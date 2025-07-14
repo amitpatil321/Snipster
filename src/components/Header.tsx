@@ -15,6 +15,7 @@ const themes = [
   "notebook",
   "bold-tech",
   "elegant-luxury",
+  "t3-chat",
 ];
 
 const Header = () => {

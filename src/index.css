@@ -8,6 +8,7 @@
 @import "./themes/bold-tech.css";
 @import "./themes/claude.css";
 @import "./themes/elegant-luxury.css";
+@import "./themes/t3-chat.css";
 
 @theme inline {
   --color-background: var(--background);
