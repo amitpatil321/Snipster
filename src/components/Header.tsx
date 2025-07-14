@@ -1,12 +1,21 @@
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "components/ui/dropdown-menu";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "components/ui/select";
-import { useEffect, useState } from "react";
+import { useAuth } from "hooks/useAuth";
+import { useTheme } from "hooks/useTheme";
 
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SidebarTrigger } from "./ui/sidebar";
 
 const themes = [
@@ -19,54 +28,74 @@ const themes = [
 ];
 
 const Header = () => {
-  const [theme, setTheme] = useState("");
-  const [isDark, setIsDark] = useState(false);
-
-  const applyTheme = (themeName: string, dark: boolean) => {
-    const body = document.body;
-    body.classList.remove(...themes);
-    body.classList.add(themeName);
-    if (dark) {
-      body.classList.add("dark");
-    }
-  };
-
-  const handleThemeChange = (selectedTheme: string) => {
-    setTheme(selectedTheme);
-    applyTheme(selectedTheme, isDark);
-  };
-
-  const handleDarkToggle = () => {
-    const newDark = !isDark;
-    setIsDark(newDark);
-    applyTheme(theme, newDark);
-    if (isDark) document.body.classList.remove("dark");
-  };
-
-  useEffect(() => {
-    document.body.classList.add("amethyst-haze");
-  }, []);
+  const { theme, isDark, handleThemeChange, toggleDark } = useTheme();
+  const { isAuthenticated, user, login, logout, signup } = useAuth();
 
   return (
-    <div className="flex flex-row items-center gap-4">
-      <SidebarTrigger />
-      <Select onValueChange={handleThemeChange} value={theme}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select color theme" />
-        </SelectTrigger>
-        <SelectContent>
-          {themes.map((theme) => {
-            return (
-              <SelectItem key={theme} value={theme} className="font-sans">
-                <span className="capitalize">{theme}</span>
+    <div className="flex flex-row justify-between items-center gap-4 p-2">
+      <div className="flex items-center gap-2">
+        <SidebarTrigger />
+        <Select onValueChange={handleThemeChange} value={theme}>
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Select theme" />
+          </SelectTrigger>
+          <SelectContent>
+            {themes.map((theme) => (
+              <SelectItem key={theme} value={theme} className="capitalize">
+                {theme}
               </SelectItem>
-            );
-          })}
-        </SelectContent>
-      </Select>
-      <button onClick={handleDarkToggle} className="p-2 border rounded">
-        {isDark ? "Light" : "Dark"}
-      </button>
+            ))}
+          </SelectContent>
+        </Select>
+        <button
+          onClick={toggleDark}
+          className="px-3 py-1 border rounded text-sm"
+        >
+          {isDark ? "Light" : "Dark"}
+        </button>
+      </div>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="font-sans">
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={isAuthenticated ? user?.picture : ""}
+              alt="profile"
+            />
+            <AvatarFallback>
+              {isAuthenticated ? user?.email?.[0]?.toUpperCase() : "U"}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-48 font-sans cursor-pointer"
+          align="end"
+        >
+          {isAuthenticated ? (
+            <>
+              <div className="px-3 py-2">
+                <p className="font-medium text-sm">{user?.name}</p>
+                <p className="text-muted-foreground text-xs truncate">
+                  {user?.email}
+                </p>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+                Logout
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <div className="font-sans">
+              <DropdownMenuItem className="cursor-pointer" onClick={login}>
+                Login
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer" onClick={signup}>
+                Signup
+              </DropdownMenuItem>
+            </div>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
