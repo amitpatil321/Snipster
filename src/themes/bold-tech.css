@@ -37,15 +37,20 @@
   --radius: 0.625rem;
   --shadow-2xs: 2px 2px 4px 0px hsl(255 86% 66% / 0.1);
   --shadow-xs: 2px 2px 4px 0px hsl(255 86% 66% / 0.1);
-  --shadow-sm: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-sm:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 1px 2px -1px hsl(255 86% 66% / 0.2);
-  --shadow: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 1px 2px -1px hsl(255 86% 66% / 0.2);
-  --shadow-md: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-md:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 2px 4px -1px hsl(255 86% 66% / 0.2);
-  --shadow-lg: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-lg:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 4px 6px -1px hsl(255 86% 66% / 0.2);
-  --shadow-xl: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-xl:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 8px 10px -1px hsl(255 86% 66% / 0.2);
   --shadow-2xl: 2px 2px 4px 0px hsl(255 86% 66% / 0.5);
   --tracking-normal: 0em;
@@ -91,15 +96,20 @@
   --radius: 0.625rem;
   --shadow-2xs: 2px 2px 4px 0px hsl(255 86% 66% / 0.1);
   --shadow-xs: 2px 2px 4px 0px hsl(255 86% 66% / 0.1);
-  --shadow-sm: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-sm:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 1px 2px -1px hsl(255 86% 66% / 0.2);
-  --shadow: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 1px 2px -1px hsl(255 86% 66% / 0.2);
-  --shadow-md: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-md:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 2px 4px -1px hsl(255 86% 66% / 0.2);
-  --shadow-lg: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-lg:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 4px 6px -1px hsl(255 86% 66% / 0.2);
-  --shadow-xl: 2px 2px 4px 0px hsl(255 86% 66% / 0.2),
+  --shadow-xl:
+    2px 2px 4px 0px hsl(255 86% 66% / 0.2),
     2px 8px 10px -1px hsl(255 86% 66% / 0.2);
   --shadow-2xl: 2px 2px 4px 0px hsl(255 86% 66% / 0.5);
 }
