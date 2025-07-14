@@ -1,1 +1,1 @@
-npm test
+npm exec lint-staged
