@@ -8,7 +8,13 @@ import {
 import { useEffect, useState } from "react";
 import { SidebarTrigger } from "./ui/sidebar";
 
-const themes = ["amethyst-haze", "claude", "notebook", "bold-tech"];
+const themes = [
+  "amethyst-haze",
+  "claude",
+  "notebook",
+  "bold-tech",
+  "elegant-luxury",
+];
 
 const Header = () => {
   const [theme, setTheme] = useState("");
@@ -40,8 +46,8 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="flex flex-row gap-4">
-      <SidebarTrigger className="-ml-1" />
+    <div className="flex flex-row items-center gap-4">
+      <SidebarTrigger />
       <Select onValueChange={handleThemeChange} value={theme}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Select color theme" />
@@ -49,7 +55,7 @@ const Header = () => {
         <SelectContent>
           {themes.map((theme) => {
             return (
-              <SelectItem key={theme} value={theme}>
+              <SelectItem key={theme} value={theme} className="font-sans">
                 <span className="capitalize">{theme}</span>
               </SelectItem>
             );

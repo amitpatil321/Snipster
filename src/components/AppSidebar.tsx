@@ -7,169 +7,62 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail,
+  useSidebar,
 } from "components/ui/sidebar";
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  ChevronRight,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "./ui/collapsible";
+import { Heart, List, Trash } from "lucide-react";
 
 const AppSidebar = () => {
-  const items = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
+  const { open } = useSidebar();
+
+  console.log(useSidebar());
+
+  const items = [
+    {
+      label: "All Snippets",
+      icon: List,
+      path: "/all",
+      count: 5,
     },
-    teams: [
-      {
-        name: "Acme Inc",
-        logo: GalleryVerticalEnd,
-        plan: "Enterprise",
-      },
-      {
-        name: "Acme Corp.",
-        logo: AudioWaveform,
-        plan: "Startup",
-      },
-      {
-        name: "Evil Corp.",
-        logo: Command,
-        plan: "Free",
-      },
-    ],
-    navMain: [
-      {
-        title: "Playground",
-        url: "#",
-        icon: SquareTerminal,
-        isActive: true,
-        items: [
-          {
-            title: "History",
-            url: "#",
-          },
-          {
-            title: "Starred",
-            url: "#",
-          },
-          {
-            title: "Settings",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Models",
-        url: "#",
-        icon: Bot,
-        items: [
-          {
-            title: "Genesis",
-            url: "#",
-          },
-          {
-            title: "Explorer",
-            url: "#",
-          },
-          {
-            title: "Quantum",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Documentation",
-        url: "#",
-        icon: BookOpen,
-        items: [
-          {
-            title: "Introduction",
-            url: "#",
-          },
-          {
-            title: "Get Started",
-            url: "#",
-          },
-          {
-            title: "Tutorials",
-            url: "#",
-          },
-          {
-            title: "Changelog",
-            url: "#",
-          },
-        ],
-      },
-      {
-        title: "Settings",
-        url: "#",
-        icon: Settings2,
-        items: [
-          {
-            title: "General",
-            url: "#",
-          },
-          {
-            title: "Team",
-            url: "#",
-          },
-          {
-            title: "Billing",
-            url: "#",
-          },
-          {
-            title: "Limits",
-            url: "#",
-          },
-        ],
-      },
-    ],
-    projects: [
-      {
-        name: "Design Engineering",
-        url: "#",
-        icon: Frame,
-      },
-      {
-        name: "Sales & Marketing",
-        url: "#",
-        icon: PieChart,
-      },
-      {
-        name: "Travel",
-        url: "#",
-        icon: Map,
-      },
-    ],
-  };
+    {
+      label: "Favorites",
+      icon: Heart,
+      path: "/all",
+      count: 5,
+    },
+    {
+      label: "Trash",
+      icon: Trash,
+      path: "/all",
+      count: 5,
+    },
+  ];
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>Team switcher</SidebarHeader>
+    <Sidebar collapsible="icon" className="border-r">
+      <SidebarHeader className="items-center mt-4 mb-4 text-2xl">
+        {open && "Snipster"}
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            {items.navMain.map((item) => (
+            {items.map((each) => {
+              return (
+                <SidebarMenuButton
+                  key={each.label}
+                  tooltip={each.label}
+                  className="flex justify-between items-center hover:bg-accent h-11 transition-colors duration-700 hover:text-accent-foreground cursor-pointer"
+                >
+                  <div className="flex flex-row justify-center items-center gap-2">
+                    <each.icon />
+                    {each.label}
+                  </div>
+                  <div>{each.count}</div>
+                </SidebarMenuButton>
+              );
+            })}
+            {/* {items.navMain.map((item) => (
               <Collapsible
                 key={item.title}
                 asChild
@@ -177,7 +70,7 @@ const AppSidebar = () => {
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
+                  <CollapsibleTrigger asChild className="border h-10">
                     <SidebarMenuButton tooltip={item.title}>
                       {item.icon && (
                         <item.icon size={32} width={32} height={32} />
@@ -201,7 +94,7 @@ const AppSidebar = () => {
                   </CollapsibleContent>
                 </SidebarMenuItem>
               </Collapsible>
-            ))}
+            ))} */}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
