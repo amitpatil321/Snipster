@@ -17,6 +17,7 @@ import { useTheme } from "hooks/useTheme";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SidebarTrigger } from "./ui/sidebar";
+import { Skeleton } from "./ui/skeleton";
 
 const themes = [
   "amethyst-haze",
@@ -29,7 +30,7 @@ const themes = [
 
 const Header = () => {
   const { theme, isDark, handleThemeChange, toggleDark } = useTheme();
-  const { isAuthenticated, user, login, logout, signup } = useAuth();
+  const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
 
   return (
     <div className="flex flex-row justify-between items-center gap-4 p-2">
@@ -63,22 +64,38 @@ const Header = () => {
               alt="profile"
             />
             <AvatarFallback>
-              {isAuthenticated ? user?.email?.[0]?.toUpperCase() : "U"}
+              {isAuthenticated ? (
+                user?.email?.[0]?.toUpperCase()
+              ) : isLoading ? (
+                <Skeleton className="rounded-full w-12 h-12" />
+              ) : (
+                "U"
+              )}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-48 font-sans cursor-pointer"
+          className="w-52 font-sans cursor-pointer"
           align="end"
         >
           {isAuthenticated ? (
             <>
-              <div className="px-3 py-2">
-                <p className="font-medium text-sm">{user?.name}</p>
-                <p className="text-muted-foreground text-xs truncate">
-                  {user?.email}
-                </p>
-              </div>
+              <DropdownMenuItem className="flex flex-row items-start gap-2 px-3 py-2">
+                <Avatar>
+                  <AvatarImage
+                    src={isAuthenticated ? user?.picture : ""}
+                    alt="profile"
+                  />
+                </Avatar>
+                <div className="flex flex-col">
+                  <p className="font-medium text-sm break-words">
+                    {user?.name}
+                  </p>
+                  <p className="text-muted-foreground text-xs break-words">
+                    {user?.email}
+                  </p>
+                </div>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer" onClick={logout}>
                 Logout

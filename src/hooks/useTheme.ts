@@ -10,8 +10,13 @@ const themes = [
 ];
 
 export function useTheme(defaultTheme = "amethyst-haze") {
-  const [theme, setTheme] = useState(defaultTheme);
-  const [isDark, setIsDark] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    // On first load, check localStorage or fallback
+    return localStorage.getItem("app-theme") || defaultTheme;
+  });
+  const [isDark, setIsDark] = useState(() => {
+    return localStorage.getItem("app-dark") === "true"; // Store as string "true" or "false"
+  });
 
   const applyTheme = (themeName: string, dark: boolean) => {
     const body = document.body;
@@ -26,18 +31,20 @@ export function useTheme(defaultTheme = "amethyst-haze") {
 
   const handleThemeChange = (selectedTheme: string) => {
     setTheme(selectedTheme);
+    localStorage.setItem("app-theme", selectedTheme);
     applyTheme(selectedTheme, isDark);
   };
 
   const toggleDark = () => {
     const newDark = !isDark;
     setIsDark(newDark);
+    localStorage.setItem("app-dark", String(newDark)); // Save as "true"/"false"
     applyTheme(theme, newDark);
   };
 
   useEffect(() => {
-    applyTheme(defaultTheme, isDark);
-  }, [defaultTheme, isDark]);
+    applyTheme(theme, isDark);
+  }, [theme, isDark]);
 
   return {
     theme,
