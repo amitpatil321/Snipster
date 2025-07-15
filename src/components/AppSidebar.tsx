@@ -9,30 +9,30 @@ import {
   SidebarRail,
   useSidebar,
 } from "components/ui/sidebar";
+import { ROUTES } from "config/routes.constant";
 import { Heart, List, Trash } from "lucide-react";
+import { Link } from "react-router";
 
 const AppSidebar = () => {
   const { open } = useSidebar();
-
-  console.log(useSidebar());
 
   const items = [
     {
       label: "All Snippets",
       icon: List,
-      path: "/all",
+      path: ROUTES.ALL,
       count: 5,
     },
     {
-      label: "Favorites",
+      label: "Favorite",
       icon: Heart,
-      path: "/all",
+      path: ROUTES.FAVORITE,
       count: 5,
     },
     {
       label: "Trash",
       icon: Trash,
-      path: "/all",
+      path: ROUTES.TRASH,
       count: 5,
     },
   ];
@@ -40,7 +40,7 @@ const AppSidebar = () => {
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="items-center mt-4 mb-4 text-2xl">
-        {open && "Snipster"}
+        {open && <Link to={ROUTES.HOME}>Snipster</Link>}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -48,17 +48,22 @@ const AppSidebar = () => {
           <SidebarMenu>
             {items.map((each) => {
               return (
-                <SidebarMenuButton
+                <Link
                   key={each.label}
-                  tooltip={each.label}
-                  className="flex justify-between items-center hover:bg-accent h-11 transition-colors duration-700 hover:text-accent-foreground cursor-pointer"
+                  to={each.path}
+                  // className="flex flex-row justify-center items-center gap-2"
                 >
-                  <div className="flex flex-row justify-center items-center gap-2">
-                    <each.icon />
-                    {each.label}
-                  </div>
-                  <div>{each.count}</div>
-                </SidebarMenuButton>
+                  <SidebarMenuButton
+                    tooltip={each.label}
+                    className="flex justify-between items-center hover:bg-accent h-11 transition-colors duration-700 hover:text-accent-foreground cursor-pointer"
+                  >
+                    <div className="flex flex-row justify-center items-center gap-2">
+                      <each.icon />
+                      {each.label}
+                    </div>
+                    <div>{each.count}</div>
+                  </SidebarMenuButton>
+                </Link>
               );
             })}
             {/* {items.navMain.map((item) => (

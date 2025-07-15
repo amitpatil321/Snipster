@@ -1,6 +1,10 @@
 import { Badge } from "components/ui/badge";
-import { cn } from "lib/utils";
+// import { cn } from "lib/utils";
+import { ROUTES } from "config/routes.constant";
 import { Star } from "lucide-react";
+import { Link, useLocation } from "react-router";
+
+import SnippetDetails from "./SnippetDetails";
 
 export const mockSnippets = [
   {
@@ -15,7 +19,8 @@ export const mockSnippets = [
   },
   {
     id: "2",
-    title: "Fetch data with React Query",
+    title:
+      "Fetch data with React Query, Copy and paste the following code into your project.",
     tags: ["react", "data-fetching", "hooks"],
     category: "React",
     createdAt: "2024-06-28T14:30:00Z",
@@ -92,38 +97,49 @@ export const mockSnippets = [
   },
 ];
 
+// const SnippetList = ({ type }: { type?: string }) => {
 const SnippetList = () => {
+  // const { id } = useParams();
+  const location = useLocation();
+
+  const basePath = location.pathname.split("/")[1];
+  const showDetails = location.pathname.includes(ROUTES.DETAILS);
+
   return (
-    <div className="flex flex-col divide-y divide-border w-full">
-      {mockSnippets.map((snippet) => (
-        <div
-          key={snippet.id}
-          className={cn(
-            "flex flex-col gap-1 px-4 py-3 hover:bg-accent/50 transition-colors cursor-pointer",
-          )}
-          onClick={() => alert(`Open snippet: ${snippet.title}`)}
-        >
-          <div className="flex justify-between items-center">
-            <h3 className="font-medium text-base">{snippet.title}</h3>
-            {snippet.favorite && (
-              <Star className="fill-yellow-500 w-4 h-4 text-yellow-500" />
-            )}
-          </div>
+    <>
+      <div className="bg-card border rounded-xl w-1/3 overflow-auto text-card-foreground">
+        {mockSnippets.map(({ id, title, favorite, tags, createdAt }) => (
+          <Link
+            key={id}
+            className="flex flex-col gap-1 hover:bg-accent/50 px-4 py-3 transition-colors"
+            to={`/${basePath}/details/${id}`}
+          >
+            <div className="flex justify-between items-center">
+              <h3 className="font-medium text-base truncate">{title}</h3>
+              {favorite && (
+                <Star className="fill-yellow-500 w-4 h-4 text-yellow-500" />
+              )}
+            </div>
 
-          <div className="flex flex-wrap gap-1">
-            {snippet.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-          </div>
+            <div className="flex flex-wrap gap-1">
+              {tags.map((tag) => (
+                <Badge key={tag} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
 
-          <span className="text-muted-foreground text-xs">
-            {new Date(snippet.createdAt).toLocaleDateString()}
-          </span>
-        </div>
-      ))}
-    </div>
+            <span className="text-muted-foreground text-xs">
+              {new Date(createdAt).toLocaleDateString()}
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      <div className="flex-1 bg-card p-4 border rounded-lg overflow-auto text-card-foreground">
+        {showDetails && <SnippetDetails />}
+      </div>
+    </>
   );
 };
 
