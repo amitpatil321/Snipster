@@ -14,6 +14,8 @@ export default defineConfig({
       components: path.resolve(__dirname, "./src/components"),
       hooks: path.resolve(__dirname, "./src/hooks"),
       lib: path.resolve(__dirname, "./src/lib"),
+      types: path.resolve(__dirname, "./src/types"),
+      services: path.resolve(__dirname, "./src/services"),
     },
   },
 });
