@@ -1,5 +1,5 @@
 import RootLayout from "components/layout/RootLayout";
-import { ROUTES } from "config/routes.constant";
+import { ROUTES } from "config/routes.config";
 import { createBrowserRouter } from "react-router";
 
 import SnippetList from "./components/SnippetList";

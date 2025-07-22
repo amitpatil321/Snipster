@@ -9,7 +9,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "components/ui/sidebar";
-import { ROUTES } from "config/routes.constant";
+import { ROUTES } from "config/routes.config";
 import { Heart, List, Trash } from "lucide-react";
 import { Link } from "react-router";
 
