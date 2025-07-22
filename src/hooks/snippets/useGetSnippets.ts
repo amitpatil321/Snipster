@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSnippetsByUser } from "services/snippet.service";
-
-import type Snippet from "types/snippet";
+import { type Snippet } from "types/snippet.types";
 
 interface GetSnippetResponse {
   data: Snippet[];

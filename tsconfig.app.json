@@ -30,7 +30,8 @@
       "hooks/*": ["./src/hooks/*"],
       "lib/*": ["./src/lib/*"],
       "types/*": ["./src/types/*"],
-      "services/*": ["./src/services/*"]
+      "services/*": ["./src/services/*"],
+      "store/*": ["./src/store/*"]
     }
     // "paths": {
     //   "@/*": ["./src/*"],
