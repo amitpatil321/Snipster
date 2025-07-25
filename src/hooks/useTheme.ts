@@ -7,6 +7,7 @@ const themes = [
   "bold-tech",
   "elegant-luxury",
   "t3-chat",
+  "nature",
 ];
 
 export function useTheme(defaultTheme = "amethyst-haze") {
