@@ -1,59 +1,60 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "store/auth/authSlice";
 
+import { getAuthenticatedUser } from "../services/user.service.ts";
+
+import type { RootState } from "src/store/index.ts";
+
 export function useAuth() {
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout: auth0Logout,
-  } = useAuth0();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const dispatch = useDispatch();
 
-  const login = async () => {
+  const fetchUser = useCallback(async () => {
     try {
-      await loginWithRedirect();
-    } catch (error) {
-      console.log("Login failed:", error);
+      setIsLoading(true);
+      try {
+        const res = await getAuthenticatedUser();
+        dispatch(setUser(res.data));
+      } catch (error) {
+        console.log("Error fetching user details", error);
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      if (err instanceof Error) setError(err);
+      else setError(new Error(String(err)));
+      dispatch(setUser(null));
+    } finally {
+      setIsLoading(false);
     }
+  }, [dispatch]);
+
+  const login = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/login`;
   };
 
-  const signup = async () => {
-    try {
-      await loginWithRedirect({
-        authorizationParams: { screen_hint: "signup" },
-      });
-    } catch (error) {
-      console.log("Signup failed:", error);
-    }
+  const signup = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/login?screen_hint=signup`;
   };
 
-  const logout = async () => {
-    try {
-      await auth0Logout({ logoutParams: { returnTo: window.location.origin } });
-    } catch (error) {
-      console.log("Logout failed:", error);
-    }
+  const logout = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/logout`;
   };
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      dispatch(setUser(user));
-    }
-  }, [isAuthenticated, user, dispatch]);
+    fetchUser();
+  }, [fetchUser]);
 
   return {
     isLoading,
-    isAuthenticated,
+    isAuthenticated: !!user,
     error,
-    user,
     login,
-    signup,
     logout,
+    signup,
+    user,
   };
 }

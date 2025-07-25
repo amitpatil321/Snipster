@@ -8,6 +8,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}
+      cacheLocation="localstorage"
     >
       {children}
     </Auth0Provider>

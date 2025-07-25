@@ -43,7 +43,7 @@ const Header = () => {
           <SelectContent>
             {themes.map((theme) => (
               <SelectItem key={theme} value={theme} className="capitalize">
-                {theme}
+                <span className="capitalize">{theme}</span>
               </SelectItem>
             ))}
           </SelectContent>
@@ -62,6 +62,7 @@ const Header = () => {
             <AvatarImage
               src={isAuthenticated ? user?.picture : ""}
               alt="profile"
+              referrerPolicy="no-referrer"
             />
             <AvatarFallback>
               {isAuthenticated ? (
@@ -88,10 +89,8 @@ const Header = () => {
                   />
                 </Avatar>
                 <div className="flex flex-col">
-                  <p className="font-medium text-sm break-words">
-                    {user?.name}
-                  </p>
-                  <p className="text-muted-foreground text-xs break-words">
+                  <p className="font-bold text-sm break-words">{user?.name}</p>
+                  <p className="overflow-ellipsis text-muted-foreground text-xs break-all">
                     {user?.email}
                   </p>
                 </div>

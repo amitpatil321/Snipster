@@ -1,4 +1,4 @@
-import { Badge } from "components/ui/badge";
+// import { Badge } from "components/ui/badge";
 // import { cn } from "lib/utils";
 import { ROUTES } from "config/routes.config";
 import useGetSnippets from "hooks/snippets/useGetSnippets";
@@ -128,7 +128,7 @@ const SnippetList = () => {
             />
           </div>
         ) : (
-          snippets?.map(({ _id, title, favorite, tags, createdAt }) => (
+          snippets?.map(({ _id, title, favorite, createdAt }) => (
             <Link
               key={_id}
               className="flex flex-col gap-1 hover:bg-accent/50 px-4 py-3 transition-colors"
@@ -141,13 +141,13 @@ const SnippetList = () => {
                 )}
               </div>
 
-              <div className="flex flex-wrap gap-1">
+              {/* <div className="flex flex-wrap gap-1">
                 {tags?.map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
                   </Badge>
                 ))}
-              </div>
+              </div> */}
 
               <span className="text-muted-foreground text-xs">
                 {formatRelativeTime(createdAt)}

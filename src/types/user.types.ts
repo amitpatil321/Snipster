@@ -1,8 +1,13 @@
 export interface User {
-  auth0Id: string;
-  username: string;
+  authId: string;
   email: string;
-  passwordHash: string;
-  avatarUrl: string;
-  bio: string | null;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  name: string;
+  nickname: string;
+  picture: string;
+  sid: string;
+  sub: string;
+  updated_at: string;
 }
