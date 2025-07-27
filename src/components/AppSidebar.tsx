@@ -10,11 +10,18 @@ import {
   useSidebar,
 } from "components/ui/sidebar";
 import { ROUTES } from "config/routes.config";
+import { cn } from "lib/utils";
 import { Heart, List, Trash } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
+import { setCurrentPage } from "store/app/appSlice";
+
+import type { RootState } from "store/index";
 
 const AppSidebar = () => {
   const { open } = useSidebar();
+  const dispatch = useDispatch();
+  const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
   const items = [
     {
@@ -51,11 +58,20 @@ const AppSidebar = () => {
                 <Link
                   key={each.label}
                   to={each.path}
-                  // className="flex flex-row justify-center items-center gap-2"
+                  onClick={() =>
+                    dispatch(
+                      setCurrentPage({ label: each.label, path: each.path }),
+                    )
+                  }
                 >
                   <SidebarMenuButton
                     tooltip={each.label}
-                    className="flex justify-between items-center hover:bg-accent h-11 transition-colors duration-700 hover:text-accent-foreground cursor-pointer"
+                    className={cn(
+                      "flex justify-between items-center h-11 transition-colors duration-700 cursor-pointer",
+                      currentPage?.path === each.path
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-accent hover:text-accent-foreground",
+                    )}
                   >
                     <div className="flex flex-row justify-center items-center gap-2">
                       <each.icon />
@@ -66,39 +82,6 @@ const AppSidebar = () => {
                 </Link>
               );
             })}
-            {/* {items.navMain.map((item) => (
-              <Collapsible
-                key={item.title}
-                asChild
-                defaultOpen={item.isActive}
-                className="group/collapsible"
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild className="border h-10">
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon && (
-                        <item.icon size={32} width={32} height={32} />
-                      )}
-                      <span>{item.title}</span>
-                      <ChevronRight className="ml-auto group-data-[state=open]/collapsible:rotate-90 transition-transform duration-200" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            ))} */}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
