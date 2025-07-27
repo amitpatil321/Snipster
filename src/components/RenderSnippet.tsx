@@ -1,5 +1,6 @@
 import { ROUTES } from "config/routes.config";
 import useToggleFavorite from "hooks/snippets/useToggleFavorite";
+import useToggleRemove from "hooks/snippets/useToggleRemove";
 import { formatRelativeTime } from "lib/utils";
 import { Star, Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -20,9 +21,12 @@ const RenderSnippet = ({ snippet }: { snippet: Snippet }) => {
     snippet,
     currentPage?.path,
   );
+  const { mutate: toggleRemove } = useToggleRemove(snippet, currentPage?.path);
 
-  const deleteSnippet = () => {
-    console.log("delete");
+  const deleteSnippet = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    toggleRemove();
   };
 
   const favoriteSnippet = (event: React.MouseEvent) => {
@@ -42,7 +46,7 @@ const RenderSnippet = ({ snippet }: { snippet: Snippet }) => {
         <div className="flex flex-row gap-3 basis-[10%]">
           <Trash2
             className="opacity-0 group-hover:opacity-100 w-4 h-4 text-gray-400 hover:text-red-500 transition-all duration-400"
-            onClick={deleteSnippet}
+            onClick={(event) => deleteSnippet(event)}
           />
           {favorite ? (
             <Star

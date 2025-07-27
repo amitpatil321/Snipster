@@ -1,19 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // import { notify } from "lib/notify";
 import { toast } from "react-toastify";
-import { toggleFavorite } from "services/snippet.service";
+import { toggleRemove } from "services/snippet.service";
 import { type Snippet } from "types/snippet.types";
 
-import type { AxiosError } from "axios";
-
-export const useToggleFavorite = (
-  snippet: Snippet,
-  type: string | undefined,
-) => {
+export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => toggleFavorite(snippet._id),
+    mutationFn: () => toggleRemove(snippet._id),
     onMutate: async () => {
       const queryKey = ["getSnippets", type];
       await queryClient.cancelQueries({ queryKey });
@@ -22,31 +17,24 @@ export const useToggleFavorite = (
       queryClient.setQueryData<Snippet[]>(
         queryKey,
         (old) =>
-          old?.map((s) =>
-            s._id === snippet._id ? { ...s, favorite: !s.favorite } : s,
-          ) ?? [],
+          old?.filter((oldSnippet) => oldSnippet._id !== snippet._id) ?? [],
       );
-      // add/remove snippet from favorites cache
       return { previousSnippets };
     },
     onError: (_err, _variables, context) => {
-      const err = _err as AxiosError<{ message?: string }>;
-
-      toast.error(
-        err?.response?.data?.message ||
-          "Failed to update status. Please try again.",
-      );
+      toast.error("Failed to update status. Please try again.");
       const queryKey = ["getSnippets", type];
       if (context?.previousSnippets) {
         queryClient.setQueryData(queryKey, context.previousSnippets);
       }
     },
     onSettled: () => {
-      // Invalidate favorites query
-      queryClient.invalidateQueries({ queryKey: ["getSnippets", "favorite"] });
-      queryClient.invalidateQueries({ queryKey: ["getSnippets", "all"] });
+      // Invalidate deleted list
+      const queryKey = ["getSnippets", "all"];
+      queryClient.invalidateQueries({ queryKey: ["getSnippets", "trash"] });
+      queryClient.invalidateQueries({ queryKey: queryKey });
     },
   });
 };
 
-export default useToggleFavorite;
+export default useToggleRemove;

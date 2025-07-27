@@ -9,10 +9,17 @@ export const getSnippetsByUser = async (type: string) => {
   return response.data;
 };
 
-export const makeFavorite = async (id: string, favorite: boolean) => {
+export const toggleFavorite = async (id: string) => {
   const response = await axiosInstance.put(
     `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}/${id}/favorite`,
-    { isFavorite: favorite },
+  );
+
+  return response.data;
+};
+
+export const toggleRemove = async (id: string) => {
+  const response = await axiosInstance.put(
+    `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}/${id}/trash`,
   );
 
   return response.data;
