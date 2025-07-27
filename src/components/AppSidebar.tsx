@@ -12,8 +12,10 @@ import {
 import { ROUTES } from "config/routes.config";
 import { cn } from "lib/utils";
 import { Heart, List, Trash } from "lucide-react";
+import { useEffect } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { setCurrentPage } from "store/app/appSlice";
 
 import type { RootState } from "store/index";
@@ -21,28 +23,41 @@ import type { RootState } from "store/index";
 const AppSidebar = () => {
   const { open } = useSidebar();
   const dispatch = useDispatch();
+  const location = useLocation();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
-  const items = [
-    {
-      label: "All Snippets",
-      icon: List,
-      path: ROUTES.ALL,
-      count: 5,
-    },
-    {
-      label: "Favorite",
-      icon: Heart,
-      path: ROUTES.FAVORITE,
-      count: 5,
-    },
-    {
-      label: "Trash",
-      icon: Trash,
-      path: ROUTES.TRASH,
-      count: 5,
-    },
-  ];
+  const items = useMemo(
+    () => [
+      {
+        label: "All Snippets",
+        name: "all",
+        icon: List,
+        path: ROUTES.ALL,
+      },
+      {
+        label: "Favorite",
+        name: "favorite",
+        icon: Heart,
+        path: ROUTES.FAVORITE,
+      },
+      {
+        label: "Trash",
+        name: "trash",
+        icon: Trash,
+        path: ROUTES.TRASH,
+      },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    const item = items.find(
+      (each) => each.path === location.pathname.split("/")?.[1],
+    );
+    if (item) {
+      dispatch(setCurrentPage({ label: item.label, path: item.path }));
+    }
+  }, [location.pathname, dispatch, items]);
 
   return (
     <Sidebar collapsible="icon" className="border-r">
@@ -77,7 +92,7 @@ const AppSidebar = () => {
                       <each.icon />
                       {each.label}
                     </div>
-                    <div>{each.count}</div>
+                    <div>{5}</div>
                   </SidebarMenuButton>
                 </Link>
               );

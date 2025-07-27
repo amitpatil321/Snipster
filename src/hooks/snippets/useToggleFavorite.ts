@@ -16,6 +16,7 @@ export const useToggleFavorite = (
       const queryKey = ["getSnippets", type];
       await queryClient.cancelQueries({ queryKey });
       const previousSnippets = queryClient.getQueryData<Snippet[]>(queryKey);
+
       queryClient.setQueryData<Snippet[]>(
         queryKey,
         (old) =>
@@ -23,6 +24,7 @@ export const useToggleFavorite = (
             s._id === snippet._id ? { ...s, favorite: !s.favorite } : s,
           ) ?? [],
       );
+      // add/remove snippet from favorites cache
       return { previousSnippets };
     },
     onError: (_err, _variables, context) => {
@@ -32,10 +34,10 @@ export const useToggleFavorite = (
         queryClient.setQueryData(queryKey, context.previousSnippets);
       }
     },
-    // onSettled: () => {
-    //   // Lets overwrite our optimistic update with fresh server data.
-    //   // queryClient.invalidateQueries({ queryKey: ["getSnippets", type] });
-    // },
+    onSettled: () => {
+      // Invalidate favorites query
+      queryClient.invalidateQueries({ queryKey: ["getSnippets", "favorite"] });
+    },
   });
 };
 
