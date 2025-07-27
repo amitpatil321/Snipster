@@ -4,10 +4,14 @@ export interface Snippet {
   code: string;
   content?: string;
   language?: string;
-  folderId?: string;
+  folderId?: {
+    _id: string;
+    name: string;
+  };
   userId: string;
   tagIds?: string[];
   favorite: boolean;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
 }

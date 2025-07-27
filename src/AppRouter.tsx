@@ -1,8 +1,9 @@
 import RootLayout from "components/layout/RootLayout";
 import { ROUTES } from "config/routes.config";
+import SnippetList from "pages/SnippetList/SnippetList";
 import { createBrowserRouter } from "react-router";
 
-import SnippetList from "./components/SnippetList";
+// const SnippetList = React.lazy(() => import("pages/SnippetList/SnippetList"));
 
 export const router = createBrowserRouter([
   {
@@ -11,11 +12,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.ALL,
-        element: <SnippetList type="all" />,
+        element: <SnippetList />,
         children: [
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList type="all" />,
+            element: <SnippetList />,
           },
         ],
       },
@@ -24,11 +25,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <SnippetList type="favorite" />,
+            element: <SnippetList />,
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList type="favorite" />,
+            element: <SnippetList />,
           },
         ],
       },
@@ -37,11 +38,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <SnippetList type="trash" />,
+            element: <SnippetList />,
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList type="trash" />,
+            element: <SnippetList />,
           },
         ],
       },
