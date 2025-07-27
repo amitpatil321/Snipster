@@ -12,22 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "components/ui/select";
+import { CONFIG } from "config/config";
 import { useAuth } from "hooks/useAuth";
 import { useTheme } from "hooks/useTheme";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
-
-const themes = [
-  "amethyst-haze",
-  "claude",
-  "notebook",
-  "bold-tech",
-  "elegant-luxury",
-  "t3-chat",
-  "nature",
-];
 
 const Header = () => {
   const { theme, isDark, handleThemeChange, toggleDark } = useTheme();
@@ -42,7 +33,7 @@ const Header = () => {
             <SelectValue placeholder="Select theme" />
           </SelectTrigger>
           <SelectContent>
-            {themes.map((theme) => (
+            {CONFIG.THEMES.map((theme) => (
               <SelectItem key={theme} value={theme} className="capitalize">
                 <span className="capitalize">{theme}</span>
               </SelectItem>

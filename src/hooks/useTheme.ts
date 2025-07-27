@@ -1,14 +1,5 @@
+import { CONFIG } from "config/config";
 import { useEffect, useState } from "react";
-
-const themes = [
-  "amethyst-haze",
-  "claude",
-  "notebook",
-  "bold-tech",
-  "elegant-luxury",
-  "t3-chat",
-  "nature",
-];
 
 export function useTheme(defaultTheme = "amethyst-haze") {
   const [theme, setTheme] = useState(() => {
@@ -16,12 +7,12 @@ export function useTheme(defaultTheme = "amethyst-haze") {
     return localStorage.getItem("app-theme") || defaultTheme;
   });
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem("app-dark") === "true"; // Store as string "true" or "false"
+    return localStorage.getItem("app-dark") === "true";
   });
 
   const applyTheme = (themeName: string, dark: boolean) => {
     const body = document.body;
-    body.classList.remove(...themes);
+    body.classList.remove(...CONFIG.THEMES);
     body.classList.add(themeName);
     if (dark) {
       body.classList.add("dark");
@@ -39,7 +30,7 @@ export function useTheme(defaultTheme = "amethyst-haze") {
   const toggleDark = () => {
     const newDark = !isDark;
     setIsDark(newDark);
-    localStorage.setItem("app-dark", String(newDark)); // Save as "true"/"false"
+    localStorage.setItem("app-dark", String(newDark));
     applyTheme(theme, newDark);
   };
 
