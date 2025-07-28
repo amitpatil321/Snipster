@@ -42,21 +42,21 @@ const AppSidebar = ({ counts, loading }: PropTypes) => {
         name: "all",
         icon: List,
         path: ROUTES.ALL,
-        count: all || "-",
+        count: all || 0,
       },
       {
         label: "Favorite",
         name: "favorite",
         icon: Heart,
         path: ROUTES.FAVORITE,
-        count: favorite || "-",
+        count: favorite || 0,
       },
       {
         label: "Trash",
         name: "trash",
         icon: Trash,
         path: ROUTES.TRASH,
-        count: trash || "-",
+        count: trash || 0,
       },
     ],
     [all, favorite, trash],
@@ -104,12 +104,16 @@ const AppSidebar = ({ counts, loading }: PropTypes) => {
                       <each.icon />
                       {each.label}
                     </div>
-                    <Badge
-                      variant="secondary"
-                      className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
-                    >
-                      {loading ? <Loading size="small" /> : each.count}
-                    </Badge>
+                    {loading ? (
+                      <Loading size="small" />
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
+                      >
+                        {each.count}
+                      </Badge>
+                    )}
                   </SidebarMenuButton>
                 </Link>
               );

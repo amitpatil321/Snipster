@@ -10,7 +10,7 @@ const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
         retry: 1,
       },
       mutations: {
-        retry: 1,
+        retry: 0,
       },
     },
   });
