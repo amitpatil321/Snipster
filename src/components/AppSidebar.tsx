@@ -18,9 +18,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 import { setCurrentPage } from "store/app/appSlice";
 
+import Loading from "./Loading";
+import { Badge } from "./ui/badge";
+
 import type { RootState } from "store/index";
 
-const AppSidebar = () => {
+interface PropTypes {
+  counts: { all: number | null; favorite: number | null; trash: number | null };
+  loading: boolean;
+}
+
+const AppSidebar = ({ counts, loading }: PropTypes) => {
+  const { all, favorite, trash } = counts || {};
   const { open } = useSidebar();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -33,21 +42,24 @@ const AppSidebar = () => {
         name: "all",
         icon: List,
         path: ROUTES.ALL,
+        count: all || "-",
       },
       {
         label: "Favorite",
         name: "favorite",
         icon: Heart,
         path: ROUTES.FAVORITE,
+        count: favorite || "-",
       },
       {
         label: "Trash",
         name: "trash",
         icon: Trash,
         path: ROUTES.TRASH,
+        count: trash || "-",
       },
     ],
-    [],
+    [all, favorite, trash],
   );
 
   useEffect(() => {
@@ -92,7 +104,12 @@ const AppSidebar = () => {
                       <each.icon />
                       {each.label}
                     </div>
-                    <div>{5}</div>
+                    <Badge
+                      variant="secondary"
+                      className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
+                    >
+                      {loading ? <Loading size="small" /> : each.count}
+                    </Badge>
                   </SidebarMenuButton>
                 </Link>
               );

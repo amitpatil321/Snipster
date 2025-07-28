@@ -1,12 +1,15 @@
 import AppSidebar from "components/AppSidebar";
 import Header from "components/Header";
 import { SidebarInset } from "components/ui/sidebar";
+import { useSnippetCounts } from "hooks/snippets/useGetCounts";
 import { Outlet } from "react-router";
 
 const RootLayout = () => {
+  const { data: counts, isLoading: countsLoading } = useSnippetCounts();
+
   return (
     <div className="flex bg-background w-full h-screen font-sans transition-opacity">
-      <AppSidebar />
+      <AppSidebar counts={counts} loading={countsLoading} />
       <SidebarInset>
         <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
           <div className="bg-card m-4 p-4 border rounded-lg h-20">

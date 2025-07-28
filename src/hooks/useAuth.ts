@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getAuthenticatedUser } from "services/user.service.ts";
 import { setUser } from "store/auth/authSlice";
 
-import { getAuthenticatedUser } from "../services/user.service.ts";
-
-import type { RootState } from "src/store/index.ts";
+import type { RootState } from "store/index.ts";
 
 export function useAuth() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
