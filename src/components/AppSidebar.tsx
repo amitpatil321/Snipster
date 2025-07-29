@@ -11,7 +11,7 @@ import {
 } from "components/ui/sidebar";
 import { ROUTES } from "config/routes.config";
 import { cn } from "lib/utils";
-import { Heart, List, Trash } from "lucide-react";
+import { Folder as FolderIcon, Heart, List, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,13 +22,22 @@ import Loading from "./Loading";
 import { Badge } from "./ui/badge";
 
 import type { RootState } from "store/index";
+import type { Folder } from "types/folder.types";
+import type { SnippetCountType } from "types/snippet.types";
 
 interface PropTypes {
-  counts: { all: number | null; favorite: number | null; trash: number | null };
+  counts: SnippetCountType;
   loading: boolean;
+  folders: Folder[];
+  foldersLoading: boolean;
 }
 
-const AppSidebar = ({ counts, loading }: PropTypes) => {
+const AppSidebar = ({
+  counts,
+  loading,
+  folders,
+  foldersLoading,
+}: PropTypes) => {
   const { all, favorite, trash } = counts || {};
   const { open } = useSidebar();
   const dispatch = useDispatch();
@@ -80,49 +89,95 @@ const AppSidebar = ({ counts, loading }: PropTypes) => {
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            {items.map((each) => {
-              return (
-                <Link
-                  key={each.label}
-                  to={each.path}
-                  onClick={() =>
-                    dispatch(
-                      setCurrentPage({ label: each.label, path: each.path }),
-                    )
-                  }
-                >
-                  <SidebarMenuButton
-                    tooltip={each.label}
-                    className={cn(
-                      "flex justify-between items-center h-11 transition-colors duration-700 cursor-pointer",
-                      currentPage?.path === each.path
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-accent hover:text-accent-foreground",
-                    )}
-                  >
-                    <div className="flex flex-row justify-center items-center gap-2">
-                      <each.icon />
-                      {each.label}
-                    </div>
-                    {loading ? (
-                      <Loading size="small" />
-                    ) : (
-                      <Badge
-                        variant="secondary"
-                        className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
-                      >
-                        {each.count}
-                      </Badge>
-                    )}
-                  </SidebarMenuButton>
-                </Link>
-              );
-            })}
+            {items.map((each) => (
+              <SidebarItem
+                key={each.label}
+                label={each.label}
+                path={each.path}
+                icon={each.icon}
+                count={each.count}
+                loading={loading}
+                isActive={currentPage?.path === each.path}
+                onClick={() =>
+                  dispatch(
+                    setCurrentPage({ label: each.label, path: each.path }),
+                  )
+                }
+              />
+            ))}
+          </SidebarMenu>
+          <SidebarGroupLabel>Folders</SidebarGroupLabel>
+          <SidebarMenu>
+            {folders?.map((each) => (
+              <SidebarItem
+                key={each._id}
+                label={each.name}
+                path={each._id}
+                icon={FolderIcon}
+                count={each.snippetCount}
+                loading={foldersLoading}
+                isActive={currentPage?.label === each.name}
+                onClick={() =>
+                  dispatch(setCurrentPage({ label: each.name, path: each._id }))
+                }
+              />
+            ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
+  );
+};
+
+interface SidebarItemProps {
+  label: string;
+  path: string;
+  icon: React.ElementType;
+  count?: number;
+  loading?: boolean;
+  isActive: boolean;
+  onClick: () => void;
+}
+
+const SidebarItem = ({
+  label,
+  path,
+  icon: Icon,
+  count,
+  loading,
+  isActive,
+  onClick,
+}: SidebarItemProps) => {
+  return (
+    <Link to={path} onClick={onClick}>
+      <SidebarMenuButton
+        tooltip={label}
+        className={cn(
+          "flex justify-between items-center h-11 transition-colors duration-700 cursor-pointer",
+          isActive
+            ? "bg-primary text-primary-foreground"
+            : "hover:bg-accent hover:text-accent-foreground",
+        )}
+      >
+        <div className="flex flex-row justify-center items-center gap-2">
+          <Icon />
+          {label}
+        </div>
+        {typeof count === "number" ? (
+          loading ? (
+            <Loading size="small" />
+          ) : (
+            <Badge
+              variant="secondary"
+              className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
+            >
+              {count}
+            </Badge>
+          )
+        ) : null}
+      </SidebarMenuButton>
+    </Link>
   );
 };
 
