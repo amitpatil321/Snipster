@@ -15,3 +15,9 @@ export interface Snippet {
   updatedAt: string;
   deletedAt?: string;
 }
+
+export interface SnippetCountType {
+  all: number;
+  favorite: number;
+  trash: number;
+}
