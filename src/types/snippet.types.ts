@@ -1,7 +1,7 @@
 export interface Snippet {
   _id: string;
   title: string;
-  code: string;
+  description?: string;
   content?: string;
   language?: string;
   folderId?: {

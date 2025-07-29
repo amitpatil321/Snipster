@@ -52,9 +52,12 @@ const SnippetList = () => {
           snippets?.map((snippet) => <RenderSnippet snippet={snippet} />)
         )}
       </div>
-      <div className="flex-1 bg-card p-4 border rounded-lg overflow-auto text-card-foreground">
+      <div className="flex-1 bg-card overflow-auto text-card-foreground">
         {showDetails && <SnippetDetails />}
       </div>
+      {/* <div className="flex-1 bg-card p-4 border rounded-lg overflow-auto text-card-foreground">
+        {showDetails && <SnippetDetails />}
+      </div> */}
     </>
   );
 };
