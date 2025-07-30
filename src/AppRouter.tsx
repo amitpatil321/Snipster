@@ -2,9 +2,8 @@ import RootLayout from "components/layout/RootLayout";
 import { ROUTES } from "config/routes.config";
 import Folder from "pages/Folder/Folder";
 import Platform from "pages/Platform/Platform";
+import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
 import { createBrowserRouter } from "react-router";
-
-import SnippetDetails from "./components/SnippetDetails";
 
 // const SnippetList = React.lazy(() => import("pages/SnippetList/SnippetList"));
 

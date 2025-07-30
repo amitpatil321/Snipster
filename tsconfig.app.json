@@ -33,11 +33,9 @@
       "services/*": ["./src/services/*"],
       "store/*": ["./src/store/*"],
       "pages/*": ["./src/pages/*"],
-      "providers/*": ["./src/providers/*"]
+      "providers/*": ["./src/providers/*"],
+      "utils/*": ["./src/utils/*"]
     }
-    // "paths": {
-    //   "@/*": ["./src/*"],
-    // }
   },
   "include": ["src"]
 }

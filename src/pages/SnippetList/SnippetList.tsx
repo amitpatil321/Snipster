@@ -1,7 +1,7 @@
 import { Alert } from "components/Alert";
 import Loading from "components/Loading";
 import RenderSnippet from "components/RenderSnippet";
-import SnippetDetails from "components/SnippetDetails";
+import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
 
 // import SnippetDetails from "components/SnippetDetails";
 // import { ROUTES } from "config/routes.config";
