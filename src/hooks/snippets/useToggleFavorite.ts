@@ -29,16 +29,18 @@ export const useToggleFavorite = (
 
       const isFav = snippet.favorite;
       const updateCount = (delta: number) =>
-        queryClient.setQueryData<SnippetCountType>(countsQuery, (old) =>
-          old
-            ? { ...old, favorite: old.favorite + delta }
-            : { all: 0, favorite: delta, trash: 0 },
+        queryClient.setQueryData<{ data: SnippetCountType }>(
+          countsQuery,
+          (old) =>
+            old
+              ? { data: { ...old.data, favorite: old.data.favorite + delta } }
+              : { data: { all: 0, favorite: delta, trash: 0 } },
         );
 
-      queryClient.setQueryData<Snippet[]>(favQueryKey, (oldFavs = []) =>
+      queryClient.setQueryData<{ data: Snippet[] }>(favQueryKey, (oldFavs) =>
         isFav
-          ? [...oldFavs, snippet]
-          : oldFavs.filter((s) => s._id !== snippet._id),
+          ? { data: [...(oldFavs?.data || []), snippet] }
+          : { data: oldFavs?.data.filter((s) => s._id !== snippet._id) || [] },
       );
 
       updateCount(isFav ? 1 : -1);

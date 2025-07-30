@@ -80,64 +80,75 @@ export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
 
       if (isDeleting) {
         // Remove from current view
-        queryClient.setQueryData<Snippet[]>(
-          queryKey,
-          (old) => old?.filter((s) => s._id !== snippet._id) ?? [],
-        );
+        queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => {
+          return {
+            data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
+          };
+        });
 
-        // Add to trash
-        queryClient.setQueryData<Snippet[]>(trashKey, (old) => [
-          ...(old ?? []),
-          {
-            ...snippet,
-            deletedAt: new Date().toISOString(),
-            favorite: false,
-            code: "-",
-          },
-        ]);
+        queryClient.setQueryData<{ data: Snippet[] }>(trashKey, (old) => {
+          return {
+            data: [
+              ...(old?.data ?? []),
+              {
+                ...snippet,
+                deletedAt: new Date().toISOString(),
+                favorite: false,
+              },
+            ],
+          };
+        });
 
         // Remove from favorites
         if (wasFavorite) {
-          queryClient.setQueryData<Snippet[]>(
-            favKey,
-            (old) => old?.filter((s) => s._id !== snippet._id) ?? [],
-          );
+          queryClient.setQueryData<{ data: Snippet[] }>(favKey, (old) => ({
+            data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
+          }));
         }
 
         // Update counts
-        queryClient.setQueryData<SnippetCountType>(countKey, (old) =>
-          old
+        queryClient.setQueryData<{ data: SnippetCountType }>(countKey, (old) =>
+          old?.data
             ? {
-                ...old,
-                trash: old.trash + 1,
-                all: old.all - 1,
-                favorite: wasFavorite ? old.favorite - 1 : old.favorite,
+                data: {
+                  ...old?.data,
+                  all: old.data?.all - 1,
+                  trash: old.data?.trash + 1,
+                  favorite: wasFavorite
+                    ? old.data.favorite - 1
+                    : old.data.favorite,
+                },
               }
-            : { all: 0, trash: 1, favorite: 0 },
+            : {
+                data: {
+                  all: 0,
+                  trash: 1,
+                  favorite: wasFavorite ? 0 : 0,
+                },
+              },
         );
       } else {
         // Restore from trash
-        queryClient.setQueryData<Snippet[]>(
-          trashKey,
-          (old) => old?.filter((s) => s._id !== snippet._id) ?? [],
-        );
+        queryClient.setQueryData<{ data: Snippet[] }>(trashKey, (old) => ({
+          data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
+        }));
 
         // Add back to "all"
-        queryClient.setQueryData<Snippet[]>(allKey, (old) => [
-          ...(old ?? []),
-          { ...snippet, deletedAt: undefined },
-        ]);
+        queryClient.setQueryData<{ data: Snippet[] }>(allKey, (old) => ({
+          data: [...(old?.data ?? []), { ...snippet, deletedAt: undefined }],
+        }));
 
         // Update counts
-        queryClient.setQueryData<SnippetCountType>(countKey, (old) =>
-          old
+        queryClient.setQueryData<{ data: SnippetCountType }>(countKey, (old) =>
+          old?.data
             ? {
-                ...old,
-                trash: old.trash - 1,
-                all: old.all + 1,
-                // Do not change favorite count on restore
+                data: {
+                  ...old.data,
+                  trash: old.data.trash - 1,
+                  all: old.data.all + 1,
+                },
               }
-            : { all: 1, trash: 0, favorite: 0 },
+            : { data: { all: 1, trash: 0, favorite: 0 } },
         );
       }
 

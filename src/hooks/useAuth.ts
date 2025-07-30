@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAuthenticatedUser } from "services/user.service.ts";
+import { getAuthenticatedUser } from "services/user.services";
 import { setUser } from "store/auth/authSlice";
 
 import type { RootState } from "store/index.ts";
@@ -17,7 +17,7 @@ export function useAuth() {
       setIsLoading(true);
       try {
         const res = await getAuthenticatedUser();
-        dispatch(setUser(res.data));
+        dispatch(setUser(res.data.data));
       } catch (error) {
         console.log("Error fetching user details", error);
       }

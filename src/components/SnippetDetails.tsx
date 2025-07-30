@@ -30,6 +30,7 @@ const SnippetDetails = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const res = await axiosInstance.get(`/api/snippet/details/${id}`);
         const data = res.data?.data?.[0];
