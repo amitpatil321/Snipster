@@ -6,12 +6,24 @@ interface GetSnippetResponse {
   data: Snippet[];
 }
 
-export const useGetSnippets = (type: string) => {
+export const useGetSnippets = (type: string, folderId?: string | null) => {
+  // console.log(type, folderId);
   return useQuery<GetSnippetResponse, Error, Snippet[]>({
-    queryKey: ["getSnippets", type as "all" | "favorite" | "trash"],
-    enabled: !!type.length,
-    queryFn: () => getSnippetsByUser(type),
+    queryKey: ["getSnippets", type, folderId ?? null],
+    enabled: !!type && (type !== "folder" || !!folderId),
+    queryFn: () => getSnippetsByUser(type, folderId ?? null),
+    select: (res) => res.data,
   });
 };
+
+// export const useGetSnippets = (type: string, folderId?: string | null) => {
+//   console.log(type, folderId);
+//   return useQuery<GetSnippetResponse, Error, Snippet[]>({
+//     queryKey: ["getSnippets", type as "all" | "favorite" | "trash", folderId],
+//     enabled: !!type && (type !== "folder" || !!folderId),
+//     queryFn: () => getSnippetsByUser(type, folderId ?? null),
+//     select: (res) => res.data,
+//   });
+// };
 
 export default useGetSnippets;
