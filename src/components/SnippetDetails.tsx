@@ -18,7 +18,6 @@ const SnippetDetails = () => {
   useEffect(() => {
     if (codeRef.current && snippet?.content) {
       const el = codeRef.current;
-
       // Fully reset the code block before highlighting
       el.removeAttribute("data-highlighted");
       el.className = `language-${snippet.language?.toLowerCase() || "plaintext"}`;
@@ -67,7 +66,7 @@ const SnippetDetails = () => {
   }
 
   return (
-    <Card>
+    <Card className="shadow-none border-none">
       <CardHeader>
         <CardTitle className="font-semibold text-2xl">
           {snippet.title}

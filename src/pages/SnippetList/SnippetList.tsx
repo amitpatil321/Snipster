@@ -1,12 +1,13 @@
 import { Alert } from "components/Alert";
 import Loading from "components/Loading";
 import RenderSnippet from "components/RenderSnippet";
+import SnippetDetails from "components/SnippetDetails";
 
 // import SnippetDetails from "components/SnippetDetails";
 // import { ROUTES } from "config/routes.config";
 // import useGetSnippets from "hooks/snippets/useGetSnippets";
 // import { useMemo } from "react";
-import type { Snippet } from "src/types/snippet.types";
+import type { Snippet } from "types/snippet.types";
 
 interface SnippetListType {
   type: string;
@@ -57,13 +58,13 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
 
   return (
     <>
-      <div className="bg-card border rounded-xl w-1/3 overflow-auto text-card-foreground">
+      <div className="bg-card shadow-lg border rounded-xl w-1/3 overflow-auto text-card-foreground">
         {renderContent}
       </div>
 
-      {/* <div className="flex-1 bg-card overflow-auto text-card-foreground">
-        {showDetails && <SnippetDetails />}
-      </div> */}
+      <div className="flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">
+        <SnippetDetails />
+      </div>
     </>
   );
 };
