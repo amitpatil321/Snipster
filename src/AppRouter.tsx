@@ -1,6 +1,7 @@
 import RootLayout from "components/layout/RootLayout";
 import { ROUTES } from "config/routes.config";
-import SnippetList from "pages/SnippetList/SnippetList";
+import Folder from "pages/Folder/Folder";
+import Platform from "pages/Platform/Platform";
 import { createBrowserRouter } from "react-router";
 
 // const SnippetList = React.lazy(() => import("pages/SnippetList/SnippetList"));
@@ -12,11 +13,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.ALL,
-        element: <SnippetList />,
+        element: <Platform />,
         children: [
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList />,
+            element: <Platform />,
           },
         ],
       },
@@ -25,11 +26,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <SnippetList />,
+            element: <Platform />,
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList />,
+            element: <Platform />,
           },
         ],
       },
@@ -38,13 +39,30 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <SnippetList />,
+            element: <Platform />,
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetList />,
+            element: <Platform />,
           },
         ],
+      },
+      {
+        path: `${ROUTES.FOLDER}/:folderId`,
+        children: [
+          {
+            index: true,
+            element: <Folder />,
+          },
+          {
+            path: `${ROUTES.DETAILS}/:id`,
+            element: <Folder />,
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <h1 className="text-xl">Not found!</h1>,
       },
     ],
   },

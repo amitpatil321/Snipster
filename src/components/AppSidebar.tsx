@@ -9,6 +9,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "components/ui/sidebar";
+import { CONFIG } from "config/config";
 import { ROUTES } from "config/routes.config";
 import { cn } from "lib/utils";
 import { Folder as FolderIcon, Heart, List, Trash } from "lucide-react";
@@ -112,7 +113,7 @@ const AppSidebar = ({
               <SidebarItem
                 key={each._id}
                 label={each.name}
-                path={each._id}
+                path={`${CONFIG.PATHS.FOLDER}/${each._id}`}
                 icon={FolderIcon}
                 count={each.snippetCount}
                 loading={foldersLoading}

@@ -4,4 +4,5 @@ export const ROUTES = {
   FAVORITE: "favorite",
   TRASH: "trash",
   DETAILS: "details",
+  FOLDER: "/folder",
 };

@@ -2,8 +2,9 @@ export const CONFIG = {
   PATHS: {
     API_BASE: "/api",
     SNIPPET: "/snippet",
-    USER: "/users",
+    USER: "/user",
     TAG: "/tags",
+    FOLDER: "/folder",
   },
   THEMES: [
     "amethyst-haze",
