@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatRelativeTime(input: Date | string): string {
+  if (!input) return "";
   const date = typeof input === "string" ? new Date(input) : input;
   const now = new Date();
   const diff = (now.getTime() - date.getTime()) / 1000;
@@ -19,6 +20,15 @@ export function formatRelativeTime(input: Date | string): string {
   return date.toLocaleDateString(undefined, {
     day: "2-digit",
     month: "2-digit",
+    year: "numeric",
+  });
+}
+
+export function dateString(date: Date): string {
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return dateObj?.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
     year: "numeric",
   });
 }

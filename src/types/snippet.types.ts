@@ -1,3 +1,5 @@
+import type { Tag } from "./tag.types";
+
 export interface Snippet {
   _id: string;
   title: string;
@@ -9,11 +11,11 @@ export interface Snippet {
     name: string;
   };
   userId: string;
-  tagIds?: string[];
+  tagIds?: Tag[];
   favorite: boolean;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
 }
 
 export interface SnippetCountType {

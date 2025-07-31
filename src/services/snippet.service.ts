@@ -30,3 +30,8 @@ export const toggleRemove = async (id: string) => {
 
   return response.data;
 };
+
+export const getSnippetDetails = async (id: string | undefined) => {
+  const response = await axiosInstance.get(`${basePath}/details/${id}`);
+  return response.data;
+};

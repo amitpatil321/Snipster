@@ -7,7 +7,6 @@ interface GetSnippetResponse {
 }
 
 export const useGetSnippets = (type: string, folderId?: string | null) => {
-  // console.log(type, folderId);
   return useQuery<GetSnippetResponse, Error, Snippet[]>({
     queryKey: ["getSnippets", type, folderId ?? null],
     enabled: !!type && (type !== "folder" || !!folderId),
