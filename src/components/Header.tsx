@@ -27,9 +27,16 @@ const Header = () => {
   return (
     <div className="flex flex-row justify-between items-center gap-4 p-2">
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
+        <SidebarTrigger aria-label="Toggle sidebar" />
+        <label htmlFor="theme-select" className="sr-only">
+          Select theme
+        </label>
         <Select onValueChange={handleThemeChange} value={theme}>
-          <SelectTrigger className="w-[160px]">
+          <SelectTrigger
+            id="theme-select"
+            className="w-[160px]"
+            aria-label="Theme selector"
+          >
             <SelectValue placeholder="Select theme" />
           </SelectTrigger>
           <SelectContent>
@@ -43,6 +50,7 @@ const Header = () => {
         <button
           onClick={toggleDark}
           className="px-3 py-1 border rounded text-sm"
+          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
         >
           {isDark ? "Light" : "Dark"}
         </button>

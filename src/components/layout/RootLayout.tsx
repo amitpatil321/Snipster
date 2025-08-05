@@ -10,7 +10,7 @@ const RootLayout = () => {
   const { data: folders, isLoading: foldersLoading } = useGetFolders();
 
   return (
-    <div className="flex bg-background w-full h-screen font-sans transition-opacity">
+    <div className="flex bg-background w-full min-h-screen font-sans transition-opacity">
       <AppSidebar
         counts={counts}
         loading={countsLoading}
