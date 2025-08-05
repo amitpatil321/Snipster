@@ -6,18 +6,30 @@ export function useTheme(defaultTheme = "amethyst-haze") {
     // On first load, check localStorage or fallback
     return localStorage.getItem("app-theme") || defaultTheme;
   });
+  // const [isDark, setIsDark] = useState(() => {
+  //   return localStorage.getItem("app-dark") === "true";
+  // });
   const [isDark, setIsDark] = useState(() => {
-    return localStorage.getItem("app-dark") === "true";
+    const stored = localStorage.getItem("app-dark");
+    console.log(stored);
+    if (stored !== null) return stored === "true";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
   const applyTheme = (themeName: string, dark: boolean) => {
+    const html = document.documentElement;
     const body = document.body;
+
     body.classList.remove(...CONFIG.THEMES);
     body.classList.add(themeName);
-    if (dark) {
-      body.classList.add("dark");
-    } else {
-      body.classList.remove("dark");
+
+    body.classList.toggle("dark", dark);
+
+    html.setAttribute("data-theme", dark ? "dark" : "light");
+
+    const toggleButton = document.querySelector("#theme-toggle");
+    if (toggleButton) {
+      toggleButton.setAttribute("aria-label", dark ? "dark" : "light");
     }
   };
 
