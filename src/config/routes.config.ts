@@ -5,4 +5,5 @@ export const ROUTES = {
   TRASH: "trash",
   DETAILS: "details",
   FOLDER: "/folder",
+  TAG: "/tag",
 };

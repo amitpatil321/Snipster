@@ -4,7 +4,14 @@ import { toast } from "react-toastify";
 import { toggleRemove } from "services/snippet.service";
 import { type Snippet, type SnippetCountType } from "types/snippet.types";
 
-export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
+export const useToggleRemove = (
+  snippet: Snippet,
+  type: string | undefined,
+  folderId?: string | null,
+  options?: {
+    onSuccess?: () => void;
+  },
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -65,9 +72,9 @@ export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
     //   return { previousSnippets };
     // },
     onMutate: async () => {
-      const queryKey = ["getSnippets", type];
-      const trashKey = ["getSnippets", "trash"];
-      const allKey = ["getSnippets", "all"];
+      const queryKey = ["getSnippets", type, folderId];
+      const trashKey = ["getSnippets", "trash", folderId];
+      const allKey = ["getSnippets", "all", folderId];
       const favKey = ["getSnippets", "favorite"];
       const countKey = ["snippetCounts"];
 
@@ -92,7 +99,7 @@ export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
               ...(old?.data ?? []),
               {
                 ...snippet,
-                deletedAt: new Date().toISOString(),
+                deletedAt: new Date(),
                 favorite: false,
               },
             ],
@@ -166,6 +173,9 @@ export const useToggleRemove = (snippet: Snippet, type: string | undefined) => {
       // const queryKey = ["getSnippets", "all"];
       // queryClient.invalidateQueries({ queryKey: ["getSnippets", "trash"] });
       // queryClient.invalidateQueries({ queryKey: queryKey });
+    },
+    onSuccess: () => {
+      options?.onSuccess?.();
     },
   });
 };

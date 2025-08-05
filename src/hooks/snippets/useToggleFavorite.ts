@@ -17,7 +17,7 @@ export const useToggleFavorite = (
     mutationFn: () => toggleFavorite(snippet._id),
     onMutate: async () => {
       const listQueryKey = ["getSnippets", type, folderId];
-      const favQueryKey = ["getSnippets", "favorite"];
+      const favQueryKey = ["getSnippets", "favorite", folderId];
       const countsQuery = ["snippetCounts"];
 
       await queryClient.cancelQueries({ queryKey: listQueryKey });
@@ -65,7 +65,7 @@ export const useToggleFavorite = (
         queryKey: ["getSnippets", context?.type, context?.folderId],
       });
       queryClient.invalidateQueries({
-        queryKey: ["getSnippets", "favorite"],
+        queryKey: ["getSnippets", "favorite", folderId],
       });
       queryClient.invalidateQueries({ queryKey: ["snippetCounts"] });
     },

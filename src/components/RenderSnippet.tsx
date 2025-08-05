@@ -1,11 +1,11 @@
-import { ROUTES } from "config/routes.config";
 import useToggleFavorite from "hooks/snippets/useToggleFavorite";
 import useToggleRemove from "hooks/snippets/useToggleRemove";
 import { formatRelativeTime } from "lib/utils";
 import { Star, Trash2 } from "lucide-react";
 import { memo, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
+import { getSnippetDetailUrl } from "utils/url.utils";
 
 import { Badge } from "./ui/badge";
 
@@ -19,16 +19,21 @@ const RenderSnippet = memo(
     setSelected,
   }: {
     snippet: Snippet;
-    selected: Snippet | null;
-    setSelected: (snippet: Snippet) => void;
+    selected: string | undefined | null;
+    setSelected: (snippet: string | null | undefined) => void;
   }) => {
     const location = useLocation();
+    const { folderId: paramFolderId } = useParams();
     const basePath = useMemo(() => location.pathname.split("/")[1], [location]);
     const { _id, title, favorite, folderId, createdAt } = snippet;
     const currentPage = useSelector(
       (state: RootState) => state.app.currentPage,
     );
-
+    const detailUrl = getSnippetDetailUrl({
+      base: basePath,
+      id: _id,
+      paramFolderId,
+    });
     const { mutate: toggleFavorite } = useToggleFavorite(
       snippet,
       currentPage?.path,
@@ -53,9 +58,9 @@ const RenderSnippet = memo(
     return (
       <Link
         key={_id}
-        className={`${selected?._id === snippet._id && "bg-muted"} "group flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground"`}
-        to={`/${basePath}/${ROUTES.DETAILS}/${_id}`}
-        onClick={() => setSelected(snippet)}
+        className={`${selected === snippet._id ? "bg-muted" : ""} group flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground`}
+        to={`${detailUrl}`}
+        onClick={() => setSelected(snippet?._id)}
       >
         <div className="flex justify-between items-center">
           <h3 className="font-medium text-base truncate basis-[90%]">

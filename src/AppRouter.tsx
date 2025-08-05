@@ -1,11 +1,16 @@
 import RootLayout from "components/layout/RootLayout";
 import { ROUTES } from "config/routes.config";
-import Folder from "pages/Folder/Folder";
-import Platform from "pages/Platform/Platform";
-import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
+import { lazy } from "react";
+// import Folder from "pages/Folder/Folder";
+// import Platform from "pages/Platform/Platform";
+// import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
 import { createBrowserRouter } from "react-router";
 
-// const SnippetList = React.lazy(() => import("pages/SnippetList/SnippetList"));
+const Platform = lazy(() => import("pages/Platform/Platform"));
+const Folder = lazy(() => import("pages/Folder/Folder"));
+// const SnippetDetails = lazy(
+//   () => import("pages/SnippetDetails/SnippetDetails"),
+// );
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +23,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetDetails />,
+            element: <Platform />,
           },
         ],
       },
@@ -31,7 +36,7 @@ export const router = createBrowserRouter([
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetDetails />,
+            element: <Platform />,
           },
         ],
       },
@@ -44,7 +49,7 @@ export const router = createBrowserRouter([
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetDetails />,
+            element: <Platform />,
           },
         ],
       },
@@ -57,7 +62,7 @@ export const router = createBrowserRouter([
           },
           {
             path: `${ROUTES.DETAILS}/:id`,
-            element: <SnippetDetails />,
+            element: <Folder />,
           },
         ],
       },

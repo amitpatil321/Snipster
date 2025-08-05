@@ -1,10 +1,16 @@
 import { Alert } from "components/Alert";
 import Loading from "components/Loading";
 import RenderSnippet from "components/RenderSnippet";
-import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
-import { useCallback, useState } from "react";
+// import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
+import { motion, AnimatePresence } from "framer-motion";
+import { lazy, useCallback, useState } from "react";
+import { useParams } from "react-router";
 
 import type { Snippet } from "types/snippet.types";
+
+const SnippetDetails = lazy(
+  () => import("pages/SnippetDetails/SnippetDetails"),
+);
 
 interface SnippetListType {
   type: string;
@@ -14,10 +20,13 @@ interface SnippetListType {
 }
 
 const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
-  const [selected, setSelected] = useState<Snippet | null>(null);
+  const params = useParams();
+  const [selected, setSelected] = useState<string | null | undefined>(
+    params?.id,
+  );
 
-  const handleSelect = useCallback((snippet: Snippet) => {
-    setSelected(snippet);
+  const handleSelect = useCallback((snippetId: string | undefined | null) => {
+    setSelected(snippetId);
   }, []);
 
   if (loading) {
@@ -42,14 +51,24 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
 
   const renderContent =
     snippets?.length > 0 ? (
-      snippets?.map((snippet: Snippet) => (
-        <RenderSnippet
-          key={snippet._id}
-          snippet={snippet}
-          selected={selected}
-          setSelected={handleSelect}
-        />
-      ))
+      <AnimatePresence initial={true}>
+        {snippets?.map((snippet: Snippet) => (
+          <motion.div
+            key={snippet._id}
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            style={{ overflow: "hidden" }}
+          >
+            <RenderSnippet
+              key={snippet._id}
+              snippet={snippet}
+              selected={selected}
+              setSelected={handleSelect}
+            />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     ) : (
       <div className="p-2">
         <Alert
@@ -71,7 +90,13 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
       </div>
 
       <div className="hidden md:block flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">
-        {selected && <SnippetDetails />}
+        {selected ? (
+          <SnippetDetails setSelected={handleSelect} />
+        ) : (
+          <div className="m-2">
+            <Alert type="info" title="Please select snippet to view details" />
+          </div>
+        )}
       </div>
     </>
   );

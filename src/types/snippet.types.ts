@@ -15,7 +15,7 @@ export interface Snippet {
   favorite: boolean;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
+  deletedAt?: Date | null;
 }
 
 export interface SnippetCountType {
