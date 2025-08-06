@@ -19,7 +19,7 @@ const RootLayout = () => {
       />
       <SidebarInset>
         <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
-          <div className="bg-card shadow-lg m-4 p-4 border rounded-lg h-20">
+          <div className="bg-card shadow-lg m-4 p-2 border rounded-lg">
             <Header />
           </div>
           <div className="flex flex-row gap-4 p-4 pt-0 h-full">

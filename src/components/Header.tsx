@@ -15,22 +15,31 @@ import {
 import { CONFIG } from "config/config";
 import { useAuth } from "hooks/useAuth";
 import { useTheme } from "hooks/useTheme";
+import { PlusIcon } from "lucide-react";
+import { useNavigate } from "react-router";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
 
 const Header = () => {
-  const { theme, isDark, handleThemeChange, toggleDark } = useTheme();
+  const { theme, handleThemeChange, toggleDark } = useTheme();
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-row justify-between items-center gap-4 p-2">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-row justify-between items-center gap-4">
+      <div className="flex items-center gap-2 w-1/2">
         <SidebarTrigger aria-label="Toggle sidebar" />
+        <Input name="search" placeholder="Search..." />
         <label htmlFor="theme-select" className="sr-only">
           Select theme
         </label>
+      </div>
+
+      <div className="flex flex-row flex-wrap justify-end items-center gap-6">
         <Select onValueChange={handleThemeChange} value={theme}>
           <SelectTrigger
             id="theme-select"
@@ -47,58 +56,52 @@ const Header = () => {
             ))}
           </SelectContent>
         </Select>
-        <button
-          onClick={toggleDark}
-          className="px-3 py-1 border rounded text-sm"
-          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+        <Button
+          variant="secondary"
+          className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"
+          onClick={() => navigate("/add")}
         >
-          {isDark ? "Light" : "Dark"}
-        </button>
-      </div>
-
-      <div className="flex flex-row items-center gap-4">
-        <div>New Snippet</div>
-        <div>
-          <button
-            className="theme-toggle"
-            id="theme-toggle"
-            title="Toggles light & dark"
-            aria-label="auto"
-            aria-live="polite"
-            onClick={toggleDark}
+          <PlusIcon /> Add Snippet
+        </Button>
+        <button
+          className="theme-toggle"
+          id="theme-toggle"
+          title="Toggles light & dark"
+          aria-label="auto"
+          aria-live="polite"
+          onClick={toggleDark}
+        >
+          <svg
+            className="sun-and-moon"
+            aria-hidden="true"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
           >
-            <svg
-              className="sun-and-moon"
-              aria-hidden="true"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <mask className="moon" id="moon-mask">
-                <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                <circle cx="24" cy="10" r="6" fill="black" />
-              </mask>
-              <circle
-                className="sun"
-                cx="12"
-                cy="12"
-                r="6"
-                mask="url(#moon-mask)"
-                fill="currentColor"
-              />
-              <g className="sun-beams" stroke="currentColor">
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </g>
-            </svg>
-          </button>
-        </div>
+            <mask className="moon" id="moon-mask">
+              <rect x="0" y="0" width="100%" height="100%" fill="white" />
+              <circle cx="24" cy="10" r="6" fill="black" />
+            </mask>
+            <circle
+              className="sun"
+              cx="12"
+              cy="12"
+              r="6"
+              mask="url(#moon-mask)"
+              fill="currentColor"
+            />
+            <g className="sun-beams" stroke="currentColor">
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+        </button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="font-sans">
             <Avatar className="cursor-pointer">

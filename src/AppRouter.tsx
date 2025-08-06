@@ -8,6 +8,7 @@ import { createBrowserRouter } from "react-router";
 
 const Platform = lazy(() => import("pages/Platform/Platform"));
 const Folder = lazy(() => import("pages/Folder/Folder"));
+const AddSnippet = lazy(() => import("pages/AddSnippet/AddSnippet"));
 // const SnippetDetails = lazy(
 //   () => import("pages/SnippetDetails/SnippetDetails"),
 // );
@@ -29,11 +30,8 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.FAVORITE,
+        element: <Platform />,
         children: [
-          {
-            index: true,
-            element: <Platform />,
-          },
           {
             path: `${ROUTES.DETAILS}/:id`,
             element: <Platform />,
@@ -42,11 +40,8 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.TRASH,
+        element: <Platform />,
         children: [
-          {
-            index: true,
-            element: <Platform />,
-          },
           {
             path: `${ROUTES.DETAILS}/:id`,
             element: <Platform />,
@@ -55,21 +50,28 @@ export const router = createBrowserRouter([
       },
       {
         path: `${ROUTES.FOLDER}/:folderId`,
+        element: <Folder />,
         children: [
-          {
-            index: true,
-            element: <Folder />,
-          },
           {
             path: `${ROUTES.DETAILS}/:id`,
             element: <Folder />,
           },
         ],
       },
+    ],
+  },
+  {
+    path: `/${ROUTES.ADD}`,
+    element: <RootLayout />,
+    children: [
       {
-        path: "*",
-        element: <h1 className="text-xl">Not found!</h1>,
+        index: true,
+        element: <AddSnippet />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <h1 className="text-xl">Not found!</h1>,
   },
 ]);
