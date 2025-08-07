@@ -11,7 +11,6 @@ export function useTheme(defaultTheme = "amethyst-haze") {
   // });
   const [isDark, setIsDark] = useState(() => {
     const stored = localStorage.getItem("app-dark");
-    console.log(stored);
     if (stored !== null) return stored === "true";
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });

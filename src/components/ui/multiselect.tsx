@@ -79,6 +79,7 @@ interface MultipleSelectorProps {
   >;
   /** hide the clear all button. */
   hideClearAllButton?: boolean;
+  icon?: React.ReactNode;
 }
 
 export interface MultipleSelectorRef {
@@ -201,6 +202,7 @@ const MultipleSelector = React.forwardRef<
       commandProps,
       inputProps,
       hideClearAllButton = false,
+      icon,
     }: MultipleSelectorProps,
     ref: React.Ref<MultipleSelectorRef>,
   ) => {
@@ -478,6 +480,7 @@ const MultipleSelector = React.forwardRef<
                   data-fixed={option.fixed}
                   data-disabled={disabled || undefined}
                 >
+                  {icon && icon}
                   {option.label}
                   <button
                     type="button"
@@ -620,6 +623,7 @@ const MultipleSelector = React.forwardRef<
                                   "cursor-default text-muted-foreground",
                               )}
                             >
+                              {icon && icon}
                               {option.label}
                             </CommandItem>
                           );

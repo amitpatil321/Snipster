@@ -16,7 +16,8 @@ import { CONFIG } from "config/config";
 import { useAuth } from "hooks/useAuth";
 import { useTheme } from "hooks/useTheme";
 import { PlusIcon } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleAddSnippet } from "store/app/appSlice";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -24,10 +25,15 @@ import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
 
+import type { RootState } from "store/index";
+
 const Header = () => {
   const { theme, handleThemeChange, toggleDark } = useTheme();
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const addModalState = useSelector(
+    (state: RootState) => state.app.addSnippetOpen,
+  );
 
   return (
     <div className="flex flex-row justify-between items-center gap-4">
@@ -59,7 +65,7 @@ const Header = () => {
         <Button
           variant="secondary"
           className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"
-          onClick={() => navigate("/add")}
+          onClick={() => dispatch(toggleAddSnippet(!addModalState))}
         >
           <PlusIcon /> Add Snippet
         </Button>

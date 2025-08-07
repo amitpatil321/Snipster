@@ -34,7 +34,8 @@
       "store/*": ["./src/store/*"],
       "pages/*": ["./src/pages/*"],
       "providers/*": ["./src/providers/*"],
-      "utils/*": ["./src/utils/*"]
+      "utils/*": ["./src/utils/*"],
+      "schema/*": ["./src/schema/*"]
     }
   },
   "include": ["src"]

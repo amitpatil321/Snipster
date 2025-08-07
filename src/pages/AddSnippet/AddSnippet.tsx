@@ -1,5 +1,6 @@
-"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CodeMirror, { EditorView, type Extension } from "@uiw/react-codemirror";
+import { ComboBox } from "components/combobox";
 import Loading from "components/Loading";
 import { Button } from "components/ui/button";
 import {
@@ -7,79 +8,64 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/input";
-import MultipleSelector from "components/ui/multiselect";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-} from "components/ui/select";
+import MultipleSelector, { type Option } from "components/ui/multiselect";
 import { Textarea } from "components/ui/textarea";
 import { CONFIG } from "config/config";
+import { useGetTags } from "hooks/tags/useGetTags";
 import { useGetFolders } from "hooks/user/useGetFolders";
-import { FolderIcon } from "lucide-react";
-import { useState } from "react";
+import { Tag } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { snippetSchema } from "schema/snippet.schema";
+import { getExtensionsForLanguage } from "utils/getCodeMirrorExtension.util";
 import { z } from "zod";
 
-import type { Folder } from "types/folder.types";
-
 export default function AddSnippet() {
-  const [tags] = useState([]);
+  const [tagsArr, setTags] = useState<Option[]>([]);
+  const editorRef = useRef(null);
+
   const { data: folders, isLoading: foldersLoading } = useGetFolders();
+  const { data: tags, isLoading: tagsLoading } = useGetTags();
+  const [extensions, setExtensions] = useState<Extension[]>([]);
 
-  // const OPTIONS = [
-  //   { label: "nextjs", value: "Nextjs" },
-  //   { label: "React", value: "react" },
-  //   { label: "Remix", value: "remix" },
-  //   { label: "Vite", value: "vite" },
-  //   { label: "Nuxt", value: "nuxt" },
-  //   { label: "Vue", value: "vue" },
-  //   { label: "Svelte", value: "svelte" },
-  //   { label: "Angular", value: "angular" },
-  //   { label: "Ember", value: "ember", disable: true },
-  //   { label: "Gatsby", value: "gatsby", disable: true },
-  //   { label: "Astro", value: "astro" },
-  // ];
-  const formSchema = z.object({
-    title: z.string().min(1, { message: "Title is required" }),
-    description: z.string().optional(),
-    folder: z.string().optional(),
-    tags: z.string().optional(),
-    language: z.string().min(1, { message: "Language is required" }),
-    content: z.string().min(1, { message: "Content is required" }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof snippetSchema>>({
+    resolver: zodResolver(snippetSchema),
     defaultValues: {
       title: "",
+      description: "",
+      folder: "",
+      tags: [],
       language: "",
       content: "",
     },
   });
+  const selectedLanguage = form.watch("language");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  const handleCopy = () => {
+    if (editorRef.current) {
+      // const value = editorRef.current?.viewState?.doc.toString() ?? "";
+      // navigator.clipboard.writeText(value);
+    }
+  };
 
-  function onReset() {
-    form.reset();
-    form.clearErrors();
+  useEffect(() => {
+    if (selectedLanguage)
+      getExtensionsForLanguage(selectedLanguage).then(setExtensions);
+  }, [selectedLanguage]);
+
+  function onSubmit(values: z.infer<typeof snippetSchema>) {
+    const formattedTags = tagsArr.map((tag) => tag.value);
+    console.log({ ...values, tags: formattedTags });
   }
 
   return (
-    <div className="bg-card shadow-lg p-4 border rounded-lg w-full md:w-2/3 lg:w-2/3 transition-opacity">
-      <h2 className="mb-4 font-semibold text-xl tracking-tight">Add Snippet</h2>
+    <div className="rounded-lg transition-opacity">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          onReset={onReset}
           className="@container space-y-8"
         >
           <div className="gap-4 grid grid-cols-12">
@@ -93,7 +79,7 @@ export default function AddSnippet() {
                       <div className="relative w-full">
                         <Input
                           key="title"
-                          placeholder="Snippet Title"
+                          placeholder="Snippet Title *"
                           type="text"
                           id="title"
                           {...field}
@@ -125,125 +111,126 @@ export default function AddSnippet() {
                 </FormItem>
               )}
             />
+            <div className="items-center gap-2 grid grid-cols-1 md:grid-cols-4 col-span-12 w-full">
+              <div className="col-span-1">
+                <FormField
+                  control={form.control}
+                  name="language"
+                  render={({ field: langField }) => (
+                    <FormItem>
+                      <FormControl>
+                        <ComboBox
+                          {...langField}
+                          options={CONFIG.LANGUAGES}
+                          className="w-full"
+                          placeholder="Select language *"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="col-span-1">
+                {foldersLoading ? (
+                  <Loading size="small" />
+                ) : (
+                  <ComboBox
+                    name="folder"
+                    options={folders}
+                    valueKey="_id"
+                    labelKey="name"
+                    placeholder="Folder"
+                    className="w-[90%]"
+                  />
+                )}
+              </div>
+              <div className="col-span-2">
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem className="col-span-8 md:col-span-3">
+                      <FormControl>
+                        {tagsLoading ? (
+                          <Loading
+                            size="small"
+                            className="justify-center items-center"
+                          />
+                        ) : (
+                          <MultipleSelector
+                            {...field}
+                            value={tagsArr}
+                            creatable
+                            icon={<Tag />}
+                            defaultOptions={tags || []}
+                            placeholder="Tags"
+                            className="w-full"
+                            onChange={(option: Option[]) => {
+                              setTags(option);
+                              field.onChange(option);
+                            }}
+                            emptyIndicator={
+                              <span className="text-gray-600 dark:text-gray-400 text-center">
+                                No tags found
+                              </span>
+                            }
+                          />
+                        )}
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
             <FormField
               control={form.control}
-              name="folder"
+              name="content"
               render={({ field }) => (
-                <FormItem className="flex flex-col items-start self-end gap-2 space-y-0 col-span-12 @5xl:col-span-12 col-start-auto">
-                  <div className="w-full">
-                    <FormControl>
-                      {foldersLoading ? (
-                        <Loading size="small" />
-                      ) : (
-                        <Select
-                          key="folder"
-                          {...field}
-                          onValueChange={field.onChange}
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select folder" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {folders?.map((each: Folder) => {
-                              return (
-                                <SelectItem key={each._id} value={each._id}>
-                                  <FolderIcon />
-                                  {each?.name}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      )}
-                    </FormControl>
-
-                    <FormMessage />
-                  </div>
+                <FormItem className="flex flex-col gap-2 col-span-12 rounded-md">
+                  <FormControl>
+                    <CodeMirror
+                      {...field}
+                      ref={editorRef}
+                      placeholder="/** Paste or write your code snippet here. **/"
+                      extensions={[
+                        extensions,
+                        EditorView.lineWrapping,
+                        EditorView.baseTheme({
+                          ".cm-content": {
+                            fontSize: "14px",
+                          },
+                        }),
+                      ]}
+                      onChange={(code) => console.log(code)}
+                      style={{
+                        overflow: "auto",
+                        minHeight: 300,
+                        height: 300,
+                      }}
+                      basicSetup={{
+                        lineNumbers: true,
+                        highlightActiveLine: false,
+                      }}
+                      theme="dark"
+                      className="bg-[#282C34] rounded-md overflow-auto"
+                    />
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="language"
-              render={({ field }) => (
-                <FormItem className="flex flex-col items-start self-end gap-2 space-y-0 col-span-12 @5xl:col-span-12 col-start-auto">
-                  <div className="w-full">
-                    <FormControl>
-                      <Select
-                        key="language"
-                        {...field}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select language" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {CONFIG.LANGUAGES.map((lang) => (
-                            <SelectItem key={lang.value} value={lang.value}>
-                              {lang.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <FormItem className="flex flex-col items-start self-end gap-2 space-y-0 col-span-12 @5xl:col-span-12 col-start-auto">
-                  <div className="w-full">
-                    <FormControl>
-                      <MultipleSelector
-                        {...field}
-                        value={tags}
-                        creatable
-                        // defaultOptions={OPTIONS}
-                        placeholder="Select related tags"
-                        emptyIndicator={
-                          <p className="text-gray-600 dark:text-gray-400 text-lg text-center leading-10">
-                            No tags found
-                          </p>
-                        }
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-            <FormField
-              // control={form.control}
-              name="submit"
-              render={() => (
-                <FormItem className="flex flex-col items-start self-end gap-2 space-y-0 col-span-12 col-start-auto">
-                  <FormLabel className="hidden shrink-0">Submit</FormLabel>
-
-                  <div className="w-full">
-                    <FormControl>
-                      <Button
-                        key="submit-button-0"
-                        id="submit-button-0"
-                        name=""
-                        className="w-full"
-                        type="submit"
-                        variant="default"
-                      >
-                        Submit
-                      </Button>
-                    </FormControl>
-
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
+            <div onClick={handleCopy}>Copy</div>
+            <div className="flex justify-end col-span-12 w-full">
+              <Button
+                className="w-full sm:w-auto"
+                type="submit"
+                variant="default"
+              >
+                Submit
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
