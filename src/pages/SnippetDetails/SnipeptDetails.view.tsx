@@ -1,19 +1,20 @@
 import { type Extension } from "@codemirror/state";
 import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import { Alert } from "components/Alert";
+import { CopyButton } from "components/CopyButton";
 import { Badge } from "components/ui/badge";
 import { Button } from "components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
 import { ROUTES } from "config/routes.config";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { dateString } from "lib/utils";
 import {
+  CalendarDays,
+  Clock,
   Folder,
   SquarePenIcon,
   Star,
   Trash,
-  CalendarDays,
-  Clock,
 } from "lucide-react";
 import { memo, useEffect, useState } from "react";
 import { Link } from "react-router";
@@ -141,7 +142,11 @@ const SnippetDetailsView = memo(
                 </div>
               </div>
               {content && (
-                <div className="flex-1 rounded-lg min-h-0 overflow-hidden">
+                <div className="relative flex-1 rounded-lg min-h-0 overflow-hidden">
+                  <CopyButton
+                    text={content}
+                    className="top-2 right-6 z-10 absolute"
+                  />
                   <CodeMirror
                     value={content}
                     extensions={[
