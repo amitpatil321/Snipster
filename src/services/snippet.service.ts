@@ -1,6 +1,9 @@
 import { CONFIG } from "config/config";
+import { snippetSchema } from "schema/snippet.schema";
 
 import axiosInstance from "./axios.service";
+
+import type z from "zod";
 
 const basePath = `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}`;
 
@@ -33,5 +36,12 @@ export const toggleRemove = async (id: string) => {
 
 export const getSnippetDetails = async (id: string | undefined) => {
   const response = await axiosInstance.get(`${basePath}/details/${id}`);
+  return response.data;
+};
+
+export type SnippetPayload = z.infer<typeof snippetSchema>;
+
+export const addSnippet = async (formData: SnippetPayload) => {
+  const response = await axiosInstance.post(`${basePath}`, formData);
   return response.data;
 };

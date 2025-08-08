@@ -14,7 +14,7 @@ const Loading = ({ size = "large", className }: LoadingType) => {
   return (
     <div className="flex flex-wrap justify-center items-center gap-4">
       <Loader2Icon
-        className={`animate-spin ${sizeMap[size]} ${className} dark:text-primary text-primary`}
+        className={`animate-spin ${sizeMap[size]} dark:text-primary text-primary ${className}`}
       />
     </div>
   );

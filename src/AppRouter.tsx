@@ -8,10 +8,6 @@ import { createBrowserRouter } from "react-router";
 
 const Platform = lazy(() => import("pages/Platform/Platform"));
 const Folder = lazy(() => import("pages/Folder/Folder"));
-const AddSnippet = lazy(() => import("pages/AddSnippet/AddSnippet"));
-// const SnippetDetails = lazy(
-//   () => import("pages/SnippetDetails/SnippetDetails"),
-// );
 
 export const router = createBrowserRouter([
   {
@@ -57,16 +53,6 @@ export const router = createBrowserRouter([
             element: <Folder />,
           },
         ],
-      },
-    ],
-  },
-  {
-    path: `/${ROUTES.ADD}`,
-    element: <RootLayout />,
-    children: [
-      {
-        index: true,
-        element: <AddSnippet />,
       },
     ],
   },
