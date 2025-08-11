@@ -1,5 +1,6 @@
 import { type Option } from "components/ui/multiselect";
 import { useAddSnippet } from "hooks/snippets/useAddSnippet";
+import { useUpdateSnippet } from "hooks/snippets/useUpdateSnippet";
 import { useGetTags } from "hooks/tags/useGetTags";
 import { useGetFolders } from "hooks/user/useGetFolders";
 import { useRef, useState } from "react";
@@ -8,11 +9,16 @@ import { snippetSchema } from "schema/snippet.schema";
 import { toggleAddSnippet } from "store/app/appSlice";
 import { z } from "zod";
 
-import AddSnippetView from "./AddSnippet.view";
+import SnippetFormView from "./SnippetForm.view";
 
 import type { ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import type { Snippet } from "types/snippet.types";
 
-export default function AddSnippet() {
+interface SnipeptFormProps {
+  snippet?: Snippet | null;
+}
+
+const SnippetForm = ({ snippet }: SnipeptFormProps) => {
   const [tagsArr, setTags] = useState<Option[] | undefined>([]);
   const editorRef = useRef<ReactCodeMirrorRef>(null);
 
@@ -20,19 +26,28 @@ export default function AddSnippet() {
   const { data: folders, isLoading: foldersLoading } = useGetFolders();
   const { data: tags, isLoading: tagsLoading } = useGetTags();
   const addSnippetMutation = useAddSnippet();
+  const updateSnippetMutation = useUpdateSnippet();
 
   const onSubmit = async (values: z.infer<typeof snippetSchema>) => {
-    addSnippetMutation.mutate(values, {
-      onSuccess: () => {
-        // hide modal
-        dispatch(toggleAddSnippet(false));
-      },
-      onError: () => {},
-    });
+    if (values.id)
+      updateSnippetMutation.mutate(values, {
+        onSuccess: () => {
+          dispatch(toggleAddSnippet({ state: false, data: null }));
+        },
+        onError: () => {},
+      });
+    else
+      addSnippetMutation.mutate(values, {
+        onSuccess: () => {
+          dispatch(toggleAddSnippet({ state: false }));
+        },
+        onError: () => {},
+      });
   };
 
   return (
-    <AddSnippetView
+    <SnippetFormView
+      snippet={snippet}
       tagsArr={tagsArr}
       setTags={setTags}
       folders={folders}
@@ -41,7 +56,11 @@ export default function AddSnippet() {
       tagsLoading={tagsLoading}
       onSubmit={onSubmit}
       editorRef={editorRef}
-      isLoading={addSnippetMutation.isPending}
+      isLoading={
+        addSnippetMutation.isPending || updateSnippetMutation.isPending
+      }
     />
   );
-}
+};
+
+export default SnippetForm;

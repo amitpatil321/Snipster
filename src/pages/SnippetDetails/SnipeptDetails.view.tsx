@@ -29,13 +29,21 @@ import type { Tag } from "types/tag.types";
 interface Props {
   toggleFavorite: UseMutateFunction;
   toggleRemove: UseMutateFunction;
+  updateSnippet: () => void;
   snippet: Snippet;
   loading: boolean;
   error: boolean;
 }
 
 const SnippetDetailsView = memo(
-  ({ loading, error, snippet, toggleFavorite, toggleRemove }: Props) => {
+  ({
+    loading,
+    error,
+    snippet,
+    toggleFavorite,
+    toggleRemove,
+    updateSnippet,
+  }: Props) => {
     const {
       _id,
       title,
@@ -82,7 +90,12 @@ const SnippetDetailsView = memo(
               <CardTitle className="flex flex-row justify-between items-center">
                 <div className="font-semibold text-2xl">{title}</div>
                 <div className="flex flex-row justify-center items-center gap-2">
-                  <Button variant="ghost" size="sm" className="cursor-pointer">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="cursor-pointer"
+                    onClick={() => updateSnippet()}
+                  >
                     <SquarePenIcon /> Update
                   </Button>
                   <Button
@@ -103,10 +116,10 @@ const SnippetDetailsView = memo(
             </CardHeader>
             <CardContent className="space-y-4">
               {description && (
-                <p className="text-muted-foreground">{description}</p>
+                <span className="text-muted-foreground">{description}</span>
               )}
               {/* <div className="flex items-center gap-4 -mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm"> */}
-              <div className="flex flex-row flex-wrap items-center place-content-between gap-4 -mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm">
+              <div className="flex flex-row flex-wrap items-center place-content-between gap-4 mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm">
                 <div className="flex flex-row gap-2">
                   {folderId && (
                     <div className="flex flex-row items-center gap-1">
@@ -117,7 +130,7 @@ const SnippetDetailsView = memo(
                   {tagIds ? (
                     <div className="flex flex-wrap gap-2">
                       {tagIds?.map((each: Tag) => (
-                        <Link to={`${ROUTES.TAG}/${each._id}`}>
+                        <Link to={`/${ROUTES.TAG}/${each._id}`}>
                           <Badge key={each._id} variant="default">
                             {each.name}
                           </Badge>

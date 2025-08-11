@@ -1,8 +1,9 @@
 import { useGetSnipeptDetails } from "hooks/snippets/useGetSnippetDetails";
 import useToggleFavorite from "hooks/snippets/useToggleFavorite";
 import useToggleRemove from "hooks/snippets/useToggleRemove";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { toggleAddSnippet } from "store/app/appSlice";
 
 import SnippetDetailsView from "./SnipeptDetails.view";
 
@@ -14,7 +15,14 @@ const SnippetDetails = ({
   setSelected: (snippet: string | undefined | null) => void;
 }) => {
   const { id } = useParams();
-  const { data: snippet, isLoading, isError } = useGetSnipeptDetails(id);
+  const dispatch = useDispatch();
+
+  const {
+    data: snippet,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetSnipeptDetails(id);
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
   const { mutate: toggleFavorite } = useToggleFavorite(
@@ -33,11 +41,16 @@ const SnippetDetails = ({
     },
   );
 
+  const updateSnippet = () => {
+    dispatch(toggleAddSnippet({ state: true, data: snippet }));
+  };
+
   return (
     <SnippetDetailsView
       toggleFavorite={toggleFavorite}
       toggleRemove={toggleRemove}
-      loading={isLoading}
+      updateSnippet={updateSnippet}
+      loading={isLoading || isFetching}
       error={isError}
       snippet={snippet}
     />

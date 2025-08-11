@@ -1,15 +1,10 @@
 import AppSidebar from "components/AppSidebar";
 import Header from "components/Header";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "components/ui/dialog";
+import { Dialog, DialogContent } from "components/ui/dialog";
 import { SidebarInset } from "components/ui/sidebar";
 import { useSnippetCounts } from "hooks/snippets/useGetCounts";
 import { useGetFolders } from "hooks/user/useGetFolders";
-import AddSnippet from "pages/AddSnippet/AddSnippet";
+import SnippetForm from "pages/SnippetForm/SnippetForm";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router";
 import { toggleAddSnippet } from "store/app/appSlice";
@@ -21,8 +16,8 @@ const RootLayout = () => {
   const { data: folders, isLoading: foldersLoading } = useGetFolders();
   const dispatch = useDispatch();
 
-  const addModalState = useSelector(
-    (state: RootState) => state.app.addSnippetOpen,
+  const { state: openModal, data } = useSelector(
+    (state: RootState) => state.app.snippetForm,
   );
 
   return (
@@ -44,16 +39,13 @@ const RootLayout = () => {
         </div>
       </SidebarInset>
 
-      {addModalState && (
+      {openModal && (
         <Dialog
-          open={addModalState}
-          onOpenChange={() => dispatch(toggleAddSnippet(!addModalState))}
+          open={openModal}
+          onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
         >
           <DialogContent className="min-w-[900px] font-sans">
-            <DialogHeader>
-              <DialogTitle>Add Snippet</DialogTitle>
-            </DialogHeader>
-            <AddSnippet />
+            <SnippetForm snippet={data} />
           </DialogContent>
         </Dialog>
       )}

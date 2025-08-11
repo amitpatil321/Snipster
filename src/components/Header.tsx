@@ -32,7 +32,7 @@ const Header = () => {
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
   const dispatch = useDispatch();
   const addModalState = useSelector(
-    (state: RootState) => state.app.addSnippetOpen,
+    (state: RootState) => state.app.snippetForm.state,
   );
 
   return (
@@ -65,7 +65,7 @@ const Header = () => {
         <Button
           variant="secondary"
           className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"
-          onClick={() => dispatch(toggleAddSnippet(!addModalState))}
+          onClick={() => dispatch(toggleAddSnippet({ state: !addModalState }))}
         >
           <PlusIcon /> Add Snippet
         </Button>

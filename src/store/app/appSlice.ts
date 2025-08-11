@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface AppState {
   currentPage: { label: string; path?: string } | null;
-  addSnippetOpen: boolean;
+  snippetForm: { state: boolean; data: null };
 }
 
 const initialState: AppState = {
   currentPage: null,
-  addSnippetOpen: false,
+  snippetForm: { state: false, data: null },
 };
 
 const appSlice = createSlice({
@@ -18,7 +18,10 @@ const appSlice = createSlice({
       state.currentPage = action.payload || null;
     },
     toggleAddSnippet(state, action) {
-      state.addSnippetOpen = action.payload;
+      state.snippetForm = {
+        state: action.payload.state,
+        data: action.payload.data,
+      };
     },
   },
 });

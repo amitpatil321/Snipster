@@ -8,6 +8,7 @@ import { ComboBox } from "components/combobox";
 import { CopyButton } from "components/CopyButton";
 import Loading from "components/Loading";
 import { Button } from "components/ui/button";
+import { DialogHeader, DialogTitle } from "components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -25,22 +26,25 @@ import { useForm } from "react-hook-form";
 import { snippetSchema } from "schema/snippet.schema";
 import { getExtensionsForLanguage } from "utils/getCodeMirrorExtension.util";
 
+import type { Snippet } from "types/snippet.types";
 import type z from "zod";
 
-interface AddSnippetViewProps {
+interface SnippetFormViewProps {
+  snippet: Snippet | null | undefined;
   tagsArr: Option[] | undefined;
   setTags: React.Dispatch<React.SetStateAction<Option[] | undefined>>;
-  folders: { value: string; label: string }[];
+  folders: { _id: string; value: string; label: string }[];
   foldersLoading: boolean;
-  tags: { value: string; label: string }[];
+  tags: { _id: string; value: string; label: string }[];
   tagsLoading: boolean;
   onSubmit: (values: z.infer<typeof snippetSchema>) => Promise<void>;
   editorRef: RefObject<ReactCodeMirrorRef | null>;
   isLoading: boolean;
 }
 
-const AddSnippetView = ({
-  tagsArr,
+const SnippetFormView = ({
+  snippet,
+  // tagsArr,
   setTags,
   folders,
   foldersLoading,
@@ -49,18 +53,22 @@ const AddSnippetView = ({
   onSubmit,
   editorRef,
   isLoading,
-}: AddSnippetViewProps) => {
+}: SnippetFormViewProps) => {
   const [extensions, setExtensions] = useState<Extension[]>([]);
 
   const form = useForm<z.infer<typeof snippetSchema>>({
     resolver: zodResolver(snippetSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      folder: "",
-      tags: [],
-      language: "",
-      content: "",
+      id: snippet?._id || "null",
+      title: snippet?.title || "",
+      description: snippet?.description || "",
+      folder:
+        folders?.find((each) => each._id === snippet?.folderId?._id)?._id || "",
+      tags:
+        snippet?.tagIds?.map((tag) => ({ label: tag.name, value: tag._id })) ||
+        [],
+      language: snippet?.language || "",
+      content: snippet?.content || "",
     },
   });
   const selectedLanguage = form.watch("language");
@@ -71,6 +79,11 @@ const AddSnippetView = ({
 
   return (
     <div className="rounded-lg transition-opacity">
+      <DialogHeader className="mb-4">
+        <DialogTitle>
+          {snippet?._id ? "Update Snippet" : "Add Snippet"}
+        </DialogTitle>
+      </DialogHeader>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -138,20 +151,30 @@ const AddSnippetView = ({
                   )}
                 />
               </div>
-              <div className="col-span-1">
-                {foldersLoading ? (
-                  <Loading size="small" />
-                ) : (
-                  <ComboBox
-                    name="folder"
-                    options={folders}
-                    valueKey="_id"
-                    labelKey="name"
-                    placeholder="Folder"
-                    className="w-[90%]"
-                  />
+              <FormField
+                control={form.control}
+                name="folder"
+                render={() => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="col-span-1">
+                        {foldersLoading ? (
+                          <Loading size="small" />
+                        ) : (
+                          <ComboBox
+                            name="folder"
+                            options={folders}
+                            valueKey="_id"
+                            labelKey="name"
+                            placeholder="Folder"
+                            className="w-[90%]"
+                          />
+                        )}
+                      </div>
+                    </FormControl>
+                  </FormItem>
                 )}
-              </div>
+              />
               <div className="col-span-2">
                 <FormField
                   control={form.control}
@@ -167,7 +190,7 @@ const AddSnippetView = ({
                         ) : (
                           <MultipleSelector
                             {...field}
-                            value={tagsArr}
+                            // value={tagsArr}
                             creatable
                             icon={<Tag />}
                             defaultOptions={tags || []}
@@ -248,10 +271,12 @@ const AddSnippetView = ({
                 {isLoading ? (
                   <>
                     <Loading className="!text-muted" />
-                    Saving...
+                    {snippet?._id ? "Updating..." : "Saving..."}
                   </>
+                ) : snippet?._id ? (
+                  "Update"
                 ) : (
-                  "Submit"
+                  "Save"
                 )}
               </Button>
             </div>
@@ -262,4 +287,4 @@ const AddSnippetView = ({
   );
 };
 
-export default AddSnippetView;
+export default SnippetFormView;

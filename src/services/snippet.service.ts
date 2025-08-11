@@ -23,13 +23,13 @@ export const getSnippetsByUser = async (
 };
 
 export const toggleFavorite = async (id: string) => {
-  const response = await axiosInstance.put(`${basePath}/${id}/favorite`);
+  const response = await axiosInstance.patch(`${basePath}/${id}/favorite`);
 
   return response.data;
 };
 
 export const toggleRemove = async (id: string) => {
-  const response = await axiosInstance.put(`${basePath}/${id}/trash`);
+  const response = await axiosInstance.patch(`${basePath}/${id}/trash`);
 
   return response.data;
 };
@@ -43,5 +43,10 @@ export type SnippetPayload = z.infer<typeof snippetSchema>;
 
 export const addSnippet = async (formData: SnippetPayload) => {
   const response = await axiosInstance.post(`${basePath}`, formData);
+  return response.data;
+};
+
+export const updateSnippet = async (changedFields: SnippetPayload) => {
+  const response = await axiosInstance.put(`${basePath}`, changedFields);
   return response.data;
 };
