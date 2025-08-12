@@ -1,19 +1,20 @@
 import { CONFIG } from "config/config";
 import { useEffect, useState } from "react";
 
+import type { ThemeMode } from "types/app.types";
+
 export function useTheme(defaultTheme = "amethyst-haze") {
-  const [theme, setTheme] = useState(() => {
-    // On first load, check localStorage or fallback
-    return localStorage.getItem("app-theme") || defaultTheme;
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("app-theme") || defaultTheme,
+  );
+
+  const [mode, setMode] = useState<ThemeMode>(() => {
+    return (localStorage.getItem("app-mode") as ThemeMode) || "system";
   });
-  // const [isDark, setIsDark] = useState(() => {
-  //   return localStorage.getItem("app-dark") === "true";
-  // });
-  const [isDark, setIsDark] = useState(() => {
-    const stored = localStorage.getItem("app-dark");
-    if (stored !== null) return stored === "true";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const isDark = mode === "system" ? prefersDark.matches : mode === "dark";
 
   const applyTheme = (themeName: string, dark: boolean) => {
     const html = document.documentElement;
@@ -38,21 +39,30 @@ export function useTheme(defaultTheme = "amethyst-haze") {
     applyTheme(selectedTheme, isDark);
   };
 
-  const toggleDark = () => {
-    const newDark = !isDark;
-    setIsDark(newDark);
-    localStorage.setItem("app-dark", String(newDark));
-    applyTheme(theme, newDark);
+  const handleModeChange = (newMode: ThemeMode) => {
+    setMode(newMode);
+    localStorage.setItem("app-mode", newMode);
   };
 
   useEffect(() => {
     applyTheme(theme, isDark);
   }, [theme, isDark]);
 
+  useEffect(() => {
+    if (mode === "system") {
+      const listener = (e: MediaQueryListEvent) => {
+        applyTheme(theme, e.matches);
+      };
+      prefersDark.addEventListener("change", listener);
+      return () => prefersDark.removeEventListener("change", listener);
+    }
+  }, [mode, theme, prefersDark]);
+
   return {
     theme,
+    mode,
     isDark,
     handleThemeChange,
-    toggleDark,
+    handleModeChange,
   };
 }
