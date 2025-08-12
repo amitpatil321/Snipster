@@ -12,20 +12,27 @@
   "license": "ISC",
   "packageManager": "pnpm@10.8.1",
   "devDependencies": {
+    "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^24.0.14",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-openid-connect": "^2.19.2",
-    "mongodb": "^6.17.0"
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.17.1",
+    "morgan": "^1.10.1"
   }
 }
