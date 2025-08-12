@@ -1,0 +1,59 @@
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthenticatedUser } from "services/user.services";
+import { setUser } from "store/auth/authSlice";
+
+import type { RootState } from "store/index.ts";
+
+export function useAuth() {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const dispatch = useDispatch();
+
+  const fetchUser = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      try {
+        const res = await getAuthenticatedUser();
+        dispatch(setUser(res.data.data));
+      } catch (error) {
+        console.error("Error fetching user details", error);
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      if (err instanceof Error) setError(err);
+      else setError(new Error(String(err)));
+      dispatch(setUser(null));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
+
+  const login = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/login`;
+  };
+
+  const signup = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/login?screen_hint=signup`;
+  };
+
+  const logout = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE}/auth/logout`;
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  return {
+    isLoading,
+    isAuthenticated: !!user,
+    error,
+    login,
+    logout,
+    signup,
+    user,
+  };
+}

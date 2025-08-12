@@ -1,0 +1,137 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "components/ui/select";
+import { CONFIG } from "config/config";
+import { useAuth } from "hooks/useAuth";
+import { useTheme } from "hooks/useTheme";
+import { PlusIcon } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleAddSnippet } from "store/app/appSlice";
+
+import ThemeSwitcher from "./ThemeSwitcher";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { SidebarTrigger } from "./ui/sidebar";
+import { Skeleton } from "./ui/skeleton";
+
+import type { RootState } from "store/index";
+
+const Header = () => {
+  const { theme, handleThemeChange } = useTheme();
+  const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
+  const dispatch = useDispatch();
+  const addModalState = useSelector(
+    (state: RootState) => state.app.snippetForm.state,
+  );
+
+  return (
+    <div className="flex flex-row justify-between items-center gap-4">
+      <div className="flex items-center gap-2 w-1/2">
+        <SidebarTrigger aria-label="Toggle sidebar" />
+        <Input name="search" placeholder="Search..." />
+        <label htmlFor="theme-select" className="sr-only">
+          Select theme
+        </label>
+      </div>
+
+      <div className="flex flex-row flex-wrap justify-end items-center gap-6">
+        <Select onValueChange={handleThemeChange} value={theme}>
+          <SelectTrigger
+            id="theme-select"
+            className="w-[160px]"
+            aria-label="Theme selector"
+          >
+            <SelectValue placeholder="Select theme" />
+          </SelectTrigger>
+          <SelectContent>
+            {CONFIG.THEMES.map((theme) => (
+              <SelectItem key={theme} value={theme} className="capitalize">
+                <span className="capitalize">{theme}</span>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          variant="secondary"
+          className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"
+          onClick={() => dispatch(toggleAddSnippet({ state: !addModalState }))}
+        >
+          <PlusIcon /> Add Snippet
+        </Button>
+        <ThemeSwitcher />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild className="font-sans">
+            <Avatar className="cursor-pointer">
+              <AvatarImage
+                src={isAuthenticated ? user?.picture : ""}
+                alt="profile"
+                referrerPolicy="no-referrer"
+              />
+              <AvatarFallback>
+                {isAuthenticated ? (
+                  user?.email?.[0]?.toUpperCase()
+                ) : isLoading ? (
+                  <Skeleton className="rounded-full w-12 h-12" />
+                ) : (
+                  "U"
+                )}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-52 font-sans cursor-pointer"
+            align="end"
+          >
+            {isAuthenticated ? (
+              <>
+                <DropdownMenuItem className="flex flex-row items-start gap-2 px-3 py-2">
+                  <Avatar>
+                    <AvatarImage
+                      src={isAuthenticated ? user?.picture : ""}
+                      alt="profile"
+                    />
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <p className="font-bold text-sm break-words">
+                      {user?.name}
+                    </p>
+                    <p className="overflow-ellipsis text-muted-foreground text-xs break-all">
+                      {user?.email}
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+                  Logout
+                </DropdownMenuItem>
+              </>
+            ) : (
+              <div className="font-sans">
+                <DropdownMenuItem className="cursor-pointer" onClick={login}>
+                  Login
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer" onClick={signup}>
+                  Signup
+                </DropdownMenuItem>
+              </div>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  );
+};
+
+export default Header;
