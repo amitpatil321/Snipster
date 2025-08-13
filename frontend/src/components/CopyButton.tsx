@@ -1,6 +1,11 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "components/ui/tooltip";
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CopyButtonProps {
   text: string;

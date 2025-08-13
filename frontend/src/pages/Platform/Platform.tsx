@@ -1,7 +1,8 @@
-import useGetSnippets from "hooks/snippets/useGetSnippets";
 import { useLocation } from "react-router";
 
 import SnippetList from "../SnippetList/SnippetList";
+
+import useGetSnippets from "@/hooks/snippets/useGetSnippets";
 
 const Platform = () => {
   const params = useLocation();

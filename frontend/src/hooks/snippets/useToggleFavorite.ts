@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { notify } from "lib/notify";
 import { toast } from "react-toastify";
-import { toggleFavorite } from "services/snippet.service";
-import { type Snippet, type SnippetCountType } from "types/snippet.types";
 
 import type { AxiosError } from "axios";
+
+import { toggleFavorite } from "@/services/snippet.service";
+import { type Snippet, type SnippetCountType } from "@/types/snippet.types";
 
 export const useToggleFavorite = (
   snippet: Snippet,

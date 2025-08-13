@@ -1,3 +1,15 @@
+import { Folder as FolderIcon, Heart, List, Trash } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router";
+
+import Loading from "./Loading";
+import { Badge } from "./ui/badge";
+
+import type { RootState } from "@/store/index";
+import type { Folder } from "@/types/folder.types";
+import type { SnippetCountType } from "@/types/snippet.types";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,23 +20,11 @@ import {
   SidebarMenuButton,
   SidebarRail,
   useSidebar,
-} from "components/ui/sidebar";
-import { CONFIG } from "config/config";
-import { ROUTES } from "config/routes.config";
-import { cn } from "lib/utils";
-import { Folder as FolderIcon, Heart, List, Trash } from "lucide-react";
-import { useEffect } from "react";
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
-import { setCurrentPage } from "store/app/appSlice";
-
-import Loading from "./Loading";
-import { Badge } from "./ui/badge";
-
-import type { RootState } from "store/index";
-import type { Folder } from "types/folder.types";
-import type { SnippetCountType } from "types/snippet.types";
+} from "@/components/ui/sidebar";
+import { CONFIG } from "@/config/config";
+import { ROUTES } from "@/config/routes.config";
+import { cn } from "@/lib/utils";
+import { setCurrentPage } from "@/store/app/appSlice";
 
 interface PropTypes {
   counts: SnippetCountType;

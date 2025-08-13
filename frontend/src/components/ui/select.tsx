@@ -1,7 +1,8 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { cn } from "lib/utils";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import * as React from "react";
+
+import { cn } from "@/lib/utils";
 
 function Select({
   ...props
@@ -89,7 +90,7 @@ function SelectLabel({
   return (
     <SelectPrimitive.Label
       data-slot="select-label"
-      className={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
+      className={cn("px-2 py-1.5 text-muted-foreground text-xs", className)}
       {...props}
     />
   );
@@ -126,7 +127,7 @@ function SelectSeparator({
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("bg-border pointer-events-none -mx-1 my-1 h-px", className)}
+      className={cn("-mx-1 my-1 bg-border h-px pointer-events-none", className)}
       {...props}
     />
   );
@@ -140,7 +141,7 @@ function SelectScrollUpButton({
     <SelectPrimitive.ScrollUpButton
       data-slot="select-scroll-up-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1",
+        "flex justify-center items-center py-1 cursor-default",
         className,
       )}
       {...props}
@@ -158,7 +159,7 @@ function SelectScrollDownButton({
     <SelectPrimitive.ScrollDownButton
       data-slot="select-scroll-down-button"
       className={cn(
-        "flex cursor-default items-center justify-center py-1",
+        "flex justify-center items-center py-1 cursor-default",
         className,
       )}
       {...props}

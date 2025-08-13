@@ -1,6 +1,7 @@
-import useGetSnippets from "hooks/snippets/useGetSnippets";
-import SnippetList from "pages/SnippetList/SnippetList";
 import { useParams } from "react-router";
+
+import useGetSnippets from "@/hooks/snippets/useGetSnippets";
+import SnippetList from "@/pages/SnippetList/SnippetList";
 
 const Folder = () => {
   const { folderId } = useParams();

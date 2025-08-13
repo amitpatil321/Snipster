@@ -1,19 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
-} from "components/ui/command";
-import { FormItem, FormMessage } from "components/ui/form";
-import { Popover, PopoverTrigger, PopoverContent } from "components/ui/popover";
-import { cn } from "lib/utils";
-import { ChevronsUpDown, Check } from "lucide-react";
-import { useState } from "react";
-import { useFormContext, Controller } from "react-hook-form";
+  CommandList,
+} from "@/components/ui/command";
+import { FormItem, FormMessage } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 type ComboBoxFieldProps<T extends Record<string, any>> = {
   name: string;

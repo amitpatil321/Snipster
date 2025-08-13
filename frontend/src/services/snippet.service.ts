@@ -1,9 +1,9 @@
-import { CONFIG } from "config/config";
-import { snippetSchema } from "schema/snippet.schema";
-
 import axiosInstance from "./axios.service";
 
 import type z from "zod";
+
+import { CONFIG } from "@/config/config";
+import { snippetSchema } from "@/schema/snippet.schema";
 
 const basePath = `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}`;
 

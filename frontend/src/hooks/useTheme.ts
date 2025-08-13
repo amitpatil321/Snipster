@@ -1,7 +1,8 @@
-import { CONFIG } from "config/config";
 import { useEffect, useState } from "react";
 
-import type { ThemeMode } from "types/app.types";
+import type { ThemeMode } from "@/types/app.types";
+
+import { CONFIG } from "@/config/config";
 
 export function useTheme(defaultTheme = "amethyst-haze") {
   const [theme, setTheme] = useState(
