@@ -8,7 +8,13 @@ import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
 import { connectDB } from "./config/db";
+
 dotenv.config();
+
+if (!process.env.PORT) {
+  console.log("Missing env file or missing port number");
+  process.exit(1);
+}
 
 import authRoutes from "./routes/auth.routes";
 import snippetRoutes from "./routes/snippet.routes";

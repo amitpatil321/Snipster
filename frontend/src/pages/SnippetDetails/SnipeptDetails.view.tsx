@@ -139,16 +139,16 @@ const SnippetDetailsView = memo(
                     </div>
                   ) : null}
                 </div>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 text-sm">
                   {createdAt && (
-                    <span className="flex justify-end gap-1">
-                      <CalendarDays className="w-4 h-4" />
+                    <span className="flex justify-end items-center gap-1">
+                      <CalendarDays className="w-3 h-3" />
                       Created {dateString(createdAt)}
                     </span>
                   )}
                   {updatedAt && (
                     <span className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
+                      <Clock className="w-3 h-3" />
                       Updated {dateString(updatedAt)}
                     </span>
                   )}
