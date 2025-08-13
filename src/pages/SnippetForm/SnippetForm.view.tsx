@@ -4,30 +4,31 @@ import CodeMirror, {
   type Extension,
   type ReactCodeMirrorRef,
 } from "@uiw/react-codemirror";
-import { ComboBox } from "components/combobox";
-import { CopyButton } from "components/CopyButton";
-import Loading from "components/Loading";
-import { Button } from "components/ui/button";
-import { DialogHeader, DialogTitle } from "components/ui/dialog";
+import { Tag } from "lucide-react";
+import { useEffect, useState, type RefObject } from "react";
+import { useForm } from "react-hook-form";
+
+import type { Snippet } from "@/types/snippet.types";
+import type z from "zod";
+
+import { ComboBox } from "@/components/combobox";
+import { CopyButton } from "@/components/CopyButton";
+import Loading from "@/components/Loading";
+import { Button } from "@/components/ui/button";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "components/ui/form";
-import { Input } from "components/ui/input";
-import MultipleSelector, { type Option } from "components/ui/multiselect";
-import { Textarea } from "components/ui/textarea";
-import { CONFIG } from "config/config";
-import { Tag } from "lucide-react";
-import { useEffect, useState, type RefObject } from "react";
-import { useForm } from "react-hook-form";
-import { snippetSchema } from "schema/snippet.schema";
-import { getExtensionsForLanguage } from "utils/getCodeMirrorExtension.util";
-
-import type { Snippet } from "types/snippet.types";
-import type z from "zod";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import MultipleSelector, { type Option } from "@/components/ui/multiselect";
+import { Textarea } from "@/components/ui/textarea";
+import { CONFIG } from "@/config/config";
+import { snippetSchema } from "@/schema/snippet.schema";
+import { getExtensionsForLanguage } from "@/utils/getCodeMirrorExtension.util";
 
 interface SnippetFormViewProps {
   snippet: Snippet | null | undefined;

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getFolders } from "services/user.services";
+
+import { getFolders } from "@/services/user.services";
 
 export const useGetFolders = () => {
   return useQuery({

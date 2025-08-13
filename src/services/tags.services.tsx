@@ -1,6 +1,6 @@
-import { CONFIG } from "config/config";
-
 import axiosInstance from "./axios.service";
+
+import { CONFIG } from "@/config/config";
 
 const basePath = `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.TAG}`;
 

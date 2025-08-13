@@ -1,13 +1,6 @@
 import { type Extension } from "@codemirror/state";
 import CodeMirror, { EditorView } from "@uiw/react-codemirror";
-import { Alert } from "components/Alert";
-import { CopyButton } from "components/CopyButton";
-import { Badge } from "components/ui/badge";
-import { Button } from "components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "components/ui/card";
-import { ROUTES } from "config/routes.config";
 import { AnimatePresence, motion } from "framer-motion";
-import { dateString } from "lib/utils";
 import {
   CalendarDays,
   Clock,
@@ -18,13 +11,21 @@ import {
 } from "lucide-react";
 import { memo, useEffect, useState } from "react";
 import { Link } from "react-router";
-import { getExtensionsForLanguage } from "utils/getCodeMirrorExtension.util";
 
 import DetailsLoading from "./DetailsLoading";
 
+import type { Snippet } from "@/types/snippet.types";
+import type { Tag } from "@/types/tag.types";
 import type { UseMutateFunction } from "@tanstack/react-query";
-import type { Snippet } from "types/snippet.types";
-import type { Tag } from "types/tag.types";
+
+import { Alert } from "@/components/Alert";
+import { CopyButton } from "@/components/CopyButton";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ROUTES } from "@/config/routes.config";
+import { dateString } from "@/lib/utils";
+import { getExtensionsForLanguage } from "@/utils/getCodeMirrorExtension.util";
 
 interface Props {
   toggleFavorite: UseMutateFunction;

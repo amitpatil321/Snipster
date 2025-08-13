@@ -1,15 +1,16 @@
 import {
+  CircleFadingArrowUpIcon,
+  InfoIcon,
+  OctagonAlert,
+  ShieldAlert,
+} from "lucide-react";
+import React from "react";
+
+import {
   Alert as AlertBox,
   AlertDescription,
   AlertTitle,
-} from "components/ui/alert";
-import {
-  CircleFadingArrowUpIcon,
-  OctagonAlert,
-  ShieldAlert,
-  InfoIcon,
-} from "lucide-react";
-import React from "react";
+} from "@/components/ui/alert";
 
 interface AlertBoxProps {
   type: "info" | "success" | "warning" | "error";

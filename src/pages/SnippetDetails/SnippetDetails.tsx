@@ -1,13 +1,14 @@
-import { useGetSnipeptDetails } from "hooks/snippets/useGetSnippetDetails";
-import useToggleFavorite from "hooks/snippets/useToggleFavorite";
-import useToggleRemove from "hooks/snippets/useToggleRemove";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { toggleAddSnippet } from "store/app/appSlice";
 
 import SnippetDetailsView from "./SnipeptDetails.view";
 
-import type { RootState } from "store/index";
+import type { RootState } from "@/store/index";
+
+import { useGetSnipeptDetails } from "@/hooks/snippets/useGetSnippetDetails";
+import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
+import useToggleRemove from "@/hooks/snippets/useToggleRemove";
+import { toggleAddSnippet } from "@/store/app/appSlice";
 
 const SnippetDetails = ({
   setSelected,

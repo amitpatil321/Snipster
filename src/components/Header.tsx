@@ -1,24 +1,7 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "components/ui/select";
-import { CONFIG } from "config/config";
-import { useAuth } from "hooks/useAuth";
-import { useTheme } from "hooks/useTheme";
 import { PlusIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleAddSnippet } from "store/app/appSlice";
 
+import ColorThemeSwitcher from "./ColorThemeSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -26,10 +9,19 @@ import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
 
-import type { RootState } from "store/index";
+import type { RootState } from "@/store/index";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/hooks/useAuth";
+import { toggleAddSnippet } from "@/store/app/appSlice";
 
 const Header = () => {
-  const { theme, handleThemeChange } = useTheme();
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
   const dispatch = useDispatch();
   const addModalState = useSelector(
@@ -47,22 +39,7 @@ const Header = () => {
       </div>
 
       <div className="flex flex-row flex-wrap justify-end items-center gap-6">
-        <Select onValueChange={handleThemeChange} value={theme}>
-          <SelectTrigger
-            id="theme-select"
-            className="w-[160px]"
-            aria-label="Theme selector"
-          >
-            <SelectValue placeholder="Select theme" />
-          </SelectTrigger>
-          <SelectContent>
-            {CONFIG.THEMES.map((theme) => (
-              <SelectItem key={theme} value={theme} className="capitalize">
-                <span className="capitalize">{theme}</span>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <ColorThemeSwitcher />
         <Button
           variant="secondary"
           className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"

@@ -1,15 +1,15 @@
-import { Alert } from "components/Alert";
-import Loading from "components/Loading";
-import RenderSnippet from "components/RenderSnippet";
-// import SnippetDetails from "pages/SnippetDetails/SnippetDetails";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { lazy, useCallback, useState } from "react";
 import { useParams } from "react-router";
 
-import type { Snippet } from "types/snippet.types";
+import type { Snippet } from "@/types/snippet.types";
+
+import { Alert } from "@/components/Alert";
+import Loading from "@/components/Loading";
+import RenderSnippet from "@/components/RenderSnippet";
 
 const SnippetDetails = lazy(
-  () => import("pages/SnippetDetails/SnippetDetails"),
+  () => import("@/pages/SnippetDetails/SnippetDetails"),
 );
 
 interface SnippetListType {

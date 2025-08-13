@@ -1,15 +1,16 @@
-import AppSidebar from "components/AppSidebar";
-import Header from "components/Header";
-import { Dialog, DialogContent } from "components/ui/dialog";
-import { SidebarInset } from "components/ui/sidebar";
-import { useSnippetCounts } from "hooks/snippets/useGetCounts";
-import { useGetFolders } from "hooks/user/useGetFolders";
-import SnippetForm from "pages/SnippetForm/SnippetForm";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router";
-import { toggleAddSnippet } from "store/app/appSlice";
 
-import type { RootState } from "store/index";
+import type { RootState } from "@/store/index";
+
+import AppSidebar from "@/components/AppSidebar";
+import Header from "@/components/Header";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { SidebarInset } from "@/components/ui/sidebar";
+import { useSnippetCounts } from "@/hooks/snippets/useGetCounts";
+import { useGetFolders } from "@/hooks/user/useGetFolders";
+import SnippetForm from "@/pages/SnippetForm/SnippetForm";
+import { toggleAddSnippet } from "@/store/app/appSlice";
 
 const RootLayout = () => {
   const { data: counts, isLoading: countsLoading } = useSnippetCounts();

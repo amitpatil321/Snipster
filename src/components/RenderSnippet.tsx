@@ -1,16 +1,17 @@
-import useToggleFavorite from "hooks/snippets/useToggleFavorite";
-import useToggleRemove from "hooks/snippets/useToggleRemove";
-import { formatRelativeTime } from "lib/utils";
 import { Star, Trash2 } from "lucide-react";
 import { memo, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router";
-import { getSnippetDetailUrl } from "utils/url.utils";
 
 import { Badge } from "./ui/badge";
 
-import type { RootState } from "store/index";
-import type { Snippet } from "types/snippet.types";
+import type { RootState } from "@/store/index";
+import type { Snippet } from "@/types/snippet.types";
+
+import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
+import useToggleRemove from "@/hooks/snippets/useToggleRemove";
+import { formatRelativeTime } from "@/lib/utils";
+import { getSnippetDetailUrl } from "@/utils/url.utils";
 
 const RenderSnippet = memo(
   ({

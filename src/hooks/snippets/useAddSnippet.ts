@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { addSnippet } from "services/snippet.service";
 import { z } from "zod";
 
+import type { snippetSchema } from "@/schema/snippet.schema";
 import type { AxiosError } from "axios";
-import type { snippetSchema } from "schema/snippet.schema";
+
+import { addSnippet } from "@/services/snippet.service";
 
 type SnippetPayload = z.infer<typeof snippetSchema>;
 

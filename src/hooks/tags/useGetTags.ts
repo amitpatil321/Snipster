@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTags } from "services/tags.services";
 
 import type { Tag } from "types/tag.types";
+
+import { getTags } from "@/services/tags.services";
 
 export const useGetTags = () => {
   return useQuery({

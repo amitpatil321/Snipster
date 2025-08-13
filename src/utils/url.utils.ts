@@ -1,4 +1,4 @@
-import { ROUTES } from "config/routes.config";
+import { ROUTES } from "@/config/routes.config";
 
 export const getSnippetDetailUrl = ({
   base,
