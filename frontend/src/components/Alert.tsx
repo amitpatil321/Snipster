@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert";
 
 interface AlertBoxProps {
-  type: "info" | "success" | "warning" | "error";
+  type?: "info" | "success" | "warning" | "error";
   title: React.ReactNode | string;
   className?: string;
   description?: React.ReactNode | string;
@@ -34,7 +34,7 @@ const bgMap = {
 };
 
 export const Alert = ({
-  type,
+  type = "error",
   title,
   description,
   className,

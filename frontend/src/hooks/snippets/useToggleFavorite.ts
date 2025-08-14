@@ -7,15 +7,15 @@ import { toggleFavorite } from "@/services/snippet.service";
 import { type Snippet, type SnippetCountType } from "@/types/snippet.types";
 
 export const useToggleFavorite = (
-  snippet: Snippet,
+  // snippet: Snippet,
   type: string | undefined,
   folderId?: string | null,
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => toggleFavorite(snippet._id),
-    onMutate: async () => {
+    mutationFn: (snippet: Snippet) => toggleFavorite(snippet._id),
+    onMutate: async (snippet) => {
       const listQueryKey = ["getSnippets", type, folderId];
       const favQueryKey = ["getSnippets", "favorite", folderId];
       const countsQuery = ["snippetCounts"];

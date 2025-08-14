@@ -1,10 +1,11 @@
-import { Folder as FolderIcon, Heart, List, Trash } from "lucide-react";
+import { Folder as FolderIcon, Heart, List, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router";
 
 import Loading from "./Loading";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 
 import type { RootState } from "@/store/index";
 import type { Folder } from "@/types/folder.types";
@@ -21,6 +22,11 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { CONFIG } from "@/config/config";
 import { ROUTES } from "@/config/routes.config";
 import { cn } from "@/lib/utils";
@@ -73,13 +79,14 @@ const AppSidebar = ({
   );
 
   useEffect(() => {
-    const item = items.find(
-      (each) => each.path === location.pathname.split("/")?.[1],
-    );
-    if (item) {
-      dispatch(setCurrentPage({ label: item.label, path: item.path }));
+    const currentPath = location.pathname;
+    const matchedItem = items.find((each) => each.path === currentPath);
+    if (matchedItem) {
+      dispatch(
+        setCurrentPage({ label: matchedItem.label, path: matchedItem.path }),
+      );
     }
-  }, [location.pathname, dispatch, items]);
+  }, [location.pathname, items, dispatch]);
 
   return (
     <Sidebar collapsible="icon" className="border-r">
@@ -107,7 +114,22 @@ const AppSidebar = ({
               />
             ))}
           </SidebarMenu>
-          <SidebarGroupLabel>Folders</SidebarGroupLabel>
+          <br />
+          <SidebarGroupLabel className="flex flex-row justify-between w-full">
+            <div>Folders {folders && "(" + folders.length + ")"}</div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="size-6 cursor-pointer"
+                >
+                  <Plus />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Add folder</TooltipContent>
+            </Tooltip>
+          </SidebarGroupLabel>
           <SidebarMenu>
             {folders?.map((each) => (
               <SidebarItem

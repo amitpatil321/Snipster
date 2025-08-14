@@ -1,15 +1,9 @@
-import { PlusIcon } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-
 import ColorThemeSwitcher from "./ColorThemeSwitcher";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { SidebarTrigger } from "./ui/sidebar";
 import { Skeleton } from "./ui/skeleton";
-
-import type { RootState } from "@/store/index";
 
 import {
   DropdownMenu,
@@ -19,14 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { toggleAddSnippet } from "@/store/app/appSlice";
 
 const Header = () => {
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
-  const dispatch = useDispatch();
-  const addModalState = useSelector(
-    (state: RootState) => state.app.snippetForm.state,
-  );
 
   return (
     <div className="flex flex-row justify-between items-center gap-4">
@@ -40,13 +29,6 @@ const Header = () => {
 
       <div className="flex flex-row flex-wrap justify-end items-center gap-6">
         <ColorThemeSwitcher />
-        <Button
-          variant="secondary"
-          className="bg-primary hover:bg-primary-400 text-primary-foreground cursor-pointer"
-          onClick={() => dispatch(toggleAddSnippet({ state: !addModalState }))}
-        >
-          <PlusIcon /> Add Snippet
-        </Button>
         <ThemeSwitcher />
         <DropdownMenu>
           <DropdownMenuTrigger asChild className="font-sans">

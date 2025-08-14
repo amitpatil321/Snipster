@@ -3,6 +3,7 @@ import axiosInstance from "./axios.service";
 import type z from "zod";
 
 import { CONFIG } from "@/config/config";
+import type { BulkFavType } from "@/hooks/snippets/useBulkFavorite";
 import { snippetSchema } from "@/schema/snippet.schema";
 
 const basePath = `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}`;
@@ -48,5 +49,10 @@ export const addSnippet = async (formData: SnippetPayload) => {
 
 export const updateSnippet = async (changedFields: SnippetPayload) => {
   const response = await axiosInstance.put(`${basePath}`, changedFields);
+  return response.data;
+};
+
+export const bulkFavorites = async (data: BulkFavType) => {
+  const response = await axiosInstance.post(`${basePath}/favorites`, data);
   return response.data;
 };

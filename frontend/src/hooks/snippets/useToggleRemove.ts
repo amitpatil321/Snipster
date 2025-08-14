@@ -5,7 +5,7 @@ import { toggleRemove } from "@/services/snippet.service";
 import { type Snippet, type SnippetCountType } from "@/types/snippet.types";
 
 export const useToggleRemove = (
-  snippet: Snippet,
+  // snippet: Snippet,
   type: string | undefined,
   folderId?: string | null,
   options?: {
@@ -15,8 +15,8 @@ export const useToggleRemove = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => toggleRemove(snippet._id),
-    onMutate: async () => {
+    mutationFn: (snippet: Snippet) => toggleRemove(snippet._id),
+    onMutate: async (snippet) => {
       const queryKey = ["getSnippets", type, folderId];
       const trashKey = ["getSnippets", "trash", folderId];
       const allKey = ["getSnippets", "all", folderId];

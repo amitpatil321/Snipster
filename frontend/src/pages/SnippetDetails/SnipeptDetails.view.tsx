@@ -131,7 +131,7 @@ const SnippetDetailsView = memo(
                   {tagIds ? (
                     <div className="flex flex-wrap gap-2">
                       {tagIds?.map((each: Tag) => (
-                        <Link to={`/${ROUTES.TAG}/${each._id}`}>
+                        <Link key={each._id} to={`/${ROUTES.TAG}/${each._id}`}>
                           <Badge key={each._id} variant="default">
                             {each.name}
                           </Badge>
@@ -140,7 +140,7 @@ const SnippetDetailsView = memo(
                     </div>
                   ) : null}
                 </div>
-                <div className="flex flex-row gap-2 text-sm">
+                <div className="flex flex-row gap-2 text-xs">
                   {createdAt && (
                     <span className="flex justify-end items-center gap-1">
                       <CalendarDays className="w-3 h-3" />
