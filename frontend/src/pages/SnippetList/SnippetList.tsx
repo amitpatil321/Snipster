@@ -30,13 +30,25 @@ interface SnippetListType {
 
 const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
   const params = useParams();
+
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
   const [selected, setSelected] = useState<string | null | undefined>(
     params?.id,
   );
   const [selectedSnippets, setSelectedSnippets] = useState<string[]>([]);
+  const { mutate: toggleFavorite } = useToggleFavorite(currentPage?.type);
+  const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
+  const { mutate: bulkFavorite } = useBulkFavorites(
+    currentPage?.type,
+    setSelectedSnippets,
+  );
 
-  // if selectedSnippets has something then add more else show snippet details
+  // on page change de-select snippet ids
+  useEffect(() => {
+    setSelectedSnippets([]);
+  }, [currentPage]);
+
+  // on chcekbox click if selectedSnippets has something then add more else show snippet details
   const handleSelect = useCallback(
     (snippetId: string | null | undefined) => {
       if (!snippetId) return;
@@ -50,15 +62,6 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
     },
     [selectedSnippets.length],
   );
-
-  const { mutate: toggleFavorite } = useToggleFavorite(currentPage?.path);
-  const { mutate: toggleRemove } = useToggleRemove(currentPage?.path);
-  const { mutate: bulkFavorite } = useBulkFavorites();
-
-  // on page change de-select snippet ids
-  useEffect(() => {
-    setSelectedSnippets([]);
-  }, [currentPage]);
 
   const handleBulkFav = () => {
     const favStatus = currentPage?.path !== `/` + ROUTES.FAVORITE;

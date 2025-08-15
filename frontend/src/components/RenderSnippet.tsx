@@ -78,10 +78,20 @@ const RenderSnippet = memo(
                 />
               </motion.div>
             )}
+
+            <motion.h3
+              initial={{ opacity: 1, x: 0 }}
+              animate={{
+                x: isHovered ? 3 : 0,
+                opacity: 1,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="font-medium text-base truncate basis-[90%]"
+            >
+              {title}
+            </motion.h3>
           </AnimatePresence>
-          <h3 className="font-medium text-base truncate basis-[90%]">
-            {title}
-          </h3>
           <div className="flex flex-row gap-3 basis-[10%]">
             <Trash2
               className="opacity-0 group-hover:opacity-100 w-4 h-4 text-gray-400 hover:text-red-500 transition-all duration-400"

@@ -110,7 +110,8 @@ const ActionButtons = ({
             className="flex justify-between items-center p-2 pl-3 w-full"
           >
             <div className="font-bold text-foreground">
-              {currentPage?.label} ({snippets.length})
+              {currentPage?.label}{" "}
+              {snippets.length > 0 && "(" + snippets.length + ")"}
             </div>
             <Button
               variant="secondary"

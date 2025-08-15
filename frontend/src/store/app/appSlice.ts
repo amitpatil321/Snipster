@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AppState {
-  currentPage: { label: string; path?: string } | null;
+  currentPage: { label: string; path?: string; type: string } | null;
   snippetForm: { state: boolean; data: null };
 }
 

@@ -6,14 +6,19 @@ import useGetSnippets from "@/hooks/snippets/useGetSnippets";
 
 const Platform = () => {
   const params = useLocation();
-  const type = params.pathname.split("/")?.[1];
+  const type = params.pathname.split("/")?.[1]; //todo: replace this with redux state currentPage
 
-  const { isLoading, data: snippets = [], isError } = useGetSnippets(type);
+  const {
+    isLoading,
+    isFetching,
+    data: snippets = [],
+    isError,
+  } = useGetSnippets(type);
 
   return (
     <SnippetList
       type="folder"
-      loading={isLoading}
+      loading={isLoading || isFetching}
       error={isError}
       snippets={snippets}
     />

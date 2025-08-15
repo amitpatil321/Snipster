@@ -83,7 +83,11 @@ const AppSidebar = ({
     const matchedItem = items.find((each) => each.path === currentPath);
     if (matchedItem) {
       dispatch(
-        setCurrentPage({ label: matchedItem.label, path: matchedItem.path }),
+        setCurrentPage({
+          label: matchedItem.label,
+          path: matchedItem.path,
+          type: matchedItem.path.split("/")?.[1],
+        }),
       );
     }
   }, [location.pathname, items, dispatch]);
