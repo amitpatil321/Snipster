@@ -35,51 +35,55 @@ export const getCounts = withUser(async (req: Request, res: Response) => {
 });
 
 export const getSnippets = withUser(async (req: Request, res: Response) => {
-  try {
-    const userId = req.oidc?.user?.sub;
-    const type = (req.query.type as string) || "all";
-    const folderId = req.query.folderId as string;
+  setTimeout(async () => {
+    try {
+      const userId = req.oidc?.user?.sub;
+      const type = (req.query.type as string) || "all";
+      const folderId = req.query.folderId as string;
 
-    const filter: Record<string, any> = {
-      createdBy: userId,
-    };
-    let sortBy: Record<string, 1 | -1> = {};
-    if (type === "favorite") {
-      filter.favorite = true;
-      filter.deletedAt = null;
-      sortBy = { createdAt: -1 };
-    } else if (type === "trash") {
-      filter.deletedAt = { $ne: null };
-      sortBy = { deletedAt: -1 };
-    } else if (type === "all") {
-      filter.deletedAt = null;
-      sortBy = { createdAt: -1 };
-    } else if (type === "folder") {
-      filter.deletedAt = null;
-      if (folderId) {
-        filter.folderId = new Types.ObjectId(folderId);
+      const filter: Record<string, any> = {
+        createdBy: userId,
+      };
+      let sortBy: Record<string, 1 | -1> = {};
+      if (type === "favorite") {
+        filter.favorite = true;
+        filter.deletedAt = null;
+        sortBy = { createdAt: -1 };
+      } else if (type === "trash") {
+        filter.deletedAt = { $ne: null };
+        sortBy = { deletedAt: -1 };
+      } else if (type === "all") {
+        filter.deletedAt = null;
+        sortBy = { createdAt: -1 };
+      } else if (type === "folder") {
+        filter.deletedAt = null;
+        if (folderId) {
+          filter.folderId = new Types.ObjectId(folderId);
+        }
+        sortBy = { createdAt: -1 };
+      } else {
+        filter.deletedAt = null;
+        sortBy = { createdAt: -1 };
       }
-      sortBy = { createdAt: -1 };
-    } else {
-      filter.deletedAt = null;
-      sortBy = { createdAt: -1 };
+
+      const snippets = await Snippet.find(filter)
+        .populate({
+          path: "folderId",
+          model: Folder,
+          select: "name",
+        })
+        .select("-updatedAt -__v -content -tagIds")
+        .sort(sortBy)
+        .exec();
+
+      res.json({ success: true, data: snippets });
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to fetch snippets" });
     }
-
-    const snippets = await Snippet.find(filter)
-      .populate({
-        path: "folderId",
-        model: Folder,
-        select: "name",
-      })
-      .select("-updatedAt -__v -content -tagIds")
-      .sort(sortBy)
-      .exec();
-
-    res.json({ success: true, data: snippets });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, error: "Failed to fetch snippets" });
-  }
+  }, 2000);
 });
 
 export const toggleFavorite = withUser(async (req: Request, res: Response) => {
@@ -286,4 +290,32 @@ export const updateSnippet = withUser(async (req: Request, res: Response) => {
       message: "Error updating snippet, Please try again!",
     });
   }
+});
+
+export const bulkFavorite = withUser(async (req: Request, res: Response) => {
+  setTimeout(async () => {
+    try {
+      const userId = req.oidc?.user?.sub;
+      const { ids, status } = req.body;
+
+      if (ids.length === 0 || typeof status !== "boolean") {
+        return res.status(400).json({ success: false, error: "Invalid input" });
+      }
+
+      const result = await Snippet.updateMany(
+        { _id: { $in: ids }, createdBy: userId, deletedAt: null },
+        { $set: { favorite: status } }
+      );
+
+      res.status(200).json({
+        success: true,
+        message: `Snippets marked as ${status ? "favorite" : "unfavorite"}`,
+        modifiedCount: result.modifiedCount,
+      });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ success: false, message: "Error updating favorite status" });
+    }
+  }, 4000);
 });
