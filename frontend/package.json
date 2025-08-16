@@ -110,7 +110,7 @@
     "*.{ts,tsx}": [
       "npm run lint:fix",
       "npm run format",
-      "prettier --write",
+      "npm run format",
       "eslint --max-warnings 0 ."
     ],
     "*.{css, md, json}": [
