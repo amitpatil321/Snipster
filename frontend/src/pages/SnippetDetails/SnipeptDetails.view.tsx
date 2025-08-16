@@ -16,7 +16,6 @@ import DetailsLoading from "./DetailsLoading";
 
 import type { Snippet } from "@/types/snippet.types";
 import type { Tag } from "@/types/tag.types";
-import type { UseMutateFunction } from "@tanstack/react-query";
 
 import { Alert } from "@/components/Alert";
 import { CopyButton } from "@/components/CopyButton";
@@ -28,8 +27,8 @@ import { dateString } from "@/lib/utils";
 import { getExtensionsForLanguage } from "@/utils/getCodeMirrorExtension.util";
 
 interface Props {
-  toggleFavorite: UseMutateFunction;
-  toggleRemove: UseMutateFunction;
+  toggleFavorite: (snippet: Snippet) => void;
+  toggleRemove: (snippet: Snippet) => void;
   updateSnippet: () => void;
   snippet: Snippet;
   loading: boolean;
@@ -103,14 +102,14 @@ const SnippetDetailsView = memo(
                     variant="ghost"
                     size="sm"
                     className="hover:text-red-600 cursor-pointer"
-                    onClick={() => toggleRemove()}
+                    onClick={() => toggleRemove(snippet)}
                   >
                     <Trash /> Delete
                   </Button>
                   <Star
                     className={`cursor-pointer w-5 h-5 text-gray-400 transition-colors duration-300 ease-in-out
     ${favorite ? "text-yellow-500 fill-yellow-500" : "hover:text-yellow-500 hover:fill-yellow-500"}`}
-                    onClick={() => toggleFavorite()}
+                    onClick={() => toggleFavorite(snippet)}
                   />
                 </div>
               </CardTitle>

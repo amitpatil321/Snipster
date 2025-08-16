@@ -1,12 +1,14 @@
-import { bulkFavorites } from "@/services/snippet.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import type { Snippet } from "@/types/snippet.types";
+
+import { bulkFavorites } from "@/services/snippet.service";
 import {
   addSnippetstoFavorites,
   removeSnippetsFromList,
   updateFavCount,
   updateSnippetProperty,
 } from "@/utils/queryCache.utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface BulkFavType {
   ids: string[];
@@ -45,7 +47,6 @@ export const useBulkFavorites = (
           updateFavCount(queryClient, countsKey, payload.ids.length || 0);
           // add snippets to fav list if cache already exists
           if (queryClient.getQueryData<{ data: Snippet[] }>(favQueryKey)) {
-            console.log("fav cache available");
             addSnippetstoFavorites(
               queryClient,
               listQueryKey,
@@ -68,8 +69,8 @@ export const useBulkFavorites = (
         updateFavCount(queryClient, countsKey, -payload.ids.length || 0);
       }
     },
-    onError: (_err, _variables, context) => {},
-    onSettled: (response, error, variables, context) => {
+    onError: () => {},
+    onSettled: (response) => {
       if (response.success) {
         if (type === "all") {
           // queryClient.invalidateQueries({

@@ -1,35 +1,38 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PlusIcon, StarIcon, Trash, Undo } from "lucide-react";
+import { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "@/store";
-import type { Snippet } from "@/types/snippet.types";
+import type { SnippetListContextType } from "@/types/app.types";
 
 import FoldersDropdown from "@/components/FoldersDropdown";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ROUTES } from "@/config/routes.config";
+import { SnippetListContext } from "@/contexts/SnippetListContext";
 import { toggleAddSnippet } from "@/store/app/appSlice";
 
-interface ActionButtonsProps {
-  snippets: Snippet[];
-  selectedSnippets: string[];
-  setSelectedSnippets: React.Dispatch<React.SetStateAction<string[]>>;
-  handleBulkFav: () => void;
-  currentPage: {
-    label: string;
-    path?: string;
-  } | null;
-}
+// interface ActionButtonsProps {
+//   snippets: Snippet[];
+//   selectedSnippets: string[];
+//   setSelectedSnippets: React.Dispatch<React.SetStateAction<string[]>>;
+//   handleBulkFav: () => void;
+//   currentPage: {
+//     label: string;
+//     path?: string;
+//   } | null;
+// }
 
-const ActionButtons = ({
-  snippets,
-  selectedSnippets,
-  setSelectedSnippets,
-  handleBulkFav,
-  currentPage,
-}: ActionButtonsProps) => {
+const ActionButtons = () => {
+  const {
+    snippets,
+    selectedSnippets,
+    setSelectedSnippets,
+    handleBulkFav,
+    currentPage,
+  } = useContext(SnippetListContext) as SnippetListContextType;
   const dispatch = useDispatch();
   const addModalState = useSelector(
     (state: RootState) => state.app.snippetForm.state,
