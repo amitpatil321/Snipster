@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "author": "Amit Patil",
   "license": "ISC",
@@ -14,13 +16,19 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "npm run lint:fix",
-      "npm run format",
-      "prettier --write",
-      "eslint --max-warnings 0 ."
+      "eslint --max-warnings 0",
+      "prettier --write"
     ],
-    "*.{css, md, json}": [
-      "npm run format"
+    "*.{css,md,json}": [
+      "prettier --write"
     ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
+    "typescript-eslint": "^8.39.1"
   }
 }
