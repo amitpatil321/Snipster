@@ -14,23 +14,13 @@ import { ROUTES } from "@/config/routes.config";
 import { SnippetListContext } from "@/contexts/SnippetListContext";
 import { toggleAddSnippet } from "@/store/app/appSlice";
 
-// interface ActionButtonsProps {
-//   snippets: Snippet[];
-//   selectedSnippets: string[];
-//   setSelectedSnippets: React.Dispatch<React.SetStateAction<string[]>>;
-//   handleBulkFav: () => void;
-//   currentPage: {
-//     label: string;
-//     path?: string;
-//   } | null;
-// }
-
 const ActionButtons = () => {
   const {
     snippets,
     selectedSnippets,
     setSelectedSnippets,
     handleBulkFav,
+    handleBulkDelete,
     currentPage,
   } = useContext(SnippetListContext) as SnippetListContextType;
   const dispatch = useDispatch();
@@ -86,6 +76,7 @@ const ActionButtons = () => {
                   variant="ghost"
                   size="sm"
                   className="hover:text-red-500 cursor-pointer"
+                  onClick={handleBulkDelete}
                 >
                   {currentPage?.path === `/` + ROUTES.TRASH ? (
                     <>

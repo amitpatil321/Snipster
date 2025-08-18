@@ -7,6 +7,7 @@ export interface SnippetListContextType {
   selectedSnippets: string[];
   setSelectedSnippets: React.Dispatch<React.SetStateAction<string[]>>;
   handleBulkFav: () => void;
+  handleBulkDelete: () => void;
   handleSelect: (snippetId: string | null | undefined) => void;
   currentPage: {
     label: string;

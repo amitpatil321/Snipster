@@ -3,7 +3,6 @@ import axiosInstance from "./axios.service";
 import type z from "zod";
 
 import { CONFIG } from "@/config/config";
-import type { BulkFavType } from "@/hooks/snippets/useBulkFavorite";
 import { snippetSchema } from "@/schema/snippet.schema";
 
 const basePath = `${CONFIG.PATHS.API_BASE}${CONFIG.PATHS.SNIPPET}`;
@@ -23,14 +22,20 @@ export const getSnippetsByUser = async (
   return response.data;
 };
 
-export const toggleFavorite = async (id: string) => {
-  const response = await axiosInstance.patch(`${basePath}/${id}/favorite`);
+export const toggleFavorite = async (data: {
+  ids: string[];
+  status: boolean;
+}) => {
+  const response = await axiosInstance.patch(`${basePath}/favorite`, data);
 
   return response.data;
 };
 
-export const toggleRemove = async (id: string) => {
-  const response = await axiosInstance.patch(`${basePath}/${id}/trash`);
+export const toggleRemove = async (data: {
+  ids: string[];
+  status: boolean;
+}) => {
+  const response = await axiosInstance.patch(`${basePath}/delete`, data);
 
   return response.data;
 };
@@ -49,10 +54,5 @@ export const addSnippet = async (formData: SnippetPayload) => {
 
 export const updateSnippet = async (changedFields: SnippetPayload) => {
   const response = await axiosInstance.put(`${basePath}`, changedFields);
-  return response.data;
-};
-
-export const bulkFavorites = async (data: BulkFavType) => {
-  const response = await axiosInstance.post(`${basePath}/favorites`, data);
   return response.data;
 };

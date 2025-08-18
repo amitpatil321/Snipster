@@ -6,7 +6,6 @@ import type { Snippet } from "@/types/snippet.types";
 
 import { ROUTES } from "@/config/routes.config";
 import { SnippetListContext } from "@/contexts/SnippetListContext";
-import useBulkFavorites from "@/hooks/snippets/useBulkFavorite";
 import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
 import useToggleRemove from "@/hooks/snippets/useToggleRemove";
 
@@ -21,10 +20,6 @@ const SnippetListProvider: React.FC<{
 
   const { mutate: toggleFavorite } = useToggleFavorite(currentPage?.type);
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
-  const { mutate: bulkFavorite } = useBulkFavorites(
-    currentPage?.type,
-    setSelectedSnippets,
-  );
 
   const handleCheckboxClick = useCallback(
     (event: React.MouseEvent, snippetId: string) => {
@@ -54,28 +49,33 @@ const SnippetListProvider: React.FC<{
     [selectedSnippets.length, handleCheckboxClick, setSelected],
   );
 
+  const favoriteSnippet = useCallback(
+    (snippet: Snippet, event: React.MouseEvent) => {
+      event.stopPropagation();
+      event.preventDefault();
+      toggleFavorite({ ids: [snippet._id], status: !snippet.favorite });
+    },
+    [toggleFavorite],
+  );
+
   const handleBulkFav = useCallback(() => {
     const favStatus = currentPage?.path !== `/` + ROUTES.FAVORITE;
-    bulkFavorite({ ids: selectedSnippets, status: favStatus });
-  }, [bulkFavorite, currentPage?.path, selectedSnippets]);
+    toggleFavorite({ ids: selectedSnippets, status: favStatus });
+  }, [toggleFavorite, currentPage?.path, selectedSnippets]);
 
   const deleteSnippet = useCallback(
     (snippet: Snippet, event: React.MouseEvent) => {
       event.stopPropagation();
       event.preventDefault();
-      toggleRemove(snippet);
+      toggleRemove({ ids: [snippet?._id], status: !snippet.deletedAt });
     },
     [toggleRemove],
   );
 
-  const favoriteSnippet = useCallback(
-    (snippet: Snippet, event: React.MouseEvent) => {
-      event.stopPropagation();
-      event.preventDefault();
-      toggleFavorite(snippet);
-    },
-    [toggleFavorite],
-  );
+  const handleBulkDelete = useCallback(() => {
+    const delStatus = currentPage?.path !== `/` + ROUTES.TRASH;
+    toggleRemove({ ids: selectedSnippets, status: delStatus });
+  }, [toggleRemove, currentPage?.path, selectedSnippets]);
 
   useEffect(() => {
     setSelectedSnippets([]);
@@ -87,6 +87,7 @@ const SnippetListProvider: React.FC<{
       selectedSnippets,
       setSelectedSnippets,
       handleBulkFav,
+      handleBulkDelete,
       currentPage,
       selected,
       handleSelect,
@@ -99,6 +100,7 @@ const SnippetListProvider: React.FC<{
       snippets,
       selectedSnippets,
       handleBulkFav,
+      handleBulkDelete,
       currentPage,
       selected,
       handleSelect,

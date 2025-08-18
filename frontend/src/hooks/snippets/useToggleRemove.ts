@@ -2,7 +2,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 import { toggleRemove } from "@/services/snippet.service";
-import { type Snippet, type SnippetCountType } from "@/types/snippet.types";
+import { type Snippet } from "@/types/snippet.types";
+import {
+  moveSnippet,
+  updateCount,
+  updateSnippetProperty,
+} from "@/utils/queryCache.utils";
+
+type Payload = { ids: string[]; status: boolean };
 
 export const useToggleRemove = (
   // snippet: Snippet,
@@ -15,92 +22,36 @@ export const useToggleRemove = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (snippet: Snippet) => toggleRemove(snippet._id),
-    onMutate: async (snippet) => {
-      const queryKey = ["getSnippets", type, folderId];
+    mutationFn: (payload: Payload) => toggleRemove(payload),
+    onMutate: async (payload) => {
       const trashKey = ["getSnippets", "trash", folderId];
-      const allKey = ["getSnippets", "all", folderId];
-      const favKey = ["getSnippets", "favorite"];
+      const listKey = ["getSnippets", "all", folderId];
+      const favKey = ["getSnippets", "favorite", folderId];
       const countKey = ["snippetCounts"];
 
-      await queryClient.cancelQueries({ queryKey });
+      await queryClient.cancelQueries({ queryKey: listKey });
 
-      const previousSnippets = queryClient.getQueryData<Snippet[]>(queryKey);
+      const previousSnippets = queryClient.getQueryData<Snippet[]>(listKey);
 
-      const isDeleting = snippet.deletedAt === null;
-      const wasFavorite = snippet.favorite;
-
-      if (isDeleting) {
-        queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => {
-          return {
-            data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
-          };
+      if (type === "all") {
+        moveSnippet(queryClient, listKey, trashKey, payload.ids);
+        updateCount(queryClient, countKey, "all", -payload.ids.length);
+        updateCount(queryClient, countKey, "trash", payload.ids.length);
+      } else if (type === "favorite") {
+        // remove favorite status from snipept
+        updateSnippetProperty(queryClient, listKey, payload.ids, {
+          favorite: false,
         });
-
-        queryClient.setQueryData<{ data: Snippet[] }>(trashKey, (old) => {
-          return {
-            data: [
-              ...(old?.data ?? []),
-              {
-                ...snippet,
-                deletedAt: new Date(),
-                favorite: false,
-              },
-            ],
-          };
-        });
-
-        // Remove from favorites
-        if (wasFavorite) {
-          queryClient.setQueryData<{ data: Snippet[] }>(favKey, (old) => ({
-            data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
-          }));
-        }
-
-        // Update counts
-        queryClient.setQueryData<{ data: SnippetCountType }>(countKey, (old) =>
-          old?.data
-            ? {
-                data: {
-                  ...old?.data,
-                  all: old.data?.all - 1,
-                  trash: old.data?.trash + 1,
-                  favorite: wasFavorite
-                    ? old.data.favorite - 1
-                    : old.data.favorite,
-                },
-              }
-            : {
-                data: {
-                  all: 0,
-                  trash: 1,
-                  favorite: wasFavorite ? 0 : 0,
-                },
-              },
-        );
-      } else {
-        // Restore from trash
-        queryClient.setQueryData<{ data: Snippet[] }>(trashKey, (old) => ({
-          data: old?.data?.filter((s) => s._id !== snippet._id) ?? [],
-        }));
-
-        // Add back to "all"
-        queryClient.setQueryData<{ data: Snippet[] }>(allKey, (old) => ({
-          data: [...(old?.data ?? []), { ...snippet, deletedAt: undefined }],
-        }));
-
-        // Update counts
-        queryClient.setQueryData<{ data: SnippetCountType }>(countKey, (old) =>
-          old?.data
-            ? {
-                data: {
-                  ...old.data,
-                  trash: old.data.trash - 1,
-                  all: old.data.all + 1,
-                },
-              }
-            : { data: { all: 1, trash: 0, favorite: 0 } },
-        );
+        moveSnippet(queryClient, favKey, trashKey, payload.ids);
+        // since snippets which are fav also part of "all", and now we are deleting it
+        // so that we need to update "all" count also
+        updateCount(queryClient, countKey, "all", -payload.ids.length);
+        updateCount(queryClient, countKey, "favorite", -payload.ids.length);
+        updateCount(queryClient, countKey, "trash", payload.ids.length);
+      } else if (type === "trash") {
+        moveSnippet(queryClient, trashKey, listKey, payload.ids);
+        updateCount(queryClient, countKey, "all", payload.ids.length);
+        updateCount(queryClient, countKey, "trash", -payload.ids.length);
       }
 
       return { previousSnippets };
