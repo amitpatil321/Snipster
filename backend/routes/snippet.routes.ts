@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-  bulkFavorite,
   getCounts,
   getDetails,
   getSnippets,
@@ -15,10 +14,9 @@ const router = Router();
 router.get("/", getSnippets);
 router.post("/", saveSnippet);
 router.put("/", updateSnippet);
-router.patch("/:id/favorite", toggleFavorite);
-router.post("/favorites", bulkFavorite);
+router.patch("/favorite", toggleFavorite);
 // we are not using delete method because its a soft delete and not hard delete
-router.patch("/:id/trash", toggleRemove);
+router.patch("/delete", toggleRemove);
 router.get("/counts", getCounts);
 router.get("/details/:id", getDetails);
 
