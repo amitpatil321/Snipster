@@ -54,24 +54,26 @@ const ActionButtons = () => {
                 </Label>
               </div>
               <div className="flex justify-end pr-1">
-                <Button
-                  variant="ghost"
-                  className="cursor-pointer"
-                  size="sm"
-                  onClick={handleBulkFav}
-                >
-                  {currentPage?.path === `/` + ROUTES.FAVORITE ? (
-                    <>
-                      <StarIcon />
-                      UnFavorite
-                    </>
-                  ) : (
-                    <>
-                      <StarIcon className="fill-yellow-500 text-yellow-500" />
-                      Favorite
-                    </>
-                  )}
-                </Button>
+                {currentPage?.path !== `/` + ROUTES.TRASH && (
+                  <Button
+                    variant="ghost"
+                    className="cursor-pointer"
+                    size="sm"
+                    onClick={handleBulkFav}
+                  >
+                    {currentPage?.path === `/` + ROUTES.FAVORITE ? (
+                      <>
+                        <StarIcon />
+                        UnFavorite
+                      </>
+                    ) : (
+                      <>
+                        <StarIcon className="fill-yellow-500 text-yellow-500" />
+                        Favorite
+                      </>
+                    )}
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -90,7 +92,9 @@ const ActionButtons = () => {
                     </>
                   )}
                 </Button>
-                <FoldersDropdown />
+                {currentPage?.path !== `/` + ROUTES.TRASH && (
+                  <FoldersDropdown />
+                )}
               </div>
             </div>
           </motion.div>

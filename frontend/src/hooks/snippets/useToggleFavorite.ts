@@ -6,7 +6,6 @@ import type { AxiosError } from "axios";
 
 import { toggleFavorite } from "@/services/snippet.service";
 import {
-  addSnippetsToList,
   copySnippetFromTo,
   removeSnippetsFromList,
   updateCount,
@@ -34,7 +33,18 @@ const useToggleFavorite = (
       const favQueryKey = ["getSnippets", "favorite", folderId || null];
       const countsKey = ["snippetCounts"];
 
-      await queryClient.cancelQueries({ queryKey: listQueryKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: listQueryKey }),
+        queryClient.cancelQueries({ queryKey: favQueryKey }),
+        queryClient.cancelQueries({ queryKey: countsKey }),
+      ]);
+
+      // Capture snapshots for all lists
+      const previousData = {
+        list: queryClient.getQueryData<{ data: Snippet[] }>(listQueryKey),
+        favorite: queryClient.getQueryData<{ data: Snippet[] }>(favQueryKey),
+        counts: queryClient.getQueryData<{ data: Snippet[] }>(countsKey),
+      };
 
       const allSnippets = queryClient.getQueryData<{ data: Snippet[] }>(
         listQueryKey,
@@ -71,7 +81,8 @@ const useToggleFavorite = (
         updateCount(queryClient, countsKey, "favorite", -ids.length);
       }
 
-      return { ids, status, type };
+      // return { ids, status, type };
+      return { previousData };
     },
 
     onError: (_err, _payload, context) => {
@@ -85,28 +96,30 @@ const useToggleFavorite = (
           "Failed to update status. Please try again.",
       );
 
-      if (!context) return;
-
-      if (context.type === "all") {
-        updateSnippetProperty(queryClient, listQueryKey, context.ids, {
-          favorite: false,
-        });
-        updateCount(queryClient, countsKey, "favorite", -context.ids.length);
-        removeSnippetsFromList(queryClient, favQueryKey, context.ids);
-      } else {
-        if (queryClient.getQueryData<{ data: Snippet[] }>(favQueryKey)) {
-          addSnippetsToList(queryClient, listQueryKey, context.ids);
-        } else {
-          queryClient.invalidateQueries({ queryKey: favQueryKey });
-        }
-        updateCount(queryClient, countsKey, "favorite", context.ids.length);
+      if (context?.previousData) {
+        queryClient.setQueryData(listQueryKey, context.previousData.list);
+        queryClient.setQueryData(favQueryKey, context.previousData.favorite);
+        queryClient.setQueryData(countsKey, context.previousData.counts);
       }
-    },
 
-    onSettled: () => {
-      // Optional: Invalidate queries if necessary
-      // queryClient.invalidateQueries({ queryKey: ["snippetCounts"] });
+      // if (!context) return;
+
+      // if (context.type === "all") {
+      //   updateSnippetProperty(queryClient, listQueryKey, context.ids, {
+      //     favorite: false,
+      //   });
+      //   updateCount(queryClient, countsKey, "favorite", -context.ids.length);
+      //   removeSnippetsFromList(queryClient, favQueryKey, context.ids);
+      // } else {
+      //   if (queryClient.getQueryData<{ data: Snippet[] }>(favQueryKey)) {
+      //     addSnippetsToList(queryClient, listQueryKey, context.ids);
+      //   } else {
+      //     queryClient.invalidateQueries({ queryKey: favQueryKey });
+      //   }
+      //   updateCount(queryClient, countsKey, "favorite", context.ids.length);
+      // }
     },
+    onSettled: () => {},
   });
 };
 

@@ -29,9 +29,20 @@ export const useToggleRemove = (
       const favKey = ["getSnippets", "favorite", folderId];
       const countKey = ["snippetCounts"];
 
-      await queryClient.cancelQueries({ queryKey: listKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: listKey }),
+        queryClient.cancelQueries({ queryKey: trashKey }),
+        queryClient.cancelQueries({ queryKey: favKey }),
+        queryClient.cancelQueries({ queryKey: countKey }),
+      ]);
 
-      const previousSnippets = queryClient.getQueryData<Snippet[]>(listKey);
+      // Capture snapshots for all lists
+      const previousData = {
+        list: queryClient.getQueryData<{ data: Snippet[] }>(listKey),
+        trash: queryClient.getQueryData<{ data: Snippet[] }>(trashKey),
+        favorite: queryClient.getQueryData<{ data: Snippet[] }>(favKey),
+        counts: queryClient.getQueryData<{ data: Snippet[] }>(countKey),
+      };
 
       if (type === "all") {
         moveSnippet(queryClient, listKey, trashKey, payload.ids);
@@ -54,13 +65,19 @@ export const useToggleRemove = (
         updateCount(queryClient, countKey, "trash", -payload.ids.length);
       }
 
-      return { previousSnippets };
+      return { previousData };
     },
-    onError: (_err, _variables, context) => {
-      toast.error("Failed to update status. Please try again.");
-      const queryKey = ["getSnippets", type];
-      if (context?.previousSnippets) {
-        queryClient.setQueryData(queryKey, context.previousSnippets);
+    onError: (_err, _payload, context) => {
+      const trashKey = ["getSnippets", "trash", folderId];
+      const listKey = ["getSnippets", "all", folderId];
+      const favKey = ["getSnippets", "favorite", folderId];
+      const countKey = ["snippetCounts"];
+      toast.error("Failed to remove snippet. Please try again.");
+      if (context?.previousData) {
+        queryClient.setQueryData(listKey, context.previousData.list);
+        queryClient.setQueryData(trashKey, context.previousData.trash);
+        queryClient.setQueryData(favKey, context.previousData.favorite);
+        queryClient.setQueryData(countKey, context.previousData.counts);
       }
     },
     onSettled: () => {
