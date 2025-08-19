@@ -54,47 +54,48 @@ const ActionButtons = () => {
                 </Label>
               </div>
               <div className="flex justify-end pr-1">
-                {currentPage?.path !== `/` + ROUTES.TRASH && (
+                {currentPage?.type !== "folder" &&
+                  currentPage?.type !== ROUTES.TRASH && (
+                    <Button
+                      variant="ghost"
+                      className="cursor-pointer"
+                      size="sm"
+                      onClick={handleBulkFav}
+                    >
+                      {currentPage?.path === `/` + ROUTES.FAVORITE ? (
+                        <>
+                          <StarIcon />
+                          UnFavorite
+                        </>
+                      ) : (
+                        <>
+                          <StarIcon className="fill-yellow-500 text-yellow-500" />
+                          Favorite
+                        </>
+                      )}
+                    </Button>
+                  )}
+                {currentPage?.type !== "folder" && (
                   <Button
                     variant="ghost"
-                    className="cursor-pointer"
                     size="sm"
-                    onClick={handleBulkFav}
+                    className="hover:text-red-500 cursor-pointer"
+                    onClick={handleBulkDelete}
                   >
-                    {currentPage?.path === `/` + ROUTES.FAVORITE ? (
+                    {currentPage?.type === ROUTES.TRASH ? (
                       <>
-                        <StarIcon />
-                        UnFavorite
+                        <Undo />
+                        Restore
                       </>
                     ) : (
                       <>
-                        <StarIcon className="fill-yellow-500 text-yellow-500" />
-                        Favorite
+                        <Trash />
+                        Delete
                       </>
                     )}
                   </Button>
                 )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="hover:text-red-500 cursor-pointer"
-                  onClick={handleBulkDelete}
-                >
-                  {currentPage?.path === `/` + ROUTES.TRASH ? (
-                    <>
-                      <Undo />
-                      Restore
-                    </>
-                  ) : (
-                    <>
-                      <Trash />
-                      Delete
-                    </>
-                  )}
-                </Button>
-                {currentPage?.path !== `/` + ROUTES.TRASH && (
-                  <FoldersDropdown />
-                )}
+                {currentPage?.type !== ROUTES.TRASH && <FoldersDropdown />}
               </div>
             </div>
           </motion.div>

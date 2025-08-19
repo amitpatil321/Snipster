@@ -19,7 +19,7 @@ export function formatRelativeTime(input: Date | string): string {
 
   return date.toLocaleDateString(undefined, {
     day: "2-digit",
-    month: "2-digit",
+    month: "short",
     year: "numeric",
   });
 }

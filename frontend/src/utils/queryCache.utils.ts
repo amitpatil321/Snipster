@@ -61,7 +61,8 @@ export const updateSnippetProperty = (
     ids.includes(snippet._id) ? { ...snippet, ...updates } : snippet,
   );
 
-  queryClient.setQueryData<{ data: Snippet[] }>(queryKey, { data: modified });
+  if (queryClient.getQueryData<{ data: Snippet[] }>(queryKey))
+    queryClient.setQueryData<{ data: Snippet[] }>(queryKey, { data: modified });
 };
 
 export const copySnippetFromTo = (

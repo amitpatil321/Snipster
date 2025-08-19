@@ -29,8 +29,8 @@ const useToggleFavorite = (
 
       if (setSelectedSnippets) setSelectedSnippets([]);
 
-      const listQueryKey = ["getSnippets", "all", folderId || null];
-      const favQueryKey = ["getSnippets", "favorite", folderId || null];
+      const listQueryKey = ["getSnippets", "all", null];
+      const favQueryKey = ["getSnippets", "favorite", null];
       const countsKey = ["snippetCounts"];
 
       await Promise.all([

@@ -12,6 +12,7 @@ export interface SnippetListContextType {
   currentPage: {
     label: string;
     path?: string;
+    type: string;
   } | null;
   selected: string | undefined | null;
   setSelected: (snippet: string | null | undefined) => void;

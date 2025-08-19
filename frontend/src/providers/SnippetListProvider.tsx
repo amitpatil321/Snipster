@@ -18,7 +18,10 @@ const SnippetListProvider: React.FC<{
   const [selectedSnippets, setSelectedSnippets] = useState<string[]>([]);
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
-  const { mutate: toggleFavorite } = useToggleFavorite(currentPage?.type);
+  const { mutate: toggleFavorite } = useToggleFavorite(
+    currentPage?.type,
+    currentPage?.type === "folder" ? currentPage?.path : null,
+  );
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
 
   const handleCheckboxClick = useCallback(

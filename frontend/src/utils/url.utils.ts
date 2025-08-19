@@ -9,8 +9,9 @@ export const getSnippetDetailUrl = ({
   id: string;
   paramFolderId?: string;
 }) => {
-  if (base === ROUTES.FOLDER.split("/")?.[1] && paramFolderId) {
-    return `${ROUTES.FOLDER}/${paramFolderId}/${ROUTES.DETAILS}/${id}`;
+  if (base === ROUTES.FOLDER && paramFolderId) {
+    return `${ROUTES.DETAILS}/${id}`;
   }
+
   return `/${base}/${ROUTES.DETAILS}/${id}`;
 };

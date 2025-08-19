@@ -52,43 +52,60 @@ const AppSidebar = ({
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
   const items = useMemo(
-    () => [
-      {
-        label: "All Snippets",
-        name: "all",
-        icon: List,
-        path: `/${ROUTES.ALL}`,
-        count: all || 0,
-      },
-      {
-        label: "Favorite",
-        name: "favorite",
-        icon: Heart,
-        path: `/${ROUTES.FAVORITE}`,
-        count: favorite || 0,
-      },
-      {
-        label: "Trash",
-        name: "trash",
-        icon: Trash,
-        path: `/${ROUTES.TRASH}`,
-        count: trash || 0,
-      },
-    ],
-    [all, favorite, trash],
+    () => ({
+      platform: [
+        {
+          label: "All Snippets",
+          name: "all",
+          icon: List,
+          path: `/${ROUTES.ALL}`,
+          count: all || 0,
+        },
+        {
+          label: "Favorite",
+          name: "favorite",
+          icon: Heart,
+          path: `/${ROUTES.FAVORITE}`,
+          count: favorite || 0,
+        },
+        {
+          label: "Trash",
+          name: "trash",
+          icon: Trash,
+          path: `/${ROUTES.TRASH}`,
+          count: trash || 0,
+        },
+      ],
+      folders: folders || [],
+    }),
+    [all, favorite, trash, folders],
   );
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const matchedItem = items.find((each) => each.path === currentPath);
-    if (matchedItem) {
-      dispatch(
-        setCurrentPage({
-          label: matchedItem.label,
-          path: matchedItem.path,
-          type: matchedItem.path.split("/")?.[1],
-        }),
-      );
+
+    const platform = items.platform.find((each) => each.path === currentPath);
+    const folder = items.folders.find(
+      (each) => each._id === currentPath.split("/")?.[2],
+    );
+
+    if (platform || folder) {
+      if (platform)
+        dispatch(
+          setCurrentPage({
+            label: platform.label,
+            path: platform.path,
+            type: platform.path.split("/")?.[1],
+          }),
+        );
+      else if (folder)
+        dispatch(
+          setCurrentPage({
+            label: folder.name,
+            path: folder._id,
+            type: "folder",
+          }),
+        );
     }
   }, [location.pathname, items, dispatch]);
 
@@ -101,7 +118,7 @@ const AppSidebar = ({
         <SidebarGroup>
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
-            {items.map((each) => (
+            {items.platform.map((each) => (
               <SidebarItem
                 key={each.label}
                 label={each.label}
@@ -135,7 +152,7 @@ const AppSidebar = ({
             </Tooltip>
           </SidebarGroupLabel>
           <SidebarMenu>
-            {folders?.map((each) => (
+            {items.folders?.map((each) => (
               <SidebarItem
                 key={each._id}
                 label={each.name}

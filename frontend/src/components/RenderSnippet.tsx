@@ -11,6 +11,7 @@ import type { SnippetListContextType } from "@/types/app.types";
 import type { Snippet } from "@/types/snippet.types";
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { ROUTES } from "@/config/routes.config";
 import { SnippetListContext } from "@/contexts/SnippetListContext";
 import { formatRelativeTime } from "@/lib/utils";
 import { getSnippetDetailUrl } from "@/utils/url.utils";
@@ -61,8 +62,10 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
     >
       <div className="flex justify-between items-center">
         <AnimatePresence>
-          {((currentPage!.type === "all" && !snippet.favorite) ||
-            ["favorite", "trash"].includes(currentPage!.type)) &&
+          {((currentPage!.type === ROUTES.ALL && !snippet.favorite) ||
+            [ROUTES.FAVORITE, ROUTES.TRASH, ROUTES.FOLDER].includes(
+              currentPage!.type,
+            )) &&
             (selectedSnippets.length > 0 || isHovered) && (
               <motion.div
                 key={_id}
@@ -93,31 +96,36 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
           </motion.h3>
         </AnimatePresence>
         <div
-          className={`${!snippet?.deletedAt && "flex flex-row gap-2 basis-[10%]"}`}
+          className={`${!snippet?.deletedAt && "flex justify-end flex-row gap-2 basis-[10%]"}`}
         >
           {snippet?.deletedAt ? (
             <Undo
               className="opacity-0 group-hover:opacity-100 w-4 h-4 text-gray-400 hover:text-red-500 transition-all duration-400"
               onClick={(event) => deleteSnippet(snippet, event)}
             />
-          ) : (
+          ) : currentPage?.type !== "folder" ? (
             <Trash2
-              className="opacity-0 group-hover:opacity-100 w-4 h-4 text-gray-400 hover:text-red-500 transition-all duration-400"
+              className={`opacity-0 group-hover:opacity-100 w-4 h-4 text-gray-400 hover:text-red-500 transition-all duration-400`}
               onClick={(event) => deleteSnippet(snippet, event)}
             />
+          ) : (
+            ""
           )}
           {!snippet?.deletedAt && (
             <Star
-              className={`opacity-0 group-hover:opacity-100 cursor-pointer w-4 h-4 text-gray-400 transition-all duration-400 ease-in-out
-    ${favorite ? "opacity-100 text-yellow-500 fill-yellow-500" : "hover:text-yellow-500 hover:fill-yellow-500"}`}
-              onClick={(event) => favoriteSnippet(snippet, event)}
+              className={`opacity-0 group-hover:opacity-100 ${currentPage?.type !== "folder" ? "cursor-pointer" : "cursor-not-allowed"} w-4 h-4 text-gray-400 transition-all duration-400 ease-in-out
+    ${favorite ? "opacity-100 text-yellow-500 fill-yellow-500" : `hover:${currentPage?.type !== "folder" && "text-yellow-500 hover:fill-yellow-500"}`}`}
+              onClick={(event) =>
+                currentPage?.type !== "folder" &&
+                favoriteSnippet(snippet, event)
+              }
             />
           )}
         </div>
       </div>
 
       <div className="flex flex-row flex-wrap justify-between gap-1">
-        {folderId && (
+        {folderId && currentPage?.type !== "folder" ? (
           <Badge
             key={folderId?._id}
             variant="secondary"
@@ -125,6 +133,8 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
           >
             {folderId?.name}
           </Badge>
+        ) : (
+          <span></span>
         )}
         <div className="flex flex-row gap-4 opacity-60 text-muted-foreground text-xs">
           <span>{createdAt && formatRelativeTime(createdAt)}</span>
