@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { withUser } from "../utils/withUser";
 import { Folder } from "../models/folder.schema";
 import { Snippet } from "../models/snippet.schema";
+import { withUser } from "../utils/withUser";
 
 export const getFolders = withUser(async (req: Request, res: Response) => {
   const userId = req.oidc?.user?.sub;
@@ -11,7 +11,10 @@ export const getFolders = withUser(async (req: Request, res: Response) => {
 
     const foldersWithSnippetCount = await Promise.all(
       folders.map(async (folder) => {
-        const count = await Snippet.countDocuments({ folderId: folder._id });
+        const count = await Snippet.countDocuments({
+          folderId: folder._id,
+          deletedAt: null,
+        });
         return {
           ...folder.toObject(),
           snippetCount: count,
