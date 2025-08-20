@@ -28,14 +28,6 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
     params?.id,
   );
 
-  if (loading) {
-    return (
-      <div className="bg-card p-4 border rounded-xl w-1/3">
-        <Loading />
-      </div>
-    );
-  }
-
   if (error) {
     return (
       <div className="bg-card p-2 border rounded-xl w-1/3">
@@ -64,17 +56,19 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
         ))}
       </AnimatePresence>
     ) : (
-      <div className="p-2">
-        <Alert
-          type="info"
-          title="It's so lonely here... even the semicolons left."
-          description={
-            type === "all"
-              ? "Let's add a snippet and break the ice like a true coder."
-              : "No snippets to show!"
-          }
-        />
-      </div>
+      !loading && (
+        <div className="p-2">
+          <Alert
+            type="info"
+            title="It's so lonely here... even the semicolons left."
+            description={
+              type === "all"
+                ? "Let's add a snippet and break the ice like a true coder."
+                : "No snippets to show!"
+            }
+          />
+        </div>
+      )
     );
 
   return (
@@ -85,6 +79,11 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
     >
       <div className="bg-card shadow-lg border rounded-xl sm:w-full md:w-1/3 overflow-auto text-card-foreground">
         <ActionButtons />
+        {loading && (
+          <div className="pt-4">
+            <Loading />
+          </div>
+        )}
         {renderContent}
       </div>
 

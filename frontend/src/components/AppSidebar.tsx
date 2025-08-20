@@ -83,8 +83,9 @@ const AppSidebar = ({
 
   useEffect(() => {
     const currentPath = location.pathname;
-
-    const platform = items.platform.find((each) => each.path === currentPath);
+    const platform = items.platform.find(
+      (each) => each.path === "/" + currentPath.split("/")?.[1],
+    );
     const folder = items.folders.find(
       (each) => each._id === currentPath.split("/")?.[2],
     );
