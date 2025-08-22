@@ -292,3 +292,57 @@ export const updateSnippet = withUser(async (req: Request, res: Response) => {
     });
   }
 });
+
+export const moveToFolder = withUser(async (req: Request, res: Response) => {
+  try {
+    const userId = req.oidc?.user?.sub;
+    const { snippetIds, folderId } = req.body;
+
+    if (!Array.isArray(snippetIds) || snippetIds.length === 0 || !folderId) {
+      return res.status(400).json({
+        success: false,
+        message: "Snippet IDs and target folder ID are required",
+      });
+    }
+
+    // Check if folder exists and belongs to user
+    const folderExists = await Folder.findOne({
+      _id: folderId,
+      userId: userId,
+    });
+    if (!folderExists) {
+      return res.status(404).json({
+        success: false,
+        message: "Target folder not found or not authorized",
+      });
+    }
+
+    // Update all snippets in the list
+    const result = await Snippet.updateMany(
+      { _id: { $in: snippetIds }, createdBy: userId },
+      { $set: { folderId } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No snippets found or authorized to move",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        updatedCount: result.modifiedCount,
+        folderId,
+      },
+      message: `Moved ${result.modifiedCount} snippet(s) to the ${folderExists.name}`,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: "Error moving snippet to folder. Please try again!",
+    });
+  }
+});
