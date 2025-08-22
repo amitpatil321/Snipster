@@ -34,7 +34,7 @@ const RootLayout = () => {
           <div className="bg-card shadow-lg m-4 p-2 border rounded-lg">
             <Header />
           </div>
-          <div className="flex flex-row gap-4 p-4 pt-0 h-full">
+          <div className="flex flex-row gap-4 p-4 pt-0 h-screen">
             <Outlet />
           </div>
         </div>
