@@ -84,7 +84,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
             <Loading />
           </div>
         )}
-        {renderContent}
+        {!loading && renderContent}
       </div>
 
       <div className="hidden md:block flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">

@@ -29,7 +29,7 @@ const ActionButtons = () => {
   );
 
   return (
-    <div className="flex items-center p-1 border-b border-b-gray-200 h-12">
+    <div className="flex items-center border-b border-b-[--muted-foreground] h-12">
       <AnimatePresence mode="wait">
         {selectedSnippets.length > 0 ? (
           <motion.div

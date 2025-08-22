@@ -56,3 +56,11 @@ export const updateSnippet = async (changedFields: SnippetPayload) => {
   const response = await axiosInstance.put(`${basePath}`, changedFields);
   return response.data;
 };
+
+export const moveToFolder = async (data: {
+  snippetIds: string[];
+  folderId: string;
+}) => {
+  const response = await axiosInstance.patch(`${basePath}/folder`, data);
+  return response.data;
+};

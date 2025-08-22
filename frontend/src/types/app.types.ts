@@ -19,4 +19,5 @@ export interface SnippetListContextType {
   handleCheckboxClick: (event: React.MouseEvent, id: string) => void;
   deleteSnippet: (snippet: Snippet, event: React.MouseEvent) => void;
   favoriteSnippet: (snippet: Snippet, event: React.MouseEvent) => void;
+  moveToFolder: (selectedSnippets: string[], folderId: string) => void;
 }

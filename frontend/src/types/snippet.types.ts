@@ -9,6 +9,8 @@ export interface Snippet {
   folderId?: {
     _id: string;
     name: string;
+    snippetCount: number;
+    userId: string;
   };
   userId: string;
   tagIds?: Tag[];

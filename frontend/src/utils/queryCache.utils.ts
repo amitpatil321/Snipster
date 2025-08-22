@@ -91,7 +91,6 @@ export const copySnippetFromTo = (
     });
   }
 };
-
 export const moveSnippet = (
   queryClient: QueryClient,
   sourceQueryKey: (string | null | undefined)[],

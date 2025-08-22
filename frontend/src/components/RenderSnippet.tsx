@@ -125,7 +125,7 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
       </div>
 
       <div className="flex flex-row flex-wrap justify-between gap-1">
-        {folderId && currentPage?.type !== "folder" ? (
+        {folderId && (
           <Badge
             key={folderId?._id}
             variant="secondary"
@@ -133,8 +133,6 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
           >
             {folderId?.name}
           </Badge>
-        ) : (
-          <span></span>
         )}
         <div className="flex flex-row gap-4 opacity-60 text-muted-foreground text-xs">
           <span>{createdAt && formatRelativeTime(createdAt)}</span>

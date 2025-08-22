@@ -6,6 +6,7 @@ import type { Snippet } from "@/types/snippet.types";
 
 import { ROUTES } from "@/config/routes.config";
 import { SnippetListContext } from "@/contexts/SnippetListContext";
+import useMoveToFolder from "@/hooks/snippets/useMoveToFolder";
 import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
 import useToggleRemove from "@/hooks/snippets/useToggleRemove";
 
@@ -23,6 +24,7 @@ const SnippetListProvider: React.FC<{
     currentPage?.type === "folder" ? currentPage?.path : null,
   );
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
+  const { mutate: assignFolder } = useMoveToFolder(currentPage?.type);
 
   const handleCheckboxClick = useCallback(
     (event: React.MouseEvent, snippetId: string) => {
@@ -84,6 +86,13 @@ const SnippetListProvider: React.FC<{
     setSelectedSnippets([]);
   }, [currentPage]);
 
+  const moveToFolder = useCallback(
+    (snippetIds: string[], folderId: string) => {
+      assignFolder({ snippetIds, folderId });
+    },
+    [assignFolder],
+  );
+
   const contextValue = useMemo(
     () => ({
       snippets,
@@ -98,6 +107,7 @@ const SnippetListProvider: React.FC<{
       handleCheckboxClick,
       favoriteSnippet,
       deleteSnippet,
+      moveToFolder,
     }),
     [
       snippets,
@@ -111,6 +121,7 @@ const SnippetListProvider: React.FC<{
       handleCheckboxClick,
       favoriteSnippet,
       deleteSnippet,
+      moveToFolder,
     ],
   );
 

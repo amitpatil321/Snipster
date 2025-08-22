@@ -1,4 +1,5 @@
 import { FolderIcon, Forward } from "lucide-react";
+import { useContext } from "react";
 
 import { Alert } from "./Alert";
 import Loading from "./Loading";
@@ -13,10 +14,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SnippetListContext } from "@/contexts/SnippetListContext";
 import { useGetFolders } from "@/hooks/user/useGetFolders";
 
 const FoldersDropdown = () => {
   const { data: foldersList, isLoading, isError } = useGetFolders();
+  const { moveToFolder, selectedSnippets } = useContext(SnippetListContext);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,7 +36,11 @@ const FoldersDropdown = () => {
           {!isLoading &&
             (foldersList ?? [])?.map(({ _id, name }: Folder) => {
               return (
-                <DropdownMenuItem key={_id} className="font-sans">
+                <DropdownMenuItem
+                  key={_id}
+                  className="font-sans"
+                  onClick={() => moveToFolder(selectedSnippets, _id)}
+                >
                   <FolderIcon size="10" />
                   {name}
                 </DropdownMenuItem>
