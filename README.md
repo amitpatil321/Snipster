@@ -27,7 +27,7 @@
 - [📍 Overview](#-overview)
 - [📸 Screenshots](#-screenshots)
 - [📁 Project Structure](#-project-structure)
-- [📁 Project Index](#-project-structure)
+- [📁 Project Index](#-project-index)
 - [🚀 Getting Started](#-getting-started)
   - [☑️ Prerequisites](#-prerequisites)
   - [⚙️ Installation & Running](#-installation--running)
@@ -1011,4 +1011,5 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
