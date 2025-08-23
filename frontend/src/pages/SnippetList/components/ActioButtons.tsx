@@ -41,7 +41,7 @@ const ActionButtons = () => {
             className="flex flex-col pl-3 w-full"
           >
             <div className="flex flex-row justify-between items-center">
-              <div className="flex gap-2">
+              <div className="flex gap-2 pl-1">
                 <Checkbox
                   id="uncheckall"
                   checked={!!selectedSnippets.length}

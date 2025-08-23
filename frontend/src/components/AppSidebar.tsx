@@ -30,7 +30,7 @@ import {
 import { CONFIG } from "@/config/config";
 import { ROUTES } from "@/config/routes.config";
 import { cn } from "@/lib/utils";
-import { setCurrentPage } from "@/store/app/appSlice";
+import { setCurrentPage, toggleAddFolder } from "@/store/app/appSlice";
 
 interface PropTypes {
   counts: SnippetCountType;
@@ -145,6 +145,7 @@ const AppSidebar = ({
                   variant="secondary"
                   size="icon"
                   className="size-6 cursor-pointer"
+                  onClick={() => dispatch(toggleAddFolder(true))}
                 >
                   <Plus />
                 </Button>
@@ -160,6 +161,7 @@ const AppSidebar = ({
                 path={`${CONFIG.PATHS.FOLDER}/${each._id}`}
                 icon={FolderIcon}
                 count={each.snippetCount}
+                optimistic={each.optimistic}
                 loading={foldersLoading}
                 isActive={currentPage?.label === each.name}
                 onClick={() =>
@@ -180,6 +182,7 @@ interface SidebarItemProps {
   path: string;
   icon: React.ElementType;
   count?: number;
+  optimistic?: boolean;
   loading?: boolean;
   isActive: boolean;
   onClick: () => void;
@@ -190,12 +193,22 @@ const SidebarItem = ({
   path,
   icon: Icon,
   count,
+  optimistic,
   loading,
   isActive,
   onClick,
 }: SidebarItemProps) => {
   return (
-    <Link to={path} onClick={onClick}>
+    <Link
+      to={path}
+      onClick={(event) => {
+        if (optimistic) {
+          event.preventDefault();
+          return;
+        }
+        onClick?.();
+      }}
+    >
       <SidebarMenuButton
         tooltip={label}
         className={cn(
@@ -203,11 +216,12 @@ const SidebarItem = ({
           isActive
             ? "bg-primary text-primary-foreground"
             : "hover:bg-accent hover:text-accent-foreground",
+          optimistic ? "cursor-not-allowed" : "",
         )}
       >
         <div className="flex flex-row justify-center items-center gap-2">
           <Icon />
-          {label}
+          {optimistic ? <span className="opacity-50">{label}</span> : label}
         </div>
         {typeof count === "number" ? (
           loading ? (

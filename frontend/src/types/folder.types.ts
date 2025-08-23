@@ -3,4 +3,5 @@ export interface Folder {
   name: string;
   userId: string;
   snippetCount: number;
+  optimistic?: boolean;
 }

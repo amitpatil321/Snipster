@@ -62,8 +62,9 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
     >
       <div className="flex justify-between items-center">
         <AnimatePresence>
-          {((currentPage!.type === ROUTES.ALL && !snippet.favorite) ||
+          {(currentPage!.type === ROUTES.ALL ||
             [ROUTES.FAVORITE, ROUTES.TRASH, ROUTES.FOLDER].includes(
+              // disable checkbox for folders
               currentPage!.type,
             )) &&
             (selectedSnippets.length > 0 || isHovered) && (

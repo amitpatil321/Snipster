@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 interface AppState {
   currentPage: { label: string; path?: string; type: string } | null;
   snippetForm: { state: boolean; data: null };
+  addFolder: boolean;
 }
 
 const initialState: AppState = {
   currentPage: null,
   snippetForm: { state: false, data: null },
+  addFolder: false,
 };
 
 const appSlice = createSlice({
@@ -23,8 +25,12 @@ const appSlice = createSlice({
         data: action.payload.data,
       };
     },
+    toggleAddFolder(state, action) {
+      state.addFolder = action.payload;
+    },
   },
 });
 
-export const { setCurrentPage, toggleAddSnippet } = appSlice.actions;
+export const { setCurrentPage, toggleAddSnippet, toggleAddFolder } =
+  appSlice.actions;
 export default appSlice.reducer;
