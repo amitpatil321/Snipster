@@ -31,7 +31,11 @@ const Header = () => {
         <ColorThemeSwitcher />
         <ThemeSwitcher />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="font-sans">
+          <DropdownMenuTrigger
+            asChild
+            aria-label="User menu"
+            className="font-sans"
+          >
             <Avatar className="cursor-pointer">
               <AvatarImage
                 src={isAuthenticated ? user?.picture : ""}
@@ -52,6 +56,7 @@ const Header = () => {
           <DropdownMenuContent
             className="w-52 font-sans cursor-pointer"
             align="end"
+            aria-label="User menu"
           >
             {isAuthenticated ? (
               <>

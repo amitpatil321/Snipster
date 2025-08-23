@@ -1,8 +1,10 @@
+import { lazy, Suspense } from "react";
 import { useLocation } from "react-router";
 
-import SnippetList from "../SnippetList/SnippetList";
-
+import Loading from "@/components/Loading";
 import useGetSnippets from "@/hooks/snippets/useGetSnippets";
+
+const SnippetList = lazy(() => import("@/pages/SnippetList/SnippetList"));
 
 const Platform = () => {
   const params = useLocation();
@@ -16,12 +18,14 @@ const Platform = () => {
   } = useGetSnippets(type);
 
   return (
-    <SnippetList
-      type="folder"
-      loading={isLoading || isFetching}
-      error={isError}
-      snippets={snippets}
-    />
+    <Suspense fallback={<Loading />}>
+      <SnippetList
+        type="folder"
+        loading={isLoading || isFetching}
+        error={isError}
+        snippets={snippets}
+      />
+    </Suspense>
   );
 };
 

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { lazy, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useParams } from "react-router";
 
 import ActionButtons from "./components/ActioButtons";
@@ -88,13 +88,18 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
       </div>
 
       <div className="hidden md:block flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">
-        {selected ? (
-          <SnippetDetails />
-        ) : (
-          <div className="m-2">
-            <Alert type="info" title="Please select snippet to view details" />
-          </div>
-        )}
+        <Suspense fallback={<Loading />}>
+          {selected ? (
+            <SnippetDetails key={selected} />
+          ) : (
+            <div className="m-2">
+              <Alert
+                type="info"
+                title="Please select snippet to view details"
+              />
+            </div>
+          )}
+        </Suspense>
       </div>
     </SnippetListProvider>
   );
