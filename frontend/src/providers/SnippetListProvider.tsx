@@ -5,7 +5,7 @@ import type { RootState } from "@/store";
 import type { Snippet } from "@/types/snippet.types";
 
 import { ROUTES } from "@/config/routes.config";
-import { SnippetListContext } from "@/contexts/SnippetListContext";
+import { SnippetListContext } from "@/context/SnippetListContext";
 import useMoveToFolder from "@/hooks/snippets/useMoveToFolder";
 import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
 import useToggleRemove from "@/hooks/snippets/useToggleRemove";

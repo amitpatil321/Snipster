@@ -6,8 +6,9 @@ import SnippetDetailsView from "./SnipeptDetails.view";
 
 import type { RootState } from "@/store/index";
 import type { SnippetListContextType } from "@/types/app.types";
+import type { Snippet } from "@/types/snippet.types";
 
-import { SnippetListContext } from "@/contexts/SnippetListContext";
+import { SnippetListContext } from "@/context/SnippetListContext";
 import { useGetSnipeptDetails } from "@/hooks/snippets/useGetSnippetDetails";
 import useToggleFavorite from "@/hooks/snippets/useToggleFavorite";
 import useToggleRemove from "@/hooks/snippets/useToggleRemove";
@@ -35,14 +36,28 @@ const SnippetDetails = () => {
     },
   });
 
+  const handleToggleFavorite = (snippet: Snippet) => {
+    toggleFavorite({
+      ids: [snippet._id],
+      status: snippet.favorite ? false : true,
+    });
+  };
+
+  const handleToggleRemove = (snippet: Snippet) => {
+    toggleRemove({
+      ids: [snippet._id],
+      status: snippet.favorite ? false : true,
+    });
+  };
+
   const updateSnippet = () => {
     dispatch(toggleAddSnippet({ state: true, data: snippet }));
   };
 
   return (
     <SnippetDetailsView
-      toggleFavorite={toggleFavorite}
-      toggleRemove={toggleRemove}
+      toggleFavorite={handleToggleFavorite}
+      toggleRemove={handleToggleRemove}
       updateSnippet={updateSnippet}
       loading={isLoading || isFetching}
       error={isError}

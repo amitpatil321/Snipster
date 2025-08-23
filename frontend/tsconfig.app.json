@@ -36,7 +36,7 @@
       "providers/*": ["./src/providers/*"],
       "utils/*": ["./src/utils/*"],
       "schema/*": ["./src/schema/*"],
-      "contexts/*": ["./src/contexts/*"]
+      "context/*": ["src/context/*"]
     }
   },
   "include": ["src"]

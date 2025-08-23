@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -21,7 +22,7 @@ export default defineConfig({
       providers: path.resolve(__dirname, "./src/providers"),
       utils: path.resolve(__dirname, "./src/utils"),
       schema: path.resolve(__dirname, "./src/schema"),
-      contexts: path.resolve(__dirname, "./src/contexts"),
+      context: path.resolve(__dirname, "./src/context"),
     },
   },
 });

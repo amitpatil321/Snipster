@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ROUTES } from "@/config/routes.config";
-import { SnippetListContext } from "@/contexts/SnippetListContext";
+import { SnippetListContext } from "@/context/SnippetListContext";
 import { toggleAddSnippet } from "@/store/app/appSlice";
 
 const ActionButtons = () => {
