@@ -3,7 +3,7 @@ import { Laptop, MoonIcon, SunIcon } from "lucide-react";
 import type { ThemeMode } from "@/types/app.types";
 
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/context/ThemeContext";
 
 const ThemeSwitcher = () => {
   const { mode, handleModeChange } = useTheme();

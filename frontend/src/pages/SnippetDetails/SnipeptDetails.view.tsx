@@ -23,6 +23,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/config/routes.config";
+import { useTheme } from "@/context/ThemeContext";
 import { dateString } from "@/lib/utils";
 import { getExtensionsForLanguage } from "@/utils/getCodeMirrorExtension.util";
 
@@ -57,6 +58,7 @@ const SnippetDetailsView = memo(
       updatedAt,
     } = snippet || {};
     const [extensions, setExtensions] = useState<Extension[]>([]);
+    const { isDark } = useTheme();
 
     useEffect(() => {
       getExtensionsForLanguage(language).then(setExtensions);
@@ -182,7 +184,7 @@ const SnippetDetailsView = memo(
                       lineNumbers: true,
                       highlightActiveLine: false,
                     }}
-                    theme={"dark"}
+                    theme={isDark ? "dark" : "light"}
                     className="rounded-md h-[550px] overflow-auto"
                   />
                 </div>

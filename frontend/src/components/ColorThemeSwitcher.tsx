@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CONFIG } from "@/config/config";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "@/context/ThemeContext";
 
 const ColorThemeSwitcher = () => {
   const { theme, handleThemeChange } = useTheme();
