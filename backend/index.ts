@@ -17,6 +17,7 @@ if (!process.env.PORT) {
 }
 
 import authRoutes from "./routes/auth.routes";
+import folderRoutes from "./routes/folder.routes";
 import snippetRoutes from "./routes/snippet.routes";
 import tagRoutes from "./routes/tags.routes";
 import userRoutes from "./routes/user.routes";
@@ -91,6 +92,7 @@ app.use("/auth", authRoutes);
 app.use("/api/snippet", requiresAuth(), snippetRoutes);
 app.use("/api/user", requiresAuth(), userRoutes);
 app.use("/api/tags", requiresAuth(), tagRoutes);
+app.use("/api/folder", requiresAuth(), folderRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   const user = req.oidc.user ? "Logged in as: " + req.oidc.user.name : "";
