@@ -46,7 +46,8 @@ const RootLayout = () => {
         open={openModal}
         onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
       >
-        <DialogContent className="min-w-[900px] font-sans">
+        {/* <DialogContent className="min-w-[900px] font-sans"> */}
+        <DialogContent className="w-full md:min-w-4xl font-sans">
           <SnippetForm snippet={data} />
         </DialogContent>
       </Dialog>

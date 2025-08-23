@@ -7,6 +7,7 @@ import ActionButtons from "./components/ActioButtons";
 import type { Snippet } from "@/types/snippet.types";
 
 import { Alert } from "@/components/Alert";
+import ErrorBoundary from "@/components/ErrorCoundry/ErrorBoundry";
 import Loading from "@/components/Loading";
 import RenderSnippet from "@/components/RenderSnippet";
 import SnippetListProvider from "@/providers/SnippetListProvider";
@@ -90,7 +91,13 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
       <div className="hidden md:block flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">
         <Suspense fallback={<Loading />}>
           {selected ? (
-            <SnippetDetails key={selected} />
+            <ErrorBoundary
+              fallback={
+                <Alert type="error" title="Failed to load snippet list" />
+              }
+            >
+              <SnippetDetails key={selected} />
+            </ErrorBoundary>
           ) : (
             <div className="m-2">
               <Alert
