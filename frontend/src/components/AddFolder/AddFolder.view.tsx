@@ -3,14 +3,13 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-import { Button } from "../ui/button";
-import { DialogHeader } from "../ui/dialog";
-import { Input } from "../ui/input";
-
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import type z from "zod";
 
+import { Button } from "@/components/ui/button";
+import { DialogHeader } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { capitalize } from "@/lib/utils";
 import folderSchema from "@/schema/folder.schema";
 import { toggleAddFolder } from "@/store/app/appSlice";

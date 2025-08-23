@@ -120,20 +120,22 @@ const AppSidebar = ({
           <SidebarGroupLabel>Platform</SidebarGroupLabel>
           <SidebarMenu>
             {items.platform.map((each) => (
-              <SidebarItem
-                key={each.label}
-                label={each.label}
-                path={each.path}
-                icon={each.icon}
-                count={each.count}
-                loading={loading}
-                isActive={currentPage?.path === each.path}
-                onClick={() =>
-                  dispatch(
-                    setCurrentPage({ label: each.label, path: each.path }),
-                  )
-                }
-              />
+              <li key={each.label}>
+                <SidebarItem
+                  key={each.label}
+                  label={each.label}
+                  path={each.path}
+                  icon={each.icon}
+                  count={each.count}
+                  loading={loading}
+                  isActive={currentPage?.path === each.path}
+                  onClick={() =>
+                    dispatch(
+                      setCurrentPage({ label: each.label, path: each.path }),
+                    )
+                  }
+                />
+              </li>
             ))}
           </SidebarMenu>
           <br />
@@ -146,6 +148,7 @@ const AppSidebar = ({
                   size="icon"
                   className="size-6 cursor-pointer"
                   onClick={() => dispatch(toggleAddFolder(true))}
+                  aria-label="Add folder"
                 >
                   <Plus />
                 </Button>
@@ -155,19 +158,23 @@ const AppSidebar = ({
           </SidebarGroupLabel>
           <SidebarMenu>
             {items.folders?.map((each) => (
-              <SidebarItem
-                key={each._id}
-                label={each.name}
-                path={`${CONFIG.PATHS.FOLDER}/${each._id}`}
-                icon={FolderIcon}
-                count={each.snippetCount}
-                optimistic={each.optimistic}
-                loading={foldersLoading}
-                isActive={currentPage?.label === each.name}
-                onClick={() =>
-                  dispatch(setCurrentPage({ label: each.name, path: each._id }))
-                }
-              />
+              <li key={each._id}>
+                <SidebarItem
+                  key={each._id}
+                  label={each.name}
+                  path={`${CONFIG.PATHS.FOLDER}/${each._id}`}
+                  icon={FolderIcon}
+                  count={each.snippetCount}
+                  optimistic={each.optimistic}
+                  loading={foldersLoading}
+                  isActive={currentPage?.label === each.name}
+                  onClick={() =>
+                    dispatch(
+                      setCurrentPage({ label: each.name, path: each._id }),
+                    )
+                  }
+                />
+              </li>
             ))}
           </SidebarMenu>
         </SidebarGroup>

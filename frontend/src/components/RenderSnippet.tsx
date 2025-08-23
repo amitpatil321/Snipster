@@ -12,7 +12,7 @@ import type { Snippet } from "@/types/snippet.types";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { ROUTES } from "@/config/routes.config";
-import { SnippetListContext } from "@/contexts/SnippetListContext";
+import { SnippetListContext } from "@/context/SnippetListContext";
 import { formatRelativeTime } from "@/lib/utils";
 import { getSnippetDetailUrl } from "@/utils/url.utils";
 

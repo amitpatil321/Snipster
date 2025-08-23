@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SnippetListContext } from "@/contexts/SnippetListContext";
+import { SnippetListContext } from "@/context/SnippetListContext";
 import { useGetFolders } from "@/hooks/user/useGetFolders";
 
 const FoldersDropdown = () => {

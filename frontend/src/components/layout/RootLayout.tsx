@@ -1,10 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router";
 
-import AddFolder from "../AddFolder/AddFolder";
-
 import type { RootState } from "@/store/index";
 
+import AddFolder from "@/components/AddFolder/AddFolder";
 import AppSidebar from "@/components/AppSidebar";
 import Header from "@/components/Header";
 import SnippetForm from "@/components/SnippetForm/SnippetForm";
