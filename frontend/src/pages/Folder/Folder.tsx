@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { useParams } from "react-router";
 
 import { Alert } from "@/components/Alert";
-import ErrorBoundary from "@/components/ErrorCoundry/ErrorBoundry";
+import ErrorBoundary from "@/components/ErrorBoundry/ErrorBoundry";
 import useGetSnippets from "@/hooks/snippets/useGetSnippets";
 // import SnippetList from "@/pages/SnippetList/SnippetList";
 
