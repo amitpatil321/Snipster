@@ -33,10 +33,10 @@ const RootLayout = () => {
       />
       <SidebarInset>
         <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
-          <div className="bg-card shadow-lg m-4 p-2 border rounded-lg">
+          <div className="bg-card shadow-lg m-2 md:m-4 md:p-2 border rounded-lg">
             <Header />
           </div>
-          <div className="flex flex-row gap-4 p-4 pt-0 h-screen">
+          <div className="flex flex-row p-2 md:p-4 md:pt-0 h-screen">
             <Outlet />
           </div>
         </div>
@@ -46,7 +46,7 @@ const RootLayout = () => {
         open={openModal}
         onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
       >
-        <DialogContent className="min-w-[900px] font-sans">
+        <DialogContent className="lg:w-4xl font-sans">
           <SnippetForm snippet={data} />
         </DialogContent>
       </Dialog>

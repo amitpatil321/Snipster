@@ -18,7 +18,13 @@ const Platform = () => {
   } = useGetSnippets(type);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense
+      fallback={
+        <div className="w-full">
+          <Loading />
+        </div>
+      }
+    >
       <SnippetList
         type="folder"
         loading={isLoading || isFetching}

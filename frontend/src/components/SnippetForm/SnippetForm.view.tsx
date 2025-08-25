@@ -133,8 +133,9 @@ const SnippetFormView = ({
                 </FormItem>
               )}
             />
-            <div className="items-center gap-2 grid grid-cols-1 md:grid-cols-4 col-span-12 w-full">
-              <div className="col-span-1">
+            {/* <div className="items-center gap-2 grid grid-cols-1 md:grid-cols-4 col-span-12 w-full"> */}
+            <div className="gap-4 md:gap-4 grid grid-cols-1 md:grid-cols-2 col-span-12 w-full">
+              <div className="md:col-span-6">
                 <FormField
                   control={form.control}
                   name="language"
@@ -152,36 +153,38 @@ const SnippetFormView = ({
                   )}
                 />
               </div>
-              <FormField
-                control={form.control}
-                name="folder"
-                render={() => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="col-span-1">
-                        {foldersLoading ? (
-                          <Loading size="small" />
-                        ) : (
-                          <ComboBox
-                            name="folder"
-                            options={folders}
-                            valueKey="_id"
-                            labelKey="name"
-                            placeholder="Folder"
-                            className="w-[90%]"
-                          />
-                        )}
-                      </div>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <div className="col-span-2">
+              <div className="md:col-span-6">
+                <FormField
+                  control={form.control}
+                  name="folder"
+                  render={() => (
+                    <FormItem>
+                      <FormControl>
+                        <div>
+                          {foldersLoading ? (
+                            <Loading size="small" />
+                          ) : (
+                            <ComboBox
+                              name="folder"
+                              options={folders}
+                              valueKey="_id"
+                              labelKey="name"
+                              placeholder="Folder"
+                              className="w-full"
+                            />
+                          )}
+                        </div>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="md:col-span-12">
                 <FormField
                   control={form.control}
                   name="tags"
                   render={({ field }) => (
-                    <FormItem className="col-span-8 md:col-span-3">
+                    <FormItem>
                       <FormControl>
                         {tagsLoading ? (
                           <Loading
@@ -191,7 +194,6 @@ const SnippetFormView = ({
                         ) : (
                           <MultipleSelector
                             {...field}
-                            // value={tagsArr}
                             creatable
                             icon={<Tag />}
                             defaultOptions={tags || []}

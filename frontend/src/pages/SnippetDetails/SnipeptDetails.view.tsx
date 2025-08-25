@@ -87,110 +87,125 @@ const SnippetDetailsView = memo(
           transition={{ duration: 0.3 }}
           // exit={{ opacity: 0, y: 10 }}
         >
-          <Card className="shadow-none -mt-2 border-none">
-            <CardHeader className="-mb-6">
-              <CardTitle className="flex flex-row justify-between items-center">
-                <div className="font-semibold text-2xl">{title}</div>
-                <div className="flex flex-row justify-center items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="cursor-pointer"
-                    onClick={() => updateSnippet()}
-                  >
-                    <SquarePenIcon /> Update
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="hover:text-red-600 cursor-pointer"
-                    onClick={() => toggleRemove(snippet)}
-                  >
-                    <Trash /> Delete
-                  </Button>
-                  <Star
-                    className={`cursor-pointer w-5 h-5 text-gray-400 transition-colors duration-300 ease-in-out
+          {snippet ? (
+            <Card className="shadow-none -mt-2 border-none">
+              <CardHeader className="-mb-6 px-2 xl:px-6">
+                <CardTitle className="flex xl:flex-row flex-col justify-between items-start">
+                  <div className="font-semibold text-xl xl:text-2xl">
+                    {title}
+                  </div>
+                  <div className="flex flex-row justify-center items-center gap-2 mt-2 xl:mt-0">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="cursor-pointer"
+                      onClick={() => updateSnippet()}
+                    >
+                      <SquarePenIcon /> Update
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="hover:text-red-600 cursor-pointer"
+                      onClick={() => toggleRemove(snippet)}
+                    >
+                      <Trash /> Delete
+                    </Button>
+                    <Star
+                      className={`cursor-pointer w-5 h-5 text-gray-400 transition-colors duration-300 ease-in-out
     ${favorite ? "text-yellow-500 fill-yellow-500" : "hover:text-yellow-500 hover:fill-yellow-500"}`}
-                    onClick={() => toggleFavorite(snippet)}
-                  />
+                      onClick={() => toggleFavorite(snippet)}
+                    />
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 px-2 xl:px-6">
+                {description && (
+                  <span className="text-muted-foreground">{description}</span>
+                )}
+                {/* <div className="flex items-center gap-4 -mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm"> */}
+                <div className="flex flex-row flex-wrap items-center place-content-between gap-4 mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm">
+                  <div className="flex flex-row items-start gap-2">
+                    {folderId && (
+                      <div className="flex flex-row items-center gap-1">
+                        <Folder className="w-4 h-4" />
+                        {folderId?.name}
+                      </div>
+                    )}
+                    {tagIds ? (
+                      <div className="flex flex-wrap gap-2">
+                        {tagIds?.map((each: Tag) => (
+                          <Link
+                            key={each._id}
+                            to={`/${ROUTES.TAG}/${each._id}`}
+                          >
+                            <Badge key={each._id} variant="default">
+                              {each.name}
+                            </Badge>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-row gap-2 text-xs">
+                    {createdAt && (
+                      <span className="flex justify-end items-center gap-1">
+                        <CalendarDays className="w-3 h-3" />
+                        Created {dateString(createdAt)}
+                      </span>
+                    )}
+                    {updatedAt && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        Updated {dateString(updatedAt)}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {description && (
-                <span className="text-muted-foreground">{description}</span>
-              )}
-              {/* <div className="flex items-center gap-4 -mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm"> */}
-              <div className="flex flex-row flex-wrap items-center place-content-between gap-4 mt-2 mb-4 pb-2 border-b-1 text-muted-foreground text-sm">
-                <div className="flex flex-row gap-2">
-                  {folderId && (
-                    <div className="flex flex-row items-center gap-1">
-                      <Folder className="w-4 h-4" />
-                      {folderId?.name}
-                    </div>
-                  )}
-                  {tagIds ? (
-                    <div className="flex flex-wrap gap-2">
-                      {tagIds?.map((each: Tag) => (
-                        <Link key={each._id} to={`/${ROUTES.TAG}/${each._id}`}>
-                          <Badge key={each._id} variant="default">
-                            {each.name}
-                          </Badge>
-                        </Link>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-                <div className="flex flex-row gap-2 text-xs">
-                  {createdAt && (
-                    <span className="flex justify-end items-center gap-1">
-                      <CalendarDays className="w-3 h-3" />
-                      Created {dateString(createdAt)}
-                    </span>
-                  )}
-                  {updatedAt && (
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      Updated {dateString(updatedAt)}
-                    </span>
-                  )}
-                </div>
-              </div>
-              {content && (
-                <div className="relative flex-1 rounded-lg min-h-0 overflow-hidden">
-                  <CopyButton
-                    text={content}
-                    className="top-2 right-6 z-10 absolute"
-                  />
-                  <CodeMirror
-                    value={content}
-                    extensions={[
-                      extensions,
-                      EditorView.lineWrapping,
-                      EditorView.baseTheme({
-                        ".cm-content": {
-                          // fontFamily: "var(--font-sans)",
-                          fontSize: "14px",
-                        },
-                      }),
-                    ]}
-                    // style={{
-                    //   overflow: "auto",
-                    //   height: 600,
-                    // }}
-                    readOnly
-                    editable={false}
-                    basicSetup={{
-                      lineNumbers: true,
-                      highlightActiveLine: false,
-                    }}
-                    theme={isDark ? "dark" : "light"}
-                    className="rounded-md h-[550px] overflow-auto"
-                  />
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                {content && (
+                  <div className="relative flex-1 rounded-lg min-h-0 overflow-hidden">
+                    <CopyButton
+                      text={content}
+                      className="top-2 right-6 z-10 absolute"
+                    />
+                    <CodeMirror
+                      value={content}
+                      extensions={[
+                        extensions,
+                        EditorView.lineWrapping,
+                        EditorView.baseTheme({
+                          ".cm-content": {
+                            // fontFamily: "var(--font-sans)",
+                            fontSize: "14px",
+                          },
+                        }),
+                      ]}
+                      // style={{
+                      //   overflow: "auto",
+                      //   height: 600,
+                      // }}
+                      readOnly
+                      editable={false}
+                      basicSetup={{
+                        lineNumbers: true,
+                        highlightActiveLine: false,
+                      }}
+                      theme={isDark ? "dark" : "light"}
+                      // className="rounded-md h-[400px] xl:h-[550px] overflow-auto"
+                      className="rounded-md min-h-[200px] max-h-[70vh] overflow-auto"
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="m-2">
+              <Alert
+                type="info"
+                title="Please select snippet to view details"
+              />
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     );

@@ -7,8 +7,18 @@ import ActionButtons from "./components/ActioButtons";
 import type { Snippet } from "@/types/snippet.types";
 
 import { Alert } from "@/components/Alert";
+import ErrorBoundary from "@/components/ErrorBoundry/ErrorBoundry";
 import Loading from "@/components/Loading";
 import RenderSnippet from "@/components/RenderSnippet";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+} from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 import SnippetListProvider from "@/providers/SnippetListProvider";
 
 const SnippetDetails = lazy(
@@ -27,6 +37,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
   const [selected, setSelected] = useState<string | null | undefined>(
     params?.id,
   );
+  const isMobile = useIsMobile();
 
   if (error) {
     return (
@@ -77,7 +88,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
       selected={selected}
       setSelected={setSelected}
     >
-      <div className="bg-card shadow-lg border rounded-xl sm:w-full md:w-1/3 overflow-auto text-card-foreground">
+      <div className="bg-card shadow-lg border rounded-xl w-full md:w-1/3 overflow-auto text-card-foreground">
         <ActionButtons />
         {loading && (
           <div className="pt-4">
@@ -87,20 +98,65 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
         {!loading && renderContent}
       </div>
 
-      <div className="hidden md:block flex-1 bg-card shadow-lg border rounded-xl overflow-auto text-card-foreground">
-        <Suspense fallback={<Loading />}>
-          {selected ? (
-            <SnippetDetails key={selected} />
-          ) : (
-            <div className="m-2">
+      <Suspense
+        fallback={
+          !isMobile && (
+            <div className="flex-1 bg-card shadow-lg ml-4 pt-4 border rounded-xl w-1/3 overflow-auto text-card-foreground">
+              <Loading />
+            </div>
+          )
+        }
+      >
+        {selected ? (
+          <ErrorBoundary
+            fallback={
+              <div className="inline-block m-2 border border-green-400">
+                <Alert type="error" title="Failed to load snippet list" />
+              </div>
+            }
+          >
+            {!isMobile ? (
+              <div className="flex-1 bg-card shadow-lg ml-4 border rounded-xl w-1/3 overflow-auto text-card-foreground">
+                <SnippetDetails />
+              </div>
+            ) : (
+              <Sheet
+                open={!!selected}
+                onOpenChange={(open) => !open && setSelected(null)}
+              >
+                <SheetHeader></SheetHeader>
+                {/* <SheetContent className="w-full md:w-3/4 lg:w-2/3"> */}
+                <SheetContent className="w-full md:w-3/4 lg:w-2/3">
+                  <div className="flex-1 gap-6 grid auto-rows-min px-4">
+                    <SnippetDetails key={selected} />
+                    <SheetFooter>
+                      <SheetClose asChild>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setSelected(null);
+                          }}
+                        >
+                          Close
+                        </Button>
+                      </SheetClose>
+                    </SheetFooter>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            )}
+          </ErrorBoundary>
+        ) : (
+          !isMobile && (
+            <div className="flex-1 bg-card shadow-lg ml-4 p-2 border rounded-xl overflow-auto text-card-foreground">
               <Alert
                 type="info"
                 title="Please select snippet to view details"
               />
             </div>
-          )}
-        </Suspense>
-      </div>
+          )
+        )}
+      </Suspense>
     </SnippetListProvider>
   );
 };

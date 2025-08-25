@@ -51,6 +51,10 @@
   --spacing: 0.25rem;
 }
 
+button[role="checkbox"] {
+  border: 1px solid #939393;
+}
+
 .nature.dark {
   --background: oklch(0.2683 0.0279 150.7681);
   --foreground: oklch(0.9423 0.0097 72.6595);

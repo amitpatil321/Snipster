@@ -18,18 +18,21 @@ const Header = () => {
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
 
   return (
-    <div className="flex flex-row justify-between items-center gap-4">
-      <div className="flex items-center gap-2 w-1/2">
+    <div className="flex flex-row md:flex-row justify-between items-center md:gap-4 p-2 md:p-4">
+      <div className="flex flex-2/3 items-center gap-2 w-full md:w-1/2">
         <SidebarTrigger aria-label="Toggle sidebar" />
-        <Input name="search" placeholder="Search..." />
-        <label htmlFor="theme-select" className="sr-only">
-          Select theme
-        </label>
+        <Input
+          name="search"
+          placeholder="Search..."
+          className="flex-shrink w-full md:w-full xl:w-4/6"
+        />
       </div>
 
-      <div className="flex flex-row flex-wrap justify-end items-center gap-6">
+      <div className="flex flex-row flex-wrap flex-4/12 md:flex-2/5 justify-end items-center gap-1 md:gap-2 w-full md:w-auto md:gap4">
+        {/* <div className="flex flex-row items-center md:gap-2"> */}
         <ColorThemeSwitcher />
         <ThemeSwitcher />
+        {/* </div> */}
         <DropdownMenu>
           <DropdownMenuTrigger
             asChild
@@ -53,6 +56,7 @@ const Header = () => {
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent
             className="w-52 font-sans cursor-pointer"
             align="end"

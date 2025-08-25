@@ -91,7 +91,7 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
             }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="font-medium text-base truncate basis-[90%]"
+            className="font-medium text-base line-clamp-1 basis-[90%]"
           >
             {title}
           </motion.h3>
