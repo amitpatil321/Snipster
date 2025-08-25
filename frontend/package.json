@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
-    "preview": "vite preview",
+    "preview": "vite preview --port 5173",
     "prepare": "husky"
   },
   "dependencies": {
