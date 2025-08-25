@@ -14,6 +14,7 @@ export const CONFIG = {
     "elegant-luxury",
     "t3-chat",
     "nature",
+    "starry-night",
   ],
   LANGUAGES: [
     { label: "JavaScript", value: "javascript" },

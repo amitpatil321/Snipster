@@ -10,6 +10,7 @@
 @import "./themes/elegant-luxury.css";
 @import "./themes/t3-chat.css";
 @import "./themes/nature.css";
+@import "./themes/starry-night.css";
 
 @theme inline {
   --color-background: var(--background);
