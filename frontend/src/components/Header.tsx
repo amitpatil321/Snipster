@@ -18,7 +18,7 @@ const Header = () => {
   const { isLoading, isAuthenticated, user, login, logout, signup } = useAuth();
 
   return (
-    <div className="flex flex-row md:flex-row justify-between items-center md:gap-4 p-2 md:p-4">
+    <div className="flex flex-row md:flex-row justify-between items-center md:gap-4 p-2 md:p-2">
       <div className="flex flex-2/3 items-center gap-2 w-full md:w-1/2">
         <SidebarTrigger aria-label="Toggle sidebar" />
         <Input
