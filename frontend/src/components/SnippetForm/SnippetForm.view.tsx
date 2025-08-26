@@ -134,52 +134,55 @@ const SnippetFormView = ({
               )}
             />
             {/* <div className="items-center gap-2 grid grid-cols-1 md:grid-cols-4 col-span-12 w-full"> */}
-            <div className="gap-4 md:gap-4 grid grid-cols-1 md:grid-cols-2 col-span-12 w-full">
-              <div className="md:col-span-6">
-                <FormField
-                  control={form.control}
-                  name="language"
-                  render={({ field: langField }) => (
-                    <FormItem>
-                      <FormControl>
-                        <ComboBox
-                          {...langField}
-                          options={CONFIG.LANGUAGES}
-                          className="w-full"
-                          placeholder="Select language *"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+            {/* <div className="gap-4 md:gap-4 grid grid-cols-1 md:grid-cols-2 col-span-12 w-full"> */}
+            <div className="flex flex-col md:flex-col gap-4 col-span-12 w-full">
+              <div className="flex flex-row gap-4">
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="language"
+                    render={({ field: langField }) => (
+                      <FormItem className="!w-full">
+                        <FormControl>
+                          <ComboBox
+                            {...langField}
+                            options={CONFIG.LANGUAGES}
+                            className="!w-full"
+                            placeholder="Select language *"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name="folder"
+                    render={() => (
+                      <FormItem>
+                        <FormControl>
+                          <div>
+                            {foldersLoading ? (
+                              <Loading size="small" />
+                            ) : (
+                              <ComboBox
+                                name="folder"
+                                options={folders}
+                                valueKey="_id"
+                                labelKey="name"
+                                placeholder="Folder"
+                                className="w-full"
+                              />
+                            )}
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className="md:col-span-6">
-                <FormField
-                  control={form.control}
-                  name="folder"
-                  render={() => (
-                    <FormItem>
-                      <FormControl>
-                        <div>
-                          {foldersLoading ? (
-                            <Loading size="small" />
-                          ) : (
-                            <ComboBox
-                              name="folder"
-                              options={folders}
-                              valueKey="_id"
-                              labelKey="name"
-                              placeholder="Folder"
-                              className="w-full"
-                            />
-                          )}
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="md:col-span-12">
+              <div className="flex-1 w-full">
                 <FormField
                   control={form.control}
                   name="tags"

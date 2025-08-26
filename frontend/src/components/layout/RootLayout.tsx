@@ -33,7 +33,7 @@ const RootLayout = () => {
       />
       <SidebarInset>
         <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
-          <div className="bg-card shadow-lg m-2 md:m-4 md:p-2 border rounded-lg">
+          <div className="bg-card shadow-lg m-2 md:m-4 md:p-1 border rounded-lg">
             <Header />
           </div>
           <div className="flex flex-row p-2 md:p-4 md:pt-0 h-screen">
@@ -46,7 +46,8 @@ const RootLayout = () => {
         open={openModal}
         onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
       >
-        <DialogContent className="lg:w-4xl font-sans">
+        {/* <DialogContent className="xl:border-red-400 w-full xl:!w-[800px] sm:max-w-lg font-sans"> */}
+        <DialogContent className="!max-w-screen-md font-sans">
           <SnippetForm snippet={data} />
         </DialogContent>
       </Dialog>

@@ -110,7 +110,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
         {selected ? (
           <ErrorBoundary
             fallback={
-              <div className="inline-block m-2 border border-green-400">
+              <div className="inline-block m-2">
                 <Alert type="error" title="Failed to load snippet list" />
               </div>
             }

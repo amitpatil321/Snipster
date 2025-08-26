@@ -13,7 +13,7 @@ export const getCounts = async () => {
 };
 
 export const getSnippetsByUser = async (
-  type: string,
+  type: string | undefined,
   folderId: string | null,
 ) => {
   const response = await axiosInstance.get(
