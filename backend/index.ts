@@ -68,7 +68,7 @@ const delayResponse = (delayTime: number) => {
   };
 };
 
-app.use(delayResponse(2000));
+// app.use(delayResponse(2000));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

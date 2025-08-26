@@ -1,12 +1,10 @@
-import { lazy, Suspense } from "react";
 import { useLocation } from "react-router";
 
 import { Alert } from "@/components/Alert";
 import ErrorBoundary from "@/components/ErrorBoundry/ErrorBoundry";
-import Loading from "@/components/Loading";
 import useGetSnippets from "@/hooks/snippets/useGetSnippets";
-
-const SnippetList = lazy(() => import("@/pages/SnippetList/SnippetList"));
+import SnippetList from "@/pages/SnippetList/SnippetList";
+// const SnippetList = lazy(() => import("@/pages/SnippetList/SnippetList"));
 
 const Platform = () => {
   const params = useLocation();
@@ -23,14 +21,26 @@ const Platform = () => {
     <ErrorBoundary
       fallback={<Alert type="error" title="Failed to load snippet list" />}
     >
-      <Suspense fallback={<Loading />}>
+      <SnippetList
+        type="folder"
+        loading={isLoading || isFetching}
+        error={isError}
+        snippets={snippets}
+      />
+      {/* <Suspense
+        fallback={
+          <div className="w-full">
+            <Loading />
+          </div>
+        }
+      >
         <SnippetList
           type="folder"
           loading={isLoading || isFetching}
           error={isError}
           snippets={snippets}
         />
-      </Suspense>
+      </Suspense> */}
     </ErrorBoundary>
   );
 };
