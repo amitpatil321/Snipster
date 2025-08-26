@@ -1,4 +1,5 @@
 export const CONFIG = {
+  SEARCH_PARAM: "q",
   PATHS: {
     API_BASE: "/api",
     SNIPPET: "/snippet",

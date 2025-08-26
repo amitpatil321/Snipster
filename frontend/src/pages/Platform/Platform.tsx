@@ -1,21 +1,29 @@
-import { useLocation } from "react-router";
+import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router";
+
+import type { RootState } from "@/store";
 
 import { Alert } from "@/components/Alert";
 import ErrorBoundary from "@/components/ErrorBoundry/ErrorBoundry";
+import { CONFIG } from "@/config/config";
+import { useFilteredSnippets } from "@/hooks/snippets/useFilterSnippet";
 import useGetSnippets from "@/hooks/snippets/useGetSnippets";
 import SnippetList from "@/pages/SnippetList/SnippetList";
 // const SnippetList = lazy(() => import("@/pages/SnippetList/SnippetList"));
 
 const Platform = () => {
-  const params = useLocation();
-  const type = params.pathname.split("/")?.[1]; //todo: replace this with redux state currentPage
+  const currentPage = useSelector((state: RootState) => state.app.currentPage);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get(CONFIG.SEARCH_PARAM) || "";
 
   const {
     isLoading,
     isFetching,
     data: snippets = [],
     isError,
-  } = useGetSnippets(type);
+  } = useGetSnippets(currentPage?.type);
+
+  const filteredSnippets = useFilteredSnippets(snippets, searchQuery);
 
   return (
     <ErrorBoundary
@@ -25,7 +33,7 @@ const Platform = () => {
         type="folder"
         loading={isLoading || isFetching}
         error={isError}
-        snippets={snippets}
+        snippets={filteredSnippets}
       />
       {/* <Suspense
         fallback={

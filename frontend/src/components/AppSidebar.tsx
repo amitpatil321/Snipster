@@ -1,7 +1,7 @@
 import { Folder as FolderIcon, Heart, List, Plus, Trash } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router";
 
 import Loading from "./Loading";
 import { Badge } from "./ui/badge";
@@ -50,6 +50,8 @@ const AppSidebar = ({
   const dispatch = useDispatch();
   const location = useLocation();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get(CONFIG.SEARCH_PARAM) || "";
 
   const items = useMemo(
     () => ({
@@ -80,9 +82,16 @@ const AppSidebar = ({
     }),
     [all, favorite, trash, folders],
   );
-
   useEffect(() => {
     const currentPath = location.pathname;
+
+    // Clear `q` only if NOT on "all" page
+    if (searchQuery && !currentPath.startsWith("/all")) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.delete(CONFIG.SEARCH_PARAM);
+      setSearchParams(newParams);
+    }
+
     const platform = items.platform.find(
       (each) => each.path === "/" + currentPath.split("/")?.[1],
     );
@@ -108,7 +117,14 @@ const AppSidebar = ({
           }),
         );
     }
-  }, [location.pathname, items, dispatch]);
+  }, [
+    location.pathname,
+    items,
+    dispatch,
+    searchQuery,
+    searchParams,
+    setSearchParams,
+  ]);
 
   return (
     <Sidebar collapsible="icon" className="border-r">
