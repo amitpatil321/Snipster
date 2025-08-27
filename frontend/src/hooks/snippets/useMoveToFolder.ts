@@ -8,7 +8,12 @@ import type { AxiosError } from "axios";
 import { moveToFolder } from "@/services/snippet.service";
 import { updateSnippetProperty } from "@/utils/queryCache.utils";
 
-const useMoveToFolder = (type: string | undefined) => {
+const useMoveToFolder = (
+  type: string | undefined,
+  options?: {
+    onSuccess?: () => void;
+  },
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -173,7 +178,9 @@ const useMoveToFolder = (type: string | undefined) => {
         queryClient.setQueryData(foldersKey, context.previousData.folders);
       }
     },
-    // onSettled: () => queryClient.refetchQueries({ queryKey: ["getFolders"] }),
+    onSuccess: () => {
+      options?.onSuccess?.();
+    },
   });
 };
 

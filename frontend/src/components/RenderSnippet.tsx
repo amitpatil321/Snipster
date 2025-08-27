@@ -1,9 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { Star, Trash2, Undo } from "lucide-react";
-import { memo, useContext, useState } from "react";
+import { memo, useCallback, useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router";
 
+import SnippetActions from "./SnippetActions";
 import { Badge } from "./ui/badge";
 
 import type { RootState } from "@/store";
@@ -21,20 +20,14 @@ interface RenderSnippetProps {
 }
 
 const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
-  const {
-    selected,
-    setSelected,
-    selectedSnippets,
-    handleCheckboxClick,
-    favoriteSnippet,
-    deleteSnippet,
-  } = useContext(SnippetListContext) as SnippetListContextType;
+  const { selected, setSelected, selectedSnippets, handleCheckboxClick } =
+    useContext(SnippetListContext) as SnippetListContextType;
   // const location = useLocation();
   const [isHovered, setIsHovered] = useState(false);
   const { folderId: paramFolderId } = useParams();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
-  const { _id, title, favorite, folderId, createdAt } = snippet;
+  const { _id, title, folderId, createdAt } = snippet;
 
   const detailUrl = getSnippetDetailUrl({
     base: currentPage?.type || "all",
@@ -42,48 +35,61 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
     paramFolderId,
   });
 
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (selectedSnippets.length > 0) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleCheckboxClick(e, snippet._id);
+      } else {
+        setSelected(snippet._id);
+      }
+    },
+    [selectedSnippets.length, handleCheckboxClick, snippet._id, setSelected],
+  );
+
   return (
     <Link
       key={_id}
       className={`${selected === snippet._id ? "bg-muted" : ""} group flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-accent hover:text-accent-foreground`}
       to={`${detailUrl}`}
-      onClick={(e) => {
-        // if we are in snippet selection mode then dont change url, rest is handled in controller "handleCheckboxClick" method
-        if (selectedSnippets.length > 0) {
-          e.preventDefault();
-          e.stopPropagation();
-          handleCheckboxClick(e, snippet._id);
-        } else {
-          setSelected(snippet._id);
-        }
-      }}
+      onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex justify-between items-center">
-        <AnimatePresence>
-          {(currentPage!.type === ROUTES.ALL ||
-            [ROUTES.FAVORITE, ROUTES.TRASH, ROUTES.FOLDER].includes(
-              // disable checkbox for folders
-              currentPage!.type,
-            )) &&
-            (selectedSnippets.length > 0 || isHovered) && (
-              <motion.div
-                key={_id}
-                initial={{ opacity: 0, x: -5 }}
-                animate={{ opacity: 1, x: 0 }}
-                // exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
-                className="left-0 relative mr-1"
-              >
-                <Checkbox
-                  onClick={(event) => handleCheckboxClick(event, _id)}
-                  checked={selectedSnippets.includes(_id)}
-                />
-              </motion.div>
-            )}
+        {/* <AnimatePresence> */}
+        {(currentPage!.type === ROUTES.ALL ||
+          [ROUTES.FAVORITE, ROUTES.TRASH, ROUTES.FOLDER].includes(
+            // disable checkbox for folders
+            currentPage!.type,
+          )) &&
+          (selectedSnippets.length > 0 || isHovered) && (
+            // <motion.div
+            //   key={_id}
+            //   initial={{ opacity: 0, x: -5 }}
+            //   animate={{ opacity: 1, x: 0 }}
+            //   // exit={{ opacity: 0, x: -10 }}
+            //   transition={{ duration: 0.2 }}
+            //   className="left-0 relative mr-1"
+            // >
+            <div
+              className={`transition-all mr-1 translate-x-[0px] duration-100 checkbox-wrapper ${
+                selectedSnippets.length > 0
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
+              }`}
+            >
+              <Checkbox
+                onClick={(event) => handleCheckboxClick(event, _id)}
+                checked={selectedSnippets.includes(_id)}
+                aria-label={`Select snippet with ID ${_id}`}
+              />
+            </div>
+            // </motion.div>
+          )}
 
-          <motion.h3
+        {/* <motion.h3
             initial={{ opacity: 1, x: 0 }}
             animate={{
               x: isHovered ? 3 : 0,
@@ -92,11 +98,17 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="font-medium text-base line-clamp-1 basis-[90%]"
-          >
-            {title}
-          </motion.h3>
-        </AnimatePresence>
-        <div
+          > */}
+        <h3 className="font-medium text-base line-clamp-1 transition-transform group-hover:translate-x-[3px] duration-100 basis-[90%]">
+          {title}
+        </h3>
+        {/* </motion.h3> */}
+        {/* </AnimatePresence> */}
+        <SnippetActions
+          snippet={snippet}
+          currentPageType={currentPage?.type || "all"}
+        />
+        {/* <div
           className={`${!snippet?.deletedAt && "flex justify-end flex-row gap-2 basis-[10%]"}`}
         >
           {snippet?.deletedAt ? (
@@ -122,11 +134,11 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
               }
             />
           )}
-        </div>
+        </div> */}
       </div>
 
       <div className="flex flex-row flex-wrap justify-between gap-1">
-        {folderId && (
+        {folderId ? (
           <Badge
             key={folderId?._id}
             variant="secondary"
@@ -134,6 +146,8 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
           >
             {folderId?.name}
           </Badge>
+        ) : (
+          <span></span>
         )}
         <div className="flex flex-row gap-4 opacity-60 text-muted-foreground text-xs">
           <span>{createdAt && formatRelativeTime(createdAt)}</span>

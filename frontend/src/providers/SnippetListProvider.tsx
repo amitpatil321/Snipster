@@ -24,7 +24,11 @@ const SnippetListProvider: React.FC<{
     currentPage?.type === "folder" ? currentPage?.path : null,
   );
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
-  const { mutate: assignFolder } = useMoveToFolder(currentPage?.type);
+  const { mutate: assignFolder } = useMoveToFolder(currentPage?.type, {
+    onSuccess: () => {
+      setSelectedSnippets([]);
+    },
+  });
 
   const handleCheckboxClick = useCallback(
     (event: React.MouseEvent, snippetId: string) => {

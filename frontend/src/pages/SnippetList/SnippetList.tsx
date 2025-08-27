@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { lazy, Suspense, useState } from "react";
 import { useParams } from "react-router";
 
@@ -52,35 +51,33 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
   }
 
   const renderContent =
-    snippets?.length > 0 ? (
-      <AnimatePresence initial={true}>
-        {snippets?.map((snippet: Snippet) => (
-          <motion.div
-            key={snippet._id}
-            initial={{ height: 0 }}
-            animate={{ height: "auto" }}
-            exit={{ height: 0 }}
-            style={{ overflow: "hidden" }}
-          >
-            <RenderSnippet key={snippet._id} snippet={snippet} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
-    ) : (
-      !loading && (
-        <div className="p-2">
-          <Alert
-            type="info"
-            title="It's so lonely here... even the semicolons left."
-            description={
-              type === "all"
-                ? "Let's add a snippet and break the ice like a true coder."
-                : "No snippets to show!"
-            }
-          />
-        </div>
-      )
-    );
+    snippets?.length > 0
+      ? // <AnimatePresence initial={true}>
+        snippets?.map((snippet: Snippet) => (
+          // <motion.div
+          //   key={snippet._id}
+          //   initial={{ height: 0 }}
+          //   animate={{ height: "auto" }}
+          //   exit={{ height: 0 }}
+          //   style={{ overflow: "hidden" }}
+          // >
+          <RenderSnippet key={snippet._id} snippet={snippet} />
+          // </motion.div>
+        ))
+      : // </AnimatePresence>
+        !loading && (
+          <div className="p-2">
+            <Alert
+              type="info"
+              title="It's so lonely here... even the semicolons left."
+              description={
+                type === "all"
+                  ? "Let's add a snippet and break the ice like a true coder."
+                  : "No snippets to show!"
+              }
+            />
+          </div>
+        );
 
   return (
     <SnippetListProvider

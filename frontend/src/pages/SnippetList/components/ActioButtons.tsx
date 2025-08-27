@@ -40,7 +40,7 @@ const ActionButtons = () => {
             transition={{ duration: 0.2 }}
             className="flex flex-col pl-3 w-full"
           >
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-between items-center pr-2">
               <div className="flex gap-2 pl-1">
                 <Checkbox
                   id="uncheckall"
@@ -53,7 +53,7 @@ const ActionButtons = () => {
                     "(" + selectedSnippets.length + ")"}
                 </Label>
               </div>
-              <div className="flex justify-end pr-1">
+              <div className="flex justify-end">
                 {currentPage?.type !== "folder" &&
                   currentPage?.type !== ROUTES.TRASH && (
                     <Button
