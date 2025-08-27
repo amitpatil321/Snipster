@@ -121,3 +121,54 @@ export const moveSnippet = (
     });
   }
 };
+
+export const updateFolderName = (
+  queryClient: QueryClient,
+  queryKey: (string | null | undefined)[],
+  id: string,
+  newName: string | null,
+) => {
+  queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (oldData) => {
+    if (!oldData) return oldData;
+
+    return {
+      ...oldData,
+      data: oldData.data.map((snippet: Snippet) => {
+        if (
+          snippet.folderId &&
+          snippet.folderId._id === id &&
+          newName !== null
+        ) {
+          snippet.folderId = {
+            ...snippet.folderId,
+            name: newName,
+          };
+        }
+        return snippet;
+      }),
+    };
+  });
+};
+
+export const unlinkFolder = (
+  queryClient: QueryClient,
+  queryKey: (string | null | undefined)[],
+  id: string,
+) => {
+  queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => {
+    if (!old) return old;
+
+    return {
+      ...old,
+      data: old.data.map((snippet) => {
+        if (snippet.folderId?._id === id) {
+          return {
+            ...snippet,
+            folderId: undefined,
+          };
+        }
+        return snippet;
+      }),
+    };
+  });
+};

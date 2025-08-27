@@ -8,6 +8,7 @@ import type { AxiosError } from "axios";
 
 import { renameFolder } from "@/services/folder.services";
 import { toggleRenameFolder } from "@/store/app/appSlice";
+import { updateFolderName } from "@/utils/queryCache.utils";
 
 // interface RenameFolderResponse {
 //   success: boolean;
@@ -47,6 +48,7 @@ export const useRenameFolder = () => {
         );
         queryClient.setQueryData(foldersQueryKey, { data: updated });
       }
+
       return { folders };
     },
     onError: (_err, _payload, context) => {
@@ -62,7 +64,7 @@ export const useRenameFolder = () => {
         );
       }
     },
-    onSuccess: (_data, payload, context) => {
+    onSuccess: (_response, payload, context) => {
       // refeach current snipepts on path
       if (context.folders) {
         const updated = [...context.folders.data]?.map((folder: Folder) =>
@@ -76,15 +78,13 @@ export const useRenameFolder = () => {
           });
         }
       }
-      if (currentPage?.type === "folder") {
-        queryClient.refetchQueries({
-          queryKey: ["getSnippets", "folder", currentPage.path],
-        });
-      } else {
-        queryClient.refetchQueries({
-          queryKey: ["getSnippets", currentPage?.type, null],
-        });
-      }
+
+      const queryKey =
+        currentPage?.type === "folder"
+          ? ["getSnippets", "folder", currentPage.path]
+          : ["getSnippets", currentPage?.type, null];
+
+      updateFolderName(queryClient, queryKey, payload.id, payload.name);
     },
   });
 };

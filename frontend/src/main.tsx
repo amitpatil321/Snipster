@@ -1,6 +1,7 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+// import { scan } from "react-scan";
 
 import App from "./App.tsx";
 
@@ -12,6 +13,10 @@ import ReduxProvider from "@/providers/ReduxProvider.tsx";
 import { ToastProvider } from "@/providers/ToastProvider.tsx";
 
 import "./index.css";
+
+// scan({
+//   enabled: true,
+// });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

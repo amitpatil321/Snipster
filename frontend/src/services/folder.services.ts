@@ -11,6 +11,6 @@ export const renameFolder = (data: { id: string; name: string }) => {
   return axiosInstance.patch(`${basePath}/rename/${data.id}`, data);
 };
 
-export const deleteFolder = ({ id }: { id: string }) => {
-  return axiosInstance.delete(`${basePath}`, { data: { id } });
+export const deleteFolder = ({ folderId }: { folderId: string }) => {
+  return axiosInstance.delete(`${basePath}/${folderId}`);
 };
