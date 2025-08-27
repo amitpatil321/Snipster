@@ -9,6 +9,6 @@ const router = Router();
 
 router.post("/", createFolder);
 router.patch("/rename/:id", renameFolder);
-router.delete("/", deleteFolder);
+router.delete("/:folderId", deleteFolder);
 
 export default router;

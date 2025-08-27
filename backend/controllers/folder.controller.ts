@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Folder } from "../models/folder.schema";
+import { Snippet } from "../models/snippet.schema";
 import { withUser } from "../utils/withUser";
 
 export const createFolder = withUser(async (req: Request, res: Response) => {
@@ -86,5 +87,34 @@ export const renameFolder = withUser(async (req: Request, res: Response) => {
 });
 
 export const deleteFolder = withUser(async (req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: "Folder deleted" });
+  try {
+    const { folderId } = req.params;
+    const userId = req.oidc?.user?.sub;
+
+    const folder = await Folder.findOne({ _id: folderId, userId });
+    if (!folder) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Folder not found" });
+    }
+
+    await Folder.deleteOne({ _id: folderId });
+
+    // Unlink snippets (set folderId to null)
+    await Snippet.updateMany(
+      { folderId: folderId, createdBy: userId },
+      { $set: { folderId: null } }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Folder deleted and snippets unlinked",
+    });
+  } catch (error) {
+    console.error("Error deleting folder:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting folder, Please try again",
+    });
+  }
 });
