@@ -12,7 +12,7 @@ import { DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { capitalize } from "@/lib/utils";
 import folderSchema from "@/schema/folder.schema";
-import { toggleAddFolder } from "@/store/app/appSlice";
+import { toggleAddFolder, toggleRenameFolder } from "@/store/app/appSlice";
 
 type FolderFormValues = z.infer<typeof folderSchema>;
 
@@ -23,15 +23,26 @@ interface AddFolderResponse {
   };
 }
 interface AddFolderViewType {
+  folder?: { id: string; name: string } | null;
   addFolderMutation: UseMutationResult<
     AxiosResponse<AddFolderResponse>,
     Error,
     { name: string },
     unknown
   >;
+  renameFolderMutation: UseMutationResult<
+    AxiosResponse<AddFolderResponse>,
+    Error,
+    { id: string; name: string },
+    unknown
+  >;
 }
 
-const AddFolderView = ({ addFolderMutation }: AddFolderViewType) => {
+const AddFolderView = ({
+  folder,
+  addFolderMutation,
+  renameFolderMutation,
+}: AddFolderViewType) => {
   const dispatch = useDispatch();
 
   const {
@@ -41,18 +52,25 @@ const AddFolderView = ({ addFolderMutation }: AddFolderViewType) => {
   } = useForm<FolderFormValues>({
     resolver: zodResolver(folderSchema),
     defaultValues: {
-      name: "",
+      name: folder?.name || "",
     },
   });
 
   const onSubmit = async (data: FolderFormValues) => {
-    addFolderMutation.mutate({ name: capitalize(data.name) });
+    if (!folder) {
+      addFolderMutation.mutate({ name: capitalize(data.name) });
+    } else {
+      renameFolderMutation.mutate({
+        id: folder?.id,
+        name: capitalize(data.name),
+      });
+    }
   };
 
   return (
     <div>
       <DialogHeader>
-        <DialogTitle>Add New Folder</DialogTitle>
+        <DialogTitle>{folder?.id ? "Rename Folder" : "Add Folder"}</DialogTitle>
       </DialogHeader>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
         <div>
@@ -60,6 +78,7 @@ const AddFolderView = ({ addFolderMutation }: AddFolderViewType) => {
             placeholder="Enter folder name"
             {...register("name")}
             className="w-full"
+            maxLength={15}
           />
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -69,12 +88,22 @@ const AddFolderView = ({ addFolderMutation }: AddFolderViewType) => {
           <Button
             type="button"
             variant="outline"
-            onClick={() => dispatch(toggleAddFolder(false))}
+            onClick={() =>
+              dispatch(
+                folder?.id ? toggleRenameFolder(null) : toggleAddFolder(false),
+              )
+            }
           >
             Cancel
           </Button>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Create"}
+            {isSubmitting
+              ? folder?.id
+                ? "Updating..."
+                : "Saving..."
+              : folder?.id
+                ? "Update"
+                : "Create"}
           </Button>
         </div>
       </form>

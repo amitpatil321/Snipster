@@ -21,6 +21,7 @@ const RootLayout = () => {
   const {
     snippetForm: { state: openModal, data },
     addFolder,
+    renameFolder,
   } = useSelector((state: RootState) => state.app);
 
   return (
@@ -53,11 +54,11 @@ const RootLayout = () => {
       </Dialog>
 
       <Dialog
-        open={addFolder}
+        open={addFolder || !!renameFolder}
         onOpenChange={() => dispatch(toggleAddFolder(false))}
       >
         <DialogContent className="font-sans">
-          <AddFolder />
+          <AddFolder folder={renameFolder} />
         </DialogContent>
       </Dialog>
     </div>

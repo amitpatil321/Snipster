@@ -4,12 +4,14 @@ interface AppState {
   currentPage: { label: string; path?: string; type: string } | null;
   snippetForm: { state: boolean; data: null };
   addFolder: boolean;
+  renameFolder: { id: string; name: string } | null;
 }
 
 const initialState: AppState = {
   currentPage: null,
   snippetForm: { state: false, data: null },
   addFolder: false,
+  renameFolder: null,
 };
 
 const appSlice = createSlice({
@@ -28,9 +30,16 @@ const appSlice = createSlice({
     toggleAddFolder(state, action) {
       state.addFolder = action.payload;
     },
+    toggleRenameFolder(state, action) {
+      state.renameFolder = action.payload;
+    },
   },
 });
 
-export const { setCurrentPage, toggleAddSnippet, toggleAddFolder } =
-  appSlice.actions;
+export const {
+  setCurrentPage,
+  toggleAddSnippet,
+  toggleAddFolder,
+  toggleRenameFolder,
+} = appSlice.actions;
 export default appSlice.reducer;

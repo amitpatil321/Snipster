@@ -1,4 +1,12 @@
-import { Folder as FolderIcon, Heart, List, Plus, Trash } from "lucide-react";
+import {
+  EllipsisVertical,
+  Folder as FolderIcon,
+  Heart,
+  List,
+  Plus,
+  SquarePen,
+  Trash,
+} from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useSearchParams } from "react-router";
@@ -6,6 +14,12 @@ import { Link, useLocation, useSearchParams } from "react-router";
 import Loading from "./Loading";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 import type { RootState } from "@/store/index";
 import type { Folder } from "@/types/folder.types";
@@ -30,7 +44,11 @@ import {
 import { CONFIG } from "@/config/config";
 import { ROUTES } from "@/config/routes.config";
 import { cn } from "@/lib/utils";
-import { setCurrentPage, toggleAddFolder } from "@/store/app/appSlice";
+import {
+  setCurrentPage,
+  toggleAddFolder,
+  toggleRenameFolder,
+} from "@/store/app/appSlice";
 
 interface PropTypes {
   counts: SnippetCountType;
@@ -177,6 +195,8 @@ const AppSidebar = ({
               <li key={each._id}>
                 <SidebarItem
                   key={each._id}
+                  id={each._id}
+                  type="folder"
                   label={each.name}
                   path={`${CONFIG.PATHS.FOLDER}/${each._id}`}
                   icon={FolderIcon}
@@ -201,6 +221,8 @@ const AppSidebar = ({
 };
 
 interface SidebarItemProps {
+  type?: string;
+  id?: string;
   label: string;
   path: string;
   icon: React.ElementType;
@@ -212,6 +234,8 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({
+  id,
+  type,
   label,
   path,
   icon: Icon,
@@ -221,6 +245,14 @@ const SidebarItem = ({
   isActive,
   onClick,
 }: SidebarItemProps) => {
+  const dispatch = useDispatch();
+
+  // const { renameFolder } = useRenameFolder();
+  const renameFolder = () => {
+    dispatch(toggleRenameFolder({ id, name: label }));
+  };
+  const deleteFolder = () => console.error("delete");
+
   return (
     <Link
       to={path}
@@ -246,18 +278,51 @@ const SidebarItem = ({
           <Icon />
           {optimistic ? <span className="opacity-50">{label}</span> : label}
         </div>
-        {typeof count === "number" ? (
-          loading ? (
-            <Loading size="small" />
-          ) : (
-            <Badge
-              variant="secondary"
-              className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
-            >
-              {count}
-            </Badge>
-          )
-        ) : null}
+        <div className="flex flex-row justify-center items-center">
+          {typeof count === "number" ? (
+            loading ? (
+              <Loading size="small" />
+            ) : (
+              <Badge
+                variant="secondary"
+                className="px-1 rounded-full min-w-5 h-5 font-bold tabular-nums"
+              >
+                {count}
+              </Badge>
+            )
+          ) : null}
+          {type === "folder" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                asChild
+                aria-label="folder actions"
+                className="opacity-30 font-sans text-muted-foreground cursor-pointer"
+              >
+                <EllipsisVertical />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="font-sans">
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    renameFolder();
+                  }}
+                >
+                  <SquarePen /> Rename
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    deleteFolder();
+                  }}
+                >
+                  <Trash /> Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </SidebarMenuButton>
     </Link>
   );

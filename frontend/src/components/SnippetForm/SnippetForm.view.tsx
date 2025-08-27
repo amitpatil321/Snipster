@@ -104,6 +104,7 @@ const SnippetFormView = ({
                           placeholder="Snippet Title *"
                           type="text"
                           id="title"
+                          maxLength={100}
                           {...field}
                         />
                       </div>
@@ -124,6 +125,7 @@ const SnippetFormView = ({
                         key="description"
                         id="description"
                         placeholder="Description"
+                        maxLength={400}
                         {...field}
                       />
                     </FormControl>

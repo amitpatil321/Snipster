@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { LogIn, LogOut, Search, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 
@@ -119,16 +119,17 @@ const Header = () => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer" onClick={logout}>
+                  <LogOut />
                   Logout
                 </DropdownMenuItem>
               </>
             ) : (
               <div className="font-sans">
                 <DropdownMenuItem className="cursor-pointer" onClick={login}>
-                  Login
+                  <LogIn /> Login
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={signup}>
-                  Signup
+                  <UserPlus /> Signup
                 </DropdownMenuItem>
               </div>
             )}
