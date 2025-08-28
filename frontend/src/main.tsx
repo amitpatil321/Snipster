@@ -1,3 +1,4 @@
+import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
               <App />
               <ToastProvider />
               <ReactQueryDevtools initialIsOpen={false} />
+              <TanStackDevtools />
             </SidebarProvider>
           </ThemeProvider>
         </AuthProvider>
