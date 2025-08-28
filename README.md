@@ -985,11 +985,15 @@ http://localhost:5173
 - [x] Add multiple snippet delete and favorite
 - [x] Add animations
 - [ ] Drag & drop snippets
-- [ ] Responsive design
+- [-] Responsive design
 - [ ] Fullscreen mode for code editor
 - [ ] Snippet history tracking
 - [ ] Search by tags
-- [ ] Dark/light theme improvements
+- [x] Dark/light theme improvements
+- [ ] While adding new snippet user should be able to mark it favorite
+- [ ] Add dedicated user settings page
+- [ ] Add AI support to auto detect language and tags
+- [ ] Integrate eslint and prettier to auto format the code on paste/save
 
 ---
 
@@ -1011,5 +1015,6 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
