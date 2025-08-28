@@ -38,7 +38,7 @@ const ActionButtons = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -5 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col pl-3 w-full"
+            className="flex flex-col pl-2 w-full"
           >
             <div className="flex flex-row justify-between items-center pr-2">
               <div className="flex gap-2 pl-1">

@@ -60,7 +60,7 @@ const SnippetFormView = ({
   const form = useForm<z.infer<typeof snippetSchema>>({
     resolver: zodResolver(snippetSchema),
     defaultValues: {
-      id: snippet?._id || "null",
+      id: snippet?._id,
       title: snippet?.title || "",
       description: snippet?.description || "",
       folder:

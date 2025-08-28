@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { lazy, Suspense, useState } from "react";
 import { useParams } from "react-router";
 
@@ -54,15 +55,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
     snippets?.length > 0
       ? // <AnimatePresence initial={true}>
         snippets?.map((snippet: Snippet) => (
-          // <motion.div
-          //   key={snippet._id}
-          //   initial={{ height: 0 }}
-          //   animate={{ height: "auto" }}
-          //   exit={{ height: 0 }}
-          //   style={{ overflow: "hidden" }}
-          // >
-          <RenderSnippet key={snippet._id} snippet={snippet} />
-          // </motion.div>
+          <RenderSnippet key={snippet?._id} snippet={snippet} />
         ))
       : // </AnimatePresence>
         !loading && (
@@ -92,7 +85,14 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
             <Loading />
           </div>
         )}
-        {!loading && renderContent}
+        <motion.div
+          initial={{ height: 0 }}
+          animate={{ height: "auto" }}
+          exit={{ height: 0 }}
+          style={{ overflow: "hidden" }}
+        >
+          {!loading && renderContent}
+        </motion.div>
       </div>
 
       <Suspense

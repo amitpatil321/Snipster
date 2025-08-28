@@ -33,6 +33,14 @@ const FoldersDropdown = () => {
         <DropdownMenuGroup>
           {isLoading && <Loading size="small" />}
           {isError && <Alert title="Error fetching folders" />}
+          {!isLoading && !isError && foldersList?.length === 0 && (
+            <DropdownMenuItem
+              disabled
+              className="font-sans text-muted-foreground"
+            >
+              No folders
+            </DropdownMenuItem>
+          )}
           {!isLoading &&
             (foldersList ?? [])?.map(({ _id, name }: Folder) => {
               return (

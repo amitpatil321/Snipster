@@ -38,14 +38,30 @@ export const removeSnippetsFromList = (
   }));
 };
 
+export const addSnippetWithData = (
+  queryClient: QueryClient,
+  queryKey: (string | null)[],
+  data: Snippet,
+) => {
+  queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => {
+    if (!old) return old;
+    return {
+      ...old,
+      data: [...old.data, data],
+    };
+  });
+};
+
 export const addSnippetsToList = (
   queryClient: QueryClient,
   queryKey: (string | null)[],
   ids: string[],
 ) => {
-  queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => ({
-    data: (old?.data ?? []).filter((snippet) => !ids.includes(snippet._id)),
-  }));
+  if (queryClient.getQueryData<{ data: Snippet[] }>(queryKey)) {
+    queryClient.setQueryData<{ data: Snippet[] }>(queryKey, (old) => ({
+      data: (old?.data ?? []).filter((snippet) => !ids.includes(snippet._id)),
+    }));
+  }
 };
 
 export const updateSnippetProperty = (

@@ -30,20 +30,21 @@ const SnippetForm = ({ snippet }: SnipeptFormProps) => {
   const updateSnippetMutation = useUpdateSnippet();
 
   const onSubmit = async (values: z.infer<typeof snippetSchema>) => {
-    if (values.id)
-      updateSnippetMutation.mutate(values, {
-        onSuccess: () => {
-          dispatch(toggleAddSnippet({ state: false, data: null }));
-        },
-        onError: () => {},
-      });
-    else
+    if (!values.id) {
       addSnippetMutation.mutate(values, {
         onSuccess: () => {
           dispatch(toggleAddSnippet({ state: false }));
         },
         onError: () => {},
       });
+    } else {
+      updateSnippetMutation.mutate(values, {
+        onSuccess: () => {
+          dispatch(toggleAddSnippet({ state: false, data: null }));
+        },
+        onError: () => {},
+      });
+    }
   };
 
   return (
