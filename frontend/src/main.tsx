@@ -1,8 +1,7 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-// import { scan } from "react-scan";
+import { scan } from "react-scan";
 
 import App from "./App.tsx";
 
@@ -15,25 +14,25 @@ import { ToastProvider } from "@/providers/ToastProvider.tsx";
 
 import "./index.css";
 
-// scan({
-//   enabled: true,
-// });
+scan({
+  enabled: true,
+});
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ReduxProvider>
-      <ReactQueryProvider>
-        <AuthProvider>
-          <ThemeProvider>
-            <SidebarProvider>
-              <App />
-              <ToastProvider />
-              <ReactQueryDevtools initialIsOpen={false} />
-              <TanStackDevtools />
-            </SidebarProvider>
-          </ThemeProvider>
-        </AuthProvider>
-      </ReactQueryProvider>
-    </ReduxProvider>
-  </StrictMode>,
+  // <StrictMode>
+  <ReduxProvider>
+    <ReactQueryProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <SidebarProvider>
+            <App />
+            <ToastProvider />
+            <ReactQueryDevtools initialIsOpen={false} />
+            <TanStackDevtools />
+          </SidebarProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </ReactQueryProvider>
+  </ReduxProvider>,
+  // </StrictMode>,
 );
