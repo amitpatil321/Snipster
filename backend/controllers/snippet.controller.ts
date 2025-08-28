@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { Folder } from "../models/folder.schema";
 import { Snippet } from "../models/snippet.schema";
 import { Tag } from "../models/tags.schema";
+import { resolveTagIds } from "../utils/tag.utils";
 import { withUser } from "../utils/withUser";
 
 export const getCounts = withUser(async (req: Request, res: Response) => {
@@ -212,26 +213,30 @@ export const getDetails = withUser(async (req: Request, res: Response) => {
 export const saveSnippet = withUser(async (req: Request, res: Response) => {
   try {
     const userId = req.oidc?.user?.sub;
-    const { title, folder, tags, language, content } = req.body;
+    const { title, description, folder, tags, language, content } = req.body;
     if (!title?.trim() || !language?.trim() || !content?.trim()) {
       res.status(500).json({
         success: false,
         message: "Title, language and content are mandatory fields",
       });
     } else {
-      const result = await Snippet.create({
+      const tagIds = await resolveTagIds(tags);
+
+      const snippet = await Snippet.create({
         ...req.body,
-        folderId: folder,
-        tagIds: tags.map(
-          (each: { value: string; label: string }) =>
-            new Types.ObjectId(each.value)
-        ),
+        title: title.trim(),
+        description: description.trim(),
+        content: content.trim(),
+        folderId: folder ? new Types.ObjectId(folder) : null,
+        tagIds,
         createdBy: userId,
-      }).then((result) => {
-        res.status(200).json({
-          success: true,
-          message: { id: result?._id },
-        });
+      });
+      await snippet.populate("folderId", "_id name");
+
+      return res.status(200).json({
+        success: true,
+        message: "Snippet added successfully!",
+        data: snippet,
       });
     }
   } catch (err) {
@@ -256,16 +261,15 @@ export const updateSnippet = withUser(async (req: Request, res: Response) => {
       });
     }
 
+    const tagIds = await resolveTagIds(tags);
+
     const updatedSnippet = await Snippet.findOneAndUpdate(
       { _id: id, createdBy: userId },
       {
-        title,
-        description,
-        folderId: folder,
-        tagIds: tags.map(
-          (each: { value: string; label: string }) =>
-            new Types.ObjectId(each.value)
-        ),
+        title: title.trim(),
+        description: description.trim(),
+        folderId: folder ? new Types.ObjectId(folder) : null,
+        tagIds: tagIds,
         language,
         content,
         updatedAt: new Date(),
@@ -282,7 +286,8 @@ export const updateSnippet = withUser(async (req: Request, res: Response) => {
 
     return res.status(200).json({
       success: true,
-      message: { id: updatedSnippet._id },
+      data: updatedSnippet,
+      message: "Snippet updated successfully!",
     });
   } catch (err) {
     console.error(err);

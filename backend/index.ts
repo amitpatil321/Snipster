@@ -55,20 +55,20 @@ const limiter = rateLimit({
   ipv6Subnet: 48,
 });
 
-// const delayResponse = (delayTime: number) => {
-//   return (req: Request, res: Response, next: NextFunction) => {
-//     const originalSend = res.send.bind(res);
-//     res.send = function (body?: any): Response {
-//       setTimeout(() => {
-//         originalSend(body);
-//       }, delayTime);
-//       return res;
-//     };
-//     next();
-//   };
-// };
+const delayResponse = (delayTime: number) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const originalSend = res.send.bind(res);
+    res.send = function (body?: any): Response {
+      setTimeout(() => {
+        originalSend(body);
+      }, delayTime);
+      return res;
+    };
+    next();
+  };
+};
 
-// app.use(delayResponse(2000));
+app.use(delayResponse(2000));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
