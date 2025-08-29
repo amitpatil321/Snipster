@@ -994,6 +994,7 @@ http://localhost:5173
 - [ ] Add dedicated user settings page
 - [ ] Add AI support to auto detect language and tags
 - [ ] Integrate eslint and prettier to auto format the code on paste/save
+- [ ] Apply sort by date after optimistic updates
 
 ---
 
@@ -1015,6 +1016,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
