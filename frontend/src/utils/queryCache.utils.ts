@@ -27,16 +27,21 @@ export const deleteSnippets = (
     updateSnippetProperty(queryClient, listKey, ids, {
       deletedAt: new Date(),
     });
+    // remove snippets from all snipepts to trash
     moveSnippet(queryClient, listKey, trashKey, ids);
+    // remove snipepts from fav as well
+    removeSnippetsFromList(queryClient, favKey, ids);
     updateCount(queryClient, "all", -ids.length);
+    updateCount(queryClient, "favorite", -ids.length);
     updateCount(queryClient, "trash", ids.length);
   } else if (type === "favorite") {
     updateSnippetProperty(queryClient, favKey, ids, {
       deletedAt: new Date(),
+      favorite: false,
     });
     moveSnippet(queryClient, favKey, trashKey, ids);
     // since fav snippets are also part of all snipepts, lets move them
-    moveSnippet(queryClient, listKey, trashKey, ids);
+    removeSnippetsFromList(queryClient, listKey, ids);
     updateCount(queryClient, "all", -ids.length);
     updateCount(queryClient, "favorite", -ids.length);
     updateCount(queryClient, "trash", ids.length);
