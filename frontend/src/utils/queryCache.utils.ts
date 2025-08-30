@@ -1,31 +1,132 @@
+import { type QueryClient } from "@tanstack/react-query";
+
 import type { Snippet, SnippetCountType } from "@/types/snippet.types";
-import type { QueryClient } from "@tanstack/react-query";
+
+const trashKey = ["getSnippets", "trash"];
+const listKey = ["getSnippets", "all"];
+const favKey = ["getSnippets", "favorite"];
+// const countsKey = ["snippetCounts"];
+
+/****** New code ******/
+export const cancelQueries = async (
+  queryClient: QueryClient,
+  keys: string[],
+) => {
+  await Promise.all(
+    keys.map((eachKey) =>
+      queryClient.cancelQueries({ queryKey: ["getSnippets", eachKey] }),
+    ),
+  );
+};
+export const deleteSnippets = (
+  queryClient: QueryClient,
+  type: string | undefined,
+  ids: string[],
+) => {
+  if (type === "all") {
+    updateSnippetProperty(queryClient, listKey, ids, {
+      deletedAt: new Date(),
+    });
+    moveSnippet(queryClient, listKey, trashKey, ids);
+    updateCount(queryClient, "all", -ids.length);
+    updateCount(queryClient, "trash", ids.length);
+  } else if (type === "favorite") {
+    updateSnippetProperty(queryClient, favKey, ids, {
+      deletedAt: new Date(),
+    });
+    moveSnippet(queryClient, favKey, trashKey, ids);
+    // since fav snippets are also part of all snipepts, lets move them
+    moveSnippet(queryClient, listKey, trashKey, ids);
+    updateCount(queryClient, "all", -ids.length);
+    updateCount(queryClient, "favorite", -ids.length);
+    updateCount(queryClient, "trash", ids.length);
+  } else {
+    updateSnippetProperty(queryClient, trashKey, ids, {
+      deletedAt: null,
+    });
+
+    moveSnippet(queryClient, trashKey, listKey, ids);
+    updateCount(queryClient, "all", ids.length);
+    updateCount(queryClient, "trash", -ids.length);
+  }
+};
+export const getSnapshot = (
+  queryClient: QueryClient,
+  keys: string[],
+): Record<string, unknown> => {
+  const snapshot: Record<string, unknown> = {};
+
+  keys.forEach((eachKey) => {
+    snapshot[eachKey] = queryClient.getQueryData(["getSnippets", eachKey]);
+  });
+
+  return snapshot;
+};
+
+export const setSnapshot = (
+  queryClient: QueryClient,
+  keys: string[],
+  data: Record<string, unknown> | undefined,
+) => {
+  const snapshot: Record<string, unknown> = {};
+  if (data)
+    keys.forEach((eachKey) => {
+      snapshot[eachKey] = queryClient.setQueryData(
+        ["getSnippets", eachKey],
+        data[eachKey],
+      );
+    });
+};
+
+export const toggleFavoriteSnippet = (
+  queryClient: QueryClient,
+  type: string | undefined,
+  ids: string[],
+  status: boolean,
+) => {
+  updateSnippetProperty(queryClient, ["getSnippets", type], ids, {
+    favorite: status,
+  });
+
+  if (status) {
+    copySnippetFromTo(queryClient, listKey, favKey, ids);
+    updateCount(queryClient, "favorite", ids.length);
+  } else {
+    updateSnippetProperty(queryClient, ["getSnippets", "all"], ids, {
+      favorite: status,
+    });
+    removeSnippetsFromList(queryClient, favKey, ids);
+    updateCount(queryClient, "favorite", -ids.length);
+  }
+};
 
 export const updateCount = (
   queryClient: QueryClient,
-  queryKey: (string | null | undefined)[],
   key: keyof SnippetCountType,
   count: number,
 ) => {
-  queryClient.setQueryData<{ data: SnippetCountType }>(queryKey, (old) => {
-    if (!old) {
+  queryClient.setQueryData<{ data: SnippetCountType }>(
+    ["snippetCounts"],
+    (old) => {
+      if (!old) {
+        return {
+          data: {
+            all: 0,
+            favorite: 0,
+            trash: 0,
+            [key]: count,
+          },
+        };
+      }
+
       return {
         data: {
-          all: 0,
-          favorite: 0,
-          trash: 0,
-          [key]: count,
+          ...old.data,
+          [key]: (old.data[key] ?? 0) + (count ?? 0),
         },
       };
-    }
-
-    return {
-      data: {
-        ...old.data,
-        [key]: (old.data[key] ?? 0) + (count ?? 0),
-      },
-    };
-  });
+    },
+  );
 };
 
 export const removeSnippetsFromList = (

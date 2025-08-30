@@ -7,14 +7,11 @@ interface GetSnippetResponse {
   data: Snippet[];
 }
 
-export const useGetSnippets = (
-  type: string | undefined,
-  folderId?: string | null,
-) => {
+export const useGetSnippets = (type: string | undefined) => {
   return useQuery<GetSnippetResponse, Error, Snippet[]>({
-    queryKey: ["getSnippets", type, folderId ?? null],
-    enabled: !!type && (type !== "folder" || !!folderId),
-    queryFn: () => getSnippetsByUser(type, folderId ?? null),
+    queryKey: ["getSnippets", type],
+    enabled: !!type,
+    queryFn: () => getSnippetsByUser(type),
     select: (res) => res.data,
   });
 };

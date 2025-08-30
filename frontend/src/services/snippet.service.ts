@@ -12,13 +12,8 @@ export const getCounts = async () => {
   return response.data;
 };
 
-export const getSnippetsByUser = async (
-  type: string | undefined,
-  folderId: string | null,
-) => {
-  const response = await axiosInstance.get(
-    `${basePath}?type=${type}${folderId ? `&folderId=${folderId}` : ""}`,
-  );
+export const getSnippetsByUser = async (type: string | undefined) => {
+  const response = await axiosInstance.get(`${basePath}?type=${type}`);
   return response.data;
 };
 

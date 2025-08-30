@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -18,11 +19,9 @@ const SnippetListProvider: React.FC<{
 }> = ({ children, snippets, setSelected, selected }) => {
   const [selectedSnippets, setSelectedSnippets] = useState<string[]>([]);
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
+  const queryClient = useQueryClient();
 
-  const { mutate: toggleFavorite } = useToggleFavorite(
-    currentPage?.type,
-    currentPage?.type === "folder" ? currentPage?.path : null,
-  );
+  const { mutate: toggleFavorite } = useToggleFavorite(setSelectedSnippets);
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.type);
   const { mutate: assignFolder } = useMoveToFolder(currentPage?.type, {
     onSuccess: () => {
@@ -69,8 +68,27 @@ const SnippetListProvider: React.FC<{
 
   const handleBulkFav = useCallback(() => {
     const favStatus = currentPage?.path !== `/` + ROUTES.FAVORITE;
-    toggleFavorite({ ids: selectedSnippets, status: favStatus });
-  }, [toggleFavorite, currentPage?.path, selectedSnippets]);
+    // find distinct list which needs to be processed,
+    // if user is trying to fav items which are alredy fav then ignore it.
+    const currentList = queryClient.getQueryData<{ data: Snippet[] }>([
+      "getSnippets",
+      currentPage?.type,
+    ])?.data;
+    const currentFav = currentList
+      ?.filter((each) => each.favorite === favStatus) // this handles fav and unfav both based on status
+      .map((each) => each._id);
+
+    const newIds = selectedSnippets.filter(
+      (each) => !currentFav?.includes(each),
+    );
+    if (newIds.length) toggleFavorite({ ids: newIds, status: favStatus });
+  }, [
+    toggleFavorite,
+    currentPage?.path,
+    selectedSnippets,
+    queryClient,
+    currentPage?.type,
+  ]);
 
   const deleteSnippet = useCallback(
     (snippet: Snippet, event: React.MouseEvent) => {

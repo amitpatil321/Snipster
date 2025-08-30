@@ -29,7 +29,7 @@ const SnippetDetails = () => {
   } = useGetSnipeptDetails(id);
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
-  const { mutate: toggleFavorite } = useToggleFavorite(currentPage?.path, null);
+  const { mutate: toggleFavorite } = useToggleFavorite();
   const { mutate: toggleRemove } = useToggleRemove(currentPage?.path, null, {
     onSuccess: () => {
       handleSelect(null);
