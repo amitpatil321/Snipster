@@ -44,6 +44,7 @@ export const getSnippets = withUser(async (req: Request, res: Response) => {
     const filter: Record<string, any> = {
       createdBy: userId,
     };
+
     let sortBy: Record<string, 1 | -1> = {};
     if (type === "favorite") {
       filter.favorite = true;

@@ -1,4 +1,4 @@
-import { TanStackDevtools } from "@tanstack/react-devtools";
+// import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRoot } from "react-dom/client";
 import { scan } from "react-scan";
@@ -28,7 +28,7 @@ createRoot(document.getElementById("root")!).render(
             <App />
             <ToastProvider />
             <ReactQueryDevtools initialIsOpen={false} />
-            <TanStackDevtools />
+            {/* <TanStackDevtools /> */}
           </SidebarProvider>
         </ThemeProvider>
       </AuthProvider>

@@ -16,6 +16,12 @@ router.get("/", getSnippets);
 router.post("/", saveSnippet);
 router.put("/", updateSnippet);
 router.patch("/favorite", toggleFavorite);
+// router.patch("/favorite", (req, res) =>
+//   res.status(404).json({
+//     success: false,
+//     message: "Snippet not found or not authorized",
+//   })
+// );
 // we are not using delete method because its a soft delete and not hard delete
 router.patch("/delete", toggleRemove);
 router.patch("/folder", moveToFolder);
