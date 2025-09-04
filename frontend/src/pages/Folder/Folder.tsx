@@ -30,12 +30,7 @@ const Folder = () => {
     <ErrorBoundary
       fallback={<Alert type="error" title="Failed to load snippet list" />}
     >
-      <SnippetList
-        type="folder"
-        loading={isLoading}
-        error={isError}
-        snippets={sorted}
-      />
+      <SnippetList loading={isLoading} error={isError} snippets={sorted} />
     </ErrorBoundary>
   );
 };

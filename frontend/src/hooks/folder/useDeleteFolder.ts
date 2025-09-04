@@ -35,16 +35,16 @@ export const useDeleteFolder = () => {
 
       unlinkFolder(
         queryClient,
-        ["getSnippets", currentPage?.type, null],
+        ["getSnippets", currentPage?.type],
         payload._id,
       );
 
       // remove cache for that folder
       if (currentPage?.type === "folder") {
         // since we will be redirected to all page so lets prepare it :)
-        unlinkFolder(queryClient, ["getSnippets", "all", null], payload._id);
+        unlinkFolder(queryClient, ["getSnippets", "all"], payload._id);
         queryClient.removeQueries({
-          queryKey: ["getSnippets", "folder", currentPage.path],
+          queryKey: ["folderSnippets", payload._id],
         });
         // navigate to "/all"
         navigate(ROUTES.ALL);

@@ -166,7 +166,7 @@ export const toggleMoveToFolder = (
     const sourceFolderId = snippet.folderId?._id;
     if (!sourceFolderId) return;
 
-    const sourceKey = ["getSnippets", "folder", sourceFolderId];
+    const sourceKey = ["folderSnippets", folderId];
     const sourceData = queryClient.getQueryData<{ data: Snippet[] }>(sourceKey);
 
     if (sourceData) {
