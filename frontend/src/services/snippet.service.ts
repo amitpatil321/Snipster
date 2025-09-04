@@ -17,6 +17,12 @@ export const getSnippetsByUser = async (type: string | undefined) => {
   return response.data;
 };
 
+export const getUserSnippetsByFolder = async (folderId: string | undefined) => {
+  const response = await axiosInstance.get(
+    `${basePath}?type=folder&folderId=${folderId}`,
+  );
+  return response.data;
+};
 export const toggleFavorite = async (data: {
   ids: string[];
   status: boolean;

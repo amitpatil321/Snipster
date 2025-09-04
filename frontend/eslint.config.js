@@ -87,5 +87,6 @@ export default tseslint.config([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    ignores: ["node_modules/", "build/", "*.min.js"],
   },
 ]);

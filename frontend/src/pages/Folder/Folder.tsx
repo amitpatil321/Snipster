@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import { Alert } from "@/components/Alert";
 import ErrorBoundary from "@/components/ErrorBoundry/ErrorBoundry";
-import useGetSnippets from "@/hooks/snippets/useGetSnippets";
+import useGetFolderSnippets from "@/hooks/snippets/useGetFolderSnippets";
 // import SnippetList from "@/pages/SnippetList/SnippetList";
 
 const SnippetList = lazy(() => import("@/pages/SnippetList/SnippetList"));
@@ -15,7 +15,14 @@ const Folder = () => {
     isLoading,
     data: snippets = [],
     isError,
-  } = useGetSnippets("folder", folderId);
+  } = useGetFolderSnippets(folderId);
+
+  // sort snippets with updatedAt if available else createdAt
+  const sorted = snippets.slice().sort((a, b) => {
+    const dateA = new Date(a.updatedAt || a.createdAt).getTime();
+    const dateB = new Date(b.updatedAt || b.createdAt).getTime();
+    return dateB - dateA;
+  });
 
   if (!folderId) return;
 
@@ -27,7 +34,7 @@ const Folder = () => {
         type="folder"
         loading={isLoading}
         error={isError}
-        snippets={snippets}
+        snippets={sorted}
       />
     </ErrorBoundary>
   );

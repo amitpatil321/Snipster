@@ -27,6 +27,13 @@ const Platform = () => {
 
   const filteredSnippets = useFilteredSnippets(snippets, searchQuery);
 
+  // // sort snippets with updatedAt if available else createdAt
+  // filteredSnippets = filteredSnippets.slice().sort((a, b) => {
+  //   const dateA = new Date(a.updatedAt || a.createdAt).getTime();
+  //   const dateB = new Date(b.updatedAt || b.createdAt).getTime();
+  //   return dateB - dateA;
+  // });
+
   return (
     <ErrorBoundary
       fallback={<Alert type="error" title="Failed to load snippet list" />}
