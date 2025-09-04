@@ -23,7 +23,7 @@ const SnippetListProvider: React.FC<{
 
   const { mutate: toggleFavorite } = useToggleFavorite(setSelectedSnippets);
   const { mutate: toggleRemove } = useToggleRemove();
-  const { mutate: assignFolder } = useMoveToFolder(currentPage?.type, {
+  const { mutate: assignFolder } = useMoveToFolder({
     onSuccess: () => {
       setSelectedSnippets([]);
     },

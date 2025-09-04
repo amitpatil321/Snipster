@@ -12,12 +12,7 @@ import {
   toggleMoveToFolder,
 } from "@/utils/queryCache.utils";
 
-const useMoveToFolder = (
-  type: string | undefined,
-  options?: {
-    onSuccess?: () => void;
-  },
-) => {
+const useMoveToFolder = (options?: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
