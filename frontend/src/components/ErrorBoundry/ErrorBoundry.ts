@@ -1,23 +1,25 @@
-import React from "react";
+import * as React from "react";
+
+interface ErrorBoundaryProps {
+  fallback: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
 
 class ErrorBoundary extends React.Component<
-  { fallback: React.ReactNode; children?: React.ReactNode },
-  { hasError: boolean }
+  ErrorBoundaryProps,
+  ErrorBoundaryState
 > {
-  constructor(props: {
-    fallback: React.ReactNode;
-    children?: React.ReactNode;
-  }) {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Error caught by ErrorBoundary:", error, errorInfo);
   }
 
   render() {

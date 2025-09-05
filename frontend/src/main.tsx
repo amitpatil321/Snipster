@@ -28,7 +28,6 @@ createRoot(document.getElementById("root")!).render(
             <App />
             <ToastProvider />
             <ReactQueryDevtools initialIsOpen={false} />
-            {/* <TanStackDevtools /> */}
           </SidebarProvider>
         </ThemeProvider>
       </AuthProvider>
