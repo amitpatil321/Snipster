@@ -1,10 +1,9 @@
 import { useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 
 import SnippetDetailsView from "./SnipeptDetails.view";
 
-import type { RootState } from "@/store/index";
 import type { SnippetListContextType } from "@/types/app.types";
 import type { Snippet } from "@/types/snippet.types";
 
@@ -27,10 +26,9 @@ const SnippetDetails = () => {
     isFetching,
     isError,
   } = useGetSnipeptDetails(id);
-  const currentPage = useSelector((state: RootState) => state.app.currentPage);
 
   const { mutate: toggleFavorite } = useToggleFavorite();
-  const { mutate: toggleRemove } = useToggleRemove(currentPage?.path, null, {
+  const { mutate: toggleRemove } = useToggleRemove({
     onSuccess: () => {
       handleSelect(null);
     },

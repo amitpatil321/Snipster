@@ -318,16 +318,18 @@ const SidebarItem = React.memo(
             {type === "folder" && (
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
-                  <span
+                  <button
                     aria-label="folder actions"
                     className="opacity-30 font-sans text-muted-foreground cursor-pointer"
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
                     }}
+                    aria-haspopup="menu"
+                    aria-expanded="false"
                   >
                     <EllipsisVertical />
-                  </span>
+                  </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="font-sans">
                   <DropdownMenuItem

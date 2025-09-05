@@ -101,7 +101,10 @@ const Header = () => {
           >
             {isAuthenticated ? (
               <>
-                <DropdownMenuItem className="flex flex-row items-start gap-2 px-3 py-2">
+                <DropdownMenuItem
+                  aria-label="User profile"
+                  className="flex flex-row items-start gap-2 px-3 py-2"
+                >
                   <Avatar>
                     <AvatarImage
                       src={isAuthenticated ? user?.picture : ""}
