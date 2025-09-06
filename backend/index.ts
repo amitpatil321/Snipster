@@ -3,8 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
-import { auth, requiresAuth } from "express-openid-connect";
-import { rateLimit } from "express-rate-limit";
+import { auth } from "express-openid-connect";
 import helmet from "helmet";
 import morgan from "morgan";
 import { connectDB } from "./config/db";
@@ -16,6 +15,9 @@ if (!process.env.PORT) {
   process.exit(1);
 }
 
+import { config } from "./config/auth";
+import { rateLimitConfig } from "./config/ratelimitConfig";
+import { requireAuthJson } from "./middlewares/requireAuthJson";
 import authRoutes from "./routes/auth.routes";
 import folderRoutes from "./routes/folder.routes";
 import snippetRoutes from "./routes/snippet.routes";
@@ -27,54 +29,26 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.AUTH0_SECRET,
-  baseURL: process.env.API_URL,
-  clientID: process.env.AUTH0_CLIENT_ID,
-  clientSecret: process.env.AUTH0_CLIENT_SECRET,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-  authorizationParams: {
-    response_type: "code",
-  },
-  session: {
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // Use Secure flag only in production (HTTPS)
-      httpOnly: true,
-      sameSite: "Lax",
-    },
-  },
-};
+// const delayResponse = (delayTime: number) => {
+//   return (req: Request, res: Response, next: NextFunction) => {
+//     const originalSend = res.send.bind(res);
+//     res.send = function (body?: any): Response {
+//       setTimeout(() => {
+//         originalSend(body);
+//       }, delayTime);
+//       return res;
+//     };
+//     next();
+//   };
+// };
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: process.env.NODE_ENV === "production" ? 200 : 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
-  standardHeaders: "draft-8",
-  legacyHeaders: false,
-  ipv6Subnet: 48,
-});
-
-const delayResponse = (delayTime: number) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const originalSend = res.send.bind(res);
-    res.send = function (body?: any): Response {
-      setTimeout(() => {
-        originalSend(body);
-      }, delayTime);
-      return res;
-    };
-    next();
-  };
-};
-
-app.use(delayResponse(2000));
+// app.use(delayResponse(2000));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.use(limiter);
+app.use(rateLimitConfig);
 app.use(
   cors({
     origin: process.env.REACT_APP_URL,
@@ -89,10 +63,10 @@ app.use(compression());
 app.use(morgan("dev"));
 
 app.use("/auth", authRoutes);
-app.use("/api/snippet", requiresAuth(), snippetRoutes);
-app.use("/api/user", requiresAuth(), userRoutes);
-app.use("/api/tags", requiresAuth(), tagRoutes);
-app.use("/api/folder", requiresAuth(), folderRoutes);
+app.use("/api/snippet", requireAuthJson(), snippetRoutes);
+app.use("/api/user", requireAuthJson(), userRoutes);
+app.use("/api/tags", requireAuthJson(), tagRoutes);
+app.use("/api/folder", requireAuthJson(), folderRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   const user = req.oidc.user ? "Logged in as: " + req.oidc.user.name : "";
