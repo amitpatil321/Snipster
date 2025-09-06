@@ -21,21 +21,32 @@ export const cancelQueries = async (
     ),
   );
 };
-export const deleteSnippets = (
+export const deleteSnippets = async (
   queryClient: QueryClient,
   type: string | undefined,
   ids: string[],
 ) => {
   if (type === "all") {
+    const allSnippets = await getSnapshot(queryClient, ["all"]);
+    let favCount = 0;
+    if (Array.isArray(allSnippets?.all?.data)) {
+      const matchingFavorites = allSnippets.all.data.filter(
+        (snippet: Snippet) => snippet.favorite && ids.includes(snippet._id),
+      );
+
+      favCount = matchingFavorites.length;
+
+      if (favCount > 0) {
+        removeSnippetsFromList(queryClient, favKey, ids);
+        updateCount(queryClient, "favorite", -favCount);
+      }
+    }
     updateSnippetProperty(queryClient, listKey, ids, {
       deletedAt: new Date(),
     });
     // remove snippets from all snipepts to trash
     moveSnippet(queryClient, listKey, trashKey, ids);
-    // remove snipepts from fav as well
-    removeSnippetsFromList(queryClient, favKey, ids);
     updateCount(queryClient, "all", -ids.length);
-    updateCount(queryClient, "favorite", -ids.length);
     updateCount(queryClient, "trash", ids.length);
   } else if (type === "favorite") {
     updateSnippetProperty(queryClient, favKey, ids, {
