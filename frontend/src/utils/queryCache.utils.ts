@@ -304,6 +304,7 @@ export const addSnippetWithData = (
       data: [...old.data, data],
     };
   });
+  updateCount(queryClient, "all", 1);
 };
 
 export const addSnippetsToList = (
