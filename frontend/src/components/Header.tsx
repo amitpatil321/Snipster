@@ -95,7 +95,7 @@ const Header = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-52 font-sans cursor-pointer"
+            className="w-auto font-sans cursor-pointer"
             align="end"
             aria-label="User menu"
           >
@@ -115,7 +115,7 @@ const Header = () => {
                     <p className="font-bold text-sm break-words">
                       {user?.name}
                     </p>
-                    <p className="overflow-ellipsis text-muted-foreground text-xs break-all">
+                    <p className="text-muted-foreground text-xs break-all">
                       {user?.email}
                     </p>
                   </div>

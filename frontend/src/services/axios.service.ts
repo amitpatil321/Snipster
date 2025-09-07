@@ -17,9 +17,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      alert("Session expired");
-      // window.location.href = "/auth/login";
+    if (error.response) {
+      if (error.response?.status === 401) {
+        window.location.href = import.meta.env.VITE_API_BASE + "/auth/login";
+      }
     }
     return Promise.reject(error);
   },

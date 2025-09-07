@@ -37,9 +37,9 @@ const useMoveToFolder = (options?: { onSuccess?: () => void }) => {
       return { previousData };
     },
     onError: (_err, _payload, context) => {
-      const listQueryKey = ["getSnippets", "all", null];
-      const favQueryKey = ["getSnippets", "favorite", null];
-      const foldersKey = ["getSnippets", "folder", _payload.folderId];
+      const listQueryKey = ["getSnippets", "all"];
+      const favQueryKey = ["getSnippets", "favorite"];
+      const foldersKey = ["folderSnippets", _payload.folderId];
 
       const err = _err as AxiosError<{ message?: string }>;
 

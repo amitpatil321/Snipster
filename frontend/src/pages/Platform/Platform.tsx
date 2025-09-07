@@ -38,12 +38,6 @@ const Platform = () => {
     <ErrorBoundary
       fallback={<Alert type="error" title="Failed to load snippet list" />}
     >
-      {/* <SnippetList
-        type="folder"
-        loading={isLoading || isFetching}
-        error={isError}
-        snippets={filteredSnippets}
-      /> */}
       <Suspense
         fallback={
           <div className="w-full">
@@ -52,7 +46,6 @@ const Platform = () => {
         }
       >
         <SnippetList
-          type="folder"
           loading={isLoading || isFetching}
           error={isError}
           snippets={filteredSnippets}

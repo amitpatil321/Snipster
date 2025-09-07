@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { lazy, Suspense, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 import ActionButtons from "./components/ActioButtons";
 
+import type { RootState } from "@/store";
 import type { Snippet } from "@/types/snippet.types";
 
 import { Alert } from "@/components/Alert";
@@ -26,14 +28,15 @@ const SnippetDetails = lazy(
 );
 
 interface SnippetListType {
-  type: string;
   loading: boolean;
   error: boolean;
   snippets: Snippet[];
 }
 
-const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
+const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
   const params = useParams();
+  const currentPage = useSelector((state: RootState) => state.app.currentPage);
+
   const [selected, setSelected] = useState<string | null | undefined>(
     params?.id,
   );
@@ -64,7 +67,7 @@ const SnippetList = ({ type, loading, error, snippets }: SnippetListType) => {
               type="info"
               title="It's so lonely here... even the semicolons left."
               description={
-                type === "all"
+                currentPage?.type === "all"
                   ? "Let's add a snippet and break the ice like a true coder."
                   : "No snippets to show!"
               }

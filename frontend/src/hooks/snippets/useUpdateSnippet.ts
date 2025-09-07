@@ -16,7 +16,7 @@ export const useUpdateSnippet = () => {
     mutationFn: (changedFields: SnippetPayload) => updateSnippet(changedFields),
     onSuccess: (response) => {
       toast.success("Snippet updated successfully!");
-      queryClient.invalidateQueries({ queryKey: ["getSnippets", "all", null] });
+      queryClient.invalidateQueries({ queryKey: ["getSnippets", "all"] });
       queryClient.invalidateQueries({
         queryKey: ["getSnippetDetails", response.message.id],
       });

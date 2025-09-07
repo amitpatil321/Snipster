@@ -24,7 +24,7 @@ export const useAddSnippet = () => {
   return useMutation({
     mutationFn: (formData: SnippetPayload) => addSnippet(formData),
     onMutate: async (payload) => {
-      const allQueryKey = ["getSnippets", "all", null];
+      const allQueryKey = ["getSnippets", "all"];
       const folders = ["getFolders"];
       await queryClient.cancelQueries({ queryKey: allQueryKey });
 
@@ -62,7 +62,7 @@ export const useAddSnippet = () => {
       );
       if (context?.previousData) {
         queryClient.setQueryData(
-          ["getSnippets", "all", null],
+          ["getSnippets", "all"],
           context?.previousData.allSnippets,
         );
       }
@@ -70,7 +70,7 @@ export const useAddSnippet = () => {
       dispatch(toggleAddSnippet({ state: true, data: payload }));
     },
     onSuccess: (response, _, context) => {
-      const allQueryKey = ["getSnippets", "all", null];
+      const allQueryKey = ["getSnippets", "all"];
       queryClient.setQueryData<{ data: Snippet[] }>(allQueryKey, (old) => {
         if (!old) return old;
         return {

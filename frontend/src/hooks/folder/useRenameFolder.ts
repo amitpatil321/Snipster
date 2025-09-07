@@ -81,8 +81,8 @@ export const useRenameFolder = () => {
 
       const queryKey =
         currentPage?.type === "folder"
-          ? ["getSnippets", "folder", currentPage.path]
-          : ["getSnippets", currentPage?.type, null];
+          ? ["folderSnippets", payload.id]
+          : ["getSnippets", currentPage?.type];
 
       updateFolderName(queryClient, queryKey, payload.id, payload.name);
     },

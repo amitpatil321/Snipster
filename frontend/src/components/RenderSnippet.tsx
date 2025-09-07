@@ -71,8 +71,8 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
             <div
               className={`transition-all mr-1 translate-x-[0px] duration-100 checkbox-wrapper ${
                 selectedSnippets.length > 0
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
+                  ? "block translate-x-0"
+                  : "hidden group-hover:block group-hover:translate-x-0"
               }`}
             >
               <Checkbox
