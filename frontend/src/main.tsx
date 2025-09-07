@@ -5,7 +5,6 @@ import { scan } from "react-scan";
 
 import App from "./App.tsx";
 
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/context/ThemeContext.tsx";
 import ReactQueryProvider from "@/providers/ReactQueryProvider.tsx";
 import ReduxProvider from "@/providers/ReduxProvider.tsx";
@@ -22,11 +21,11 @@ createRoot(document.getElementById("root")!).render(
   <ReduxProvider>
     <ReactQueryProvider>
       <ThemeProvider>
-        <SidebarProvider>
-          <App />
-          <ToastProvider />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </SidebarProvider>
+        {/* <SidebarProvider> */}
+        <App />
+        <ToastProvider />
+        <ReactQueryDevtools initialIsOpen={false} />
+        {/* </SidebarProvider> */}
       </ThemeProvider>
     </ReactQueryProvider>
   </ReduxProvider>,

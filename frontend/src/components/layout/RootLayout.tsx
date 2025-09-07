@@ -8,7 +8,7 @@ import AppSidebar from "@/components/AppSidebar";
 import Header from "@/components/Header";
 import SnippetForm from "@/components/SnippetForm/SnippetForm";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { SidebarInset } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useSnippetCounts } from "@/hooks/snippets/useGetCounts";
 import { useGetFolders } from "@/hooks/user/useGetFolders";
 import { toggleAddFolder, toggleAddSnippet } from "@/store/app/appSlice";
@@ -25,43 +25,45 @@ const RootLayout = () => {
   } = useSelector((state: RootState) => state.app);
 
   return (
-    <div className="flex bg-background w-full min-h-screen font-sans transition-opacity">
-      <AppSidebar
-        counts={counts}
-        loading={countsLoading}
-        folders={folders}
-        foldersLoading={foldersLoading}
-      />
-      <SidebarInset>
-        <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
-          <div className="bg-card shadow-lg m-2 md:m-4 md:p-1 border rounded-lg">
-            <Header />
+    <SidebarProvider>
+      <div className="flex bg-background w-full min-h-screen font-sans transition-opacity">
+        <AppSidebar
+          counts={counts}
+          loading={countsLoading}
+          folders={folders}
+          foldersLoading={foldersLoading}
+        />
+        <SidebarInset>
+          <div className="flex flex-col bg-gradient-to-r from-background/75 to-10% to-transparent w-full h-screen">
+            <div className="bg-card shadow-lg m-2 md:m-4 md:p-1 border rounded-lg">
+              <Header />
+            </div>
+            <div className="flex flex-row p-2 md:p-4 md:pt-0 h-screen">
+              <Outlet />
+            </div>
           </div>
-          <div className="flex flex-row p-2 md:p-4 md:pt-0 h-screen">
-            <Outlet />
-          </div>
-        </div>
-      </SidebarInset>
+        </SidebarInset>
 
-      <Dialog
-        open={openModal}
-        onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
-      >
-        {/* <DialogContent className="xl:border-red-400 w-full xl:!w-[800px] sm:max-w-lg font-sans"> */}
-        <DialogContent className="!max-w-screen-md font-sans">
-          <SnippetForm snippet={data} />
-        </DialogContent>
-      </Dialog>
+        <Dialog
+          open={openModal}
+          onOpenChange={() => dispatch(toggleAddSnippet({ state: !openModal }))}
+        >
+          {/* <DialogContent className="xl:border-red-400 w-full xl:!w-[800px] sm:max-w-lg font-sans"> */}
+          <DialogContent className="!max-w-screen-md font-sans">
+            <SnippetForm snippet={data} />
+          </DialogContent>
+        </Dialog>
 
-      <Dialog
-        open={addFolder || !!renameFolder}
-        onOpenChange={() => dispatch(toggleAddFolder(false))}
-      >
-        <DialogContent className="font-sans">
-          <AddFolder folder={renameFolder} />
-        </DialogContent>
-      </Dialog>
-    </div>
+        <Dialog
+          open={addFolder || !!renameFolder}
+          onOpenChange={() => dispatch(toggleAddFolder(false))}
+        >
+          <DialogContent className="font-sans">
+            <AddFolder folder={renameFolder} />
+          </DialogContent>
+        </Dialog>
+      </div>
+    </SidebarProvider>
   );
 };
 

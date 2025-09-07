@@ -158,7 +158,15 @@ const AppSidebar = React.memo(
       <>
         <Sidebar collapsible="icon" className="border-r">
           <SidebarHeader className="items-center mt-4 mb-4 text-2xl">
-            {open && <Link to={ROUTES.HOME}>Snipster</Link>}
+            {open && (
+              <Link
+                to={ROUTES.HOME}
+                className="font-bold text-purple-600 dark:text-foreground text-2xl tracking-[1px]"
+              >
+                Snip
+                <span className="text-muted-foreground">ster</span>
+              </Link>
+            )}
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>

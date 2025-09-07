@@ -1,7 +1,9 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router";
 
-import RootLayout from "@/components/layout/RootLayout";
+import RootLayout from "./components/layout/RootLayout";
+import Home from "./pages/LandingPage/Home";
+
 import { ROUTES } from "@/config/routes.config";
 
 const Platform = lazy(() => import("@/pages/Platform/Platform"));
@@ -10,6 +12,9 @@ const Folder = lazy(() => import("@/pages/Folder/Folder"));
 export const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
+    element: <Home />,
+  },
+  {
     element: <RootLayout />,
     children: [
       {
