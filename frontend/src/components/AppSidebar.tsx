@@ -157,7 +157,7 @@ const AppSidebar = React.memo(
     return (
       <>
         <Sidebar collapsible="icon" className="border-r">
-          <SidebarHeader className="items-center mt-4 mb-4 text-2xl">
+          <SidebarHeader className="flex items-center mt-4 mb-4 text-2xl">
             <Link
               to={`${ROUTES.ALL}`}
               className="flex flex-row justify-center items-center gap-2 font-bold text-purple-600 dark:text-foreground text-2xl tracking-[1px]"
@@ -166,7 +166,7 @@ const AppSidebar = React.memo(
                 <>
                   <img
                     alt="snipster logo"
-                    src="./logo.svg"
+                    src="/logo.svg"
                     className="w-10 h-6"
                   />
                   <div>
@@ -175,11 +175,7 @@ const AppSidebar = React.memo(
                   </div>
                 </>
               ) : (
-                <img
-                  alt="snipster logo"
-                  src="./logo.svg"
-                  className="w-10 h-6"
-                />
+                <img alt="snipster logo" src="/logo.svg" className="w-10 h-6" />
               )}
             </Link>
           </SidebarHeader>
@@ -342,14 +338,13 @@ const SidebarItem = React.memo(
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <button
+                    type="button"
                     aria-label="folder actions"
                     className="opacity-30 font-sans text-muted-foreground cursor-pointer"
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
                     }}
-                    aria-haspopup="menu"
-                    aria-expanded="false"
                   >
                     <EllipsisVertical />
                   </button>
