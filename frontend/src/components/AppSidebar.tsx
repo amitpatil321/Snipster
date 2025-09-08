@@ -158,15 +158,30 @@ const AppSidebar = React.memo(
       <>
         <Sidebar collapsible="icon" className="border-r">
           <SidebarHeader className="items-center mt-4 mb-4 text-2xl">
-            {open && (
-              <Link
-                to={ROUTES.HOME}
-                className="font-bold text-purple-600 dark:text-foreground text-2xl tracking-[1px]"
-              >
-                Snip
-                <span className="text-muted-foreground">ster</span>
-              </Link>
-            )}
+            <Link
+              to={`${ROUTES.ALL}`}
+              className="flex flex-row justify-center items-center gap-2 font-bold text-purple-600 dark:text-foreground text-2xl tracking-[1px]"
+            >
+              {open ? (
+                <>
+                  <img
+                    alt="snipster logo"
+                    src="./logo.svg"
+                    className="w-10 h-6"
+                  />
+                  <div>
+                    Snip
+                    <span className="text-muted-foreground">ster</span>
+                  </div>
+                </>
+              ) : (
+                <img
+                  alt="snipster logo"
+                  src="./logo.svg"
+                  className="w-10 h-6"
+                />
+              )}
+            </Link>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -307,7 +322,7 @@ const SidebarItem = React.memo(
           )}
         >
           <div className="flex flex-row justify-center items-center gap-2">
-            <Icon />
+            <Icon className="flex-shrink-0 w-6 h-6" />
             {optimistic ? <span className="opacity-50">{label}</span> : label}
           </div>
           <div className="flex flex-row justify-center items-center">
