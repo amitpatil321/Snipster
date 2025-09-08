@@ -276,7 +276,14 @@ export const updateSnippet = withUser(async (req: Request, res: Response) => {
         updatedAt: new Date(),
       },
       { new: true }
-    );
+    )
+      .populate({
+        path: "folderId",
+        model: Folder,
+        select: "name",
+      })
+      .select("-updatedAt -__v -content -tagIds")
+      .exec();
 
     if (!updatedSnippet) {
       return res.status(404).json({
