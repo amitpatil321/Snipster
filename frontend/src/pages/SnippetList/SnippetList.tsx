@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
-import { lazy, Suspense, useState } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { lazy, Suspense } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import ActionButtons from "./components/ActioButtons";
 
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import SnippetListProvider from "@/providers/SnippetListProvider";
+import { setSnippetDetails } from "@/store/app/appSlice";
 
 const SnippetDetails = lazy(
   () => import("@/pages/SnippetDetails/SnippetDetails"),
@@ -34,13 +34,17 @@ interface SnippetListType {
 }
 
 const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
-  const params = useParams();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
-
-  const [selected, setSelected] = useState<string | null | undefined>(
-    params?.id,
+  const snippetDetails = useSelector(
+    (state: RootState) => state.app.snippetDetails,
   );
+  const dispatch = useDispatch();
   const isMobile = useIsMobile();
+
+  const onSnippetClick = (snippetId: string | null) => {
+    const findSnippet = snippets.find((each) => each._id === snippetId);
+    if (findSnippet) dispatch(setSnippetDetails(findSnippet));
+  };
 
   if (error) {
     return (
@@ -76,11 +80,7 @@ const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
         );
 
   return (
-    <SnippetListProvider
-      snippets={snippets}
-      selected={selected}
-      setSelected={setSelected}
-    >
+    <SnippetListProvider snippets={snippets} onSnippetClick={onSnippetClick}>
       <div className="bg-card shadow-lg border rounded-xl w-full md:w-1/3 overflow-auto text-card-foreground">
         <ActionButtons />
         {loading && (
@@ -107,11 +107,11 @@ const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
           )
         }
       >
-        {selected ? (
+        {snippetDetails ? (
           <ErrorBoundary
             fallback={
-              <div className="inline-block m-2">
-                <Alert type="error" title="Failed to load snippet list" />
+              <div className="inline-block m-2 w-full">
+                <Alert type="error" title="Failed to load snippet details" />
               </div>
             }
           >
@@ -121,20 +121,20 @@ const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
               </div>
             ) : (
               <Sheet
-                open={!!selected}
-                onOpenChange={(open) => !open && setSelected(null)}
+                open={!!snippetDetails}
+                onOpenChange={(open) => !open && onSnippetClick(null)}
               >
                 <SheetHeader></SheetHeader>
                 {/* <SheetContent className="w-full md:w-3/4 lg:w-2/3"> */}
                 <SheetContent className="w-full md:w-3/4 lg:w-2/3">
                   <div className="flex-1 gap-6 grid auto-rows-min px-4">
-                    <SnippetDetails key={selected} />
+                    <SnippetDetails key={snippetDetails._id} />
                     <SheetFooter>
                       <SheetClose asChild>
                         <Button
                           variant="outline"
                           onClick={() => {
-                            setSelected(null);
+                            onSnippetClick(null);
                           }}
                         >
                           Close

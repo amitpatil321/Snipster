@@ -14,9 +14,8 @@ import useToggleRemove from "@/hooks/snippets/useToggleRemove";
 const SnippetListProvider: React.FC<{
   children: React.ReactNode;
   snippets: Snippet[];
-  selected: string | null | undefined;
-  setSelected: React.Dispatch<React.SetStateAction<string | null | undefined>>;
-}> = ({ children, snippets, setSelected, selected }) => {
+  onSnippetClick: (snippetId: string) => void;
+}> = ({ children, snippets, onSnippetClick }) => {
   const [selectedSnippets, setSelectedSnippets] = useState<string[]>([]);
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
   const queryClient = useQueryClient();
@@ -51,10 +50,10 @@ const SnippetListProvider: React.FC<{
           snippetId,
         );
       } else {
-        setSelected(snippetId);
+        onSnippetClick(snippetId);
       }
     },
-    [selectedSnippets.length, handleCheckboxClick, setSelected],
+    [selectedSnippets.length, handleCheckboxClick, onSnippetClick],
   );
 
   const favoriteSnippet = useCallback(
@@ -123,9 +122,7 @@ const SnippetListProvider: React.FC<{
       handleBulkFav,
       handleBulkDelete,
       currentPage,
-      selected,
       handleSelect,
-      setSelected,
       handleCheckboxClick,
       favoriteSnippet,
       deleteSnippet,
@@ -137,9 +134,7 @@ const SnippetListProvider: React.FC<{
       handleBulkFav,
       handleBulkDelete,
       currentPage,
-      selected,
       handleSelect,
-      setSelected,
       handleCheckboxClick,
       favoriteSnippet,
       deleteSnippet,

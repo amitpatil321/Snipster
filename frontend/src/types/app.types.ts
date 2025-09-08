@@ -14,8 +14,6 @@ export interface SnippetListContextType {
     path?: string;
     type: string;
   } | null;
-  selected: string | undefined | null;
-  setSelected: (snippet: string | null | undefined) => void;
   handleCheckboxClick: (event: React.MouseEvent, id: string) => void;
   deleteSnippet: (snippet: Snippet, event: React.MouseEvent) => void;
   favoriteSnippet: (snippet: Snippet, event: React.MouseEvent) => void;

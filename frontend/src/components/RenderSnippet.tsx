@@ -1,5 +1,5 @@
 import { memo, useCallback, useContext, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router";
 
 import SnippetActions from "./SnippetActions";
@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ROUTES } from "@/config/routes.config";
 import { SnippetListContext } from "@/context/SnippetListContext";
 import { formatRelativeTime } from "@/lib/utils";
+import { setSnippetDetails } from "@/store/app/appSlice";
 import { getSnippetDetailUrl } from "@/utils/url.utils";
 
 interface RenderSnippetProps {
@@ -20,10 +21,14 @@ interface RenderSnippetProps {
 }
 
 const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
-  const { selected, setSelected, selectedSnippets, handleCheckboxClick } =
-    useContext(SnippetListContext) as SnippetListContextType;
-  // const location = useLocation();
-  // const [isHovered, setIsHovered] = useState(false);
+  const { selectedSnippets, handleCheckboxClick } = useContext(
+    SnippetListContext,
+  ) as SnippetListContextType;
+  const snippetDetails = useSelector(
+    (state: RootState) => state.app.snippetDetails,
+  );
+  const dispatch = useDispatch();
+
   const isHoveredRef = useRef(false);
   const { folderId: paramFolderId } = useParams();
   const currentPage = useSelector((state: RootState) => state.app.currentPage);
@@ -45,16 +50,16 @@ const RenderSnippet = memo(({ snippet }: RenderSnippetProps) => {
         e.stopPropagation();
         if (snippet._id) handleCheckboxClick(e, snippet._id);
       } else {
-        setSelected(snippet._id);
+        dispatch(setSnippetDetails(snippet));
       }
     },
-    [selectedSnippets.length, handleCheckboxClick, snippet._id, setSelected],
+    [selectedSnippets.length, handleCheckboxClick, snippet, dispatch],
   );
 
   return (
     <Link
       key={_id}
-      className={`${selected === snippet._id ? "bg-muted" : ""} ${!_id && "cursor-not-allowed text-gray-500 bg-gray-200"} group flex flex-col gap-1 px-3 py-3 transition-colors hover:bg-accent hover:text-accent-foreground`}
+      className={`${snippetDetails?._id === snippet._id ? "bg-muted" : ""} ${!_id && "cursor-not-allowed text-gray-500 bg-gray-200"} group flex flex-col gap-1 px-3 py-3 transition-colors hover:bg-accent hover:text-accent-foreground`}
       to={`${detailUrl}`}
       onClick={handleClick}
       onMouseEnter={() => (isHoveredRef.current = true)}

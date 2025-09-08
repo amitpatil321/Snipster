@@ -10,10 +10,12 @@ import {
   Trash,
 } from "lucide-react";
 import { memo, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import DetailsLoading from "./DetailsLoading";
 
+import type { RootState } from "@/store";
 import type { Snippet } from "@/types/snippet.types";
 import type { Tag } from "@/types/tag.types";
 
@@ -31,20 +33,14 @@ interface Props {
   toggleFavorite: (snippet: Snippet) => void;
   toggleRemove: (snippet: Snippet) => void;
   updateSnippet: () => void;
-  snippet: Snippet;
   loading: boolean;
   error: boolean;
 }
 
 const SnippetDetailsView = memo(
-  ({
-    loading,
-    error,
-    snippet,
-    toggleFavorite,
-    toggleRemove,
-    updateSnippet,
-  }: Props) => {
+  ({ loading, error, toggleFavorite, toggleRemove, updateSnippet }: Props) => {
+    const snippet = useSelector((state: RootState) => state.app.snippetDetails);
+
     const {
       _id,
       title,
@@ -63,8 +59,6 @@ const SnippetDetailsView = memo(
     useEffect(() => {
       getExtensionsForLanguage(language).then(setExtensions);
     }, [language]);
-
-    if (loading) return <DetailsLoading />;
 
     if (error) {
       return (
@@ -162,39 +156,44 @@ const SnippetDetailsView = memo(
                     )}
                   </div>
                 </div>
-                {content && (
-                  <div className="relative flex-1 rounded-lg min-h-0 overflow-hidden">
-                    <CopyButton
-                      text={content}
-                      className="top-2 right-6 z-10 absolute"
-                    />
-                    <CodeMirror
-                      value={content}
-                      extensions={[
-                        extensions,
-                        EditorView.lineWrapping,
-                        EditorView.baseTheme({
-                          ".cm-content": {
-                            // fontFamily: "var(--font-sans)",
-                            fontSize: "14px",
-                          },
-                        }),
-                      ]}
-                      // style={{
-                      //   overflow: "auto",
-                      //   height: 600,
-                      // }}
-                      readOnly
-                      editable={false}
-                      basicSetup={{
-                        lineNumbers: true,
-                        highlightActiveLine: false,
-                      }}
-                      theme={isDark ? "dark" : "light"}
-                      // className="rounded-md h-[400px] xl:h-[550px] overflow-auto"
-                      className="rounded-md min-h-[200px] max-h-[70vh] overflow-auto"
-                    />
-                  </div>
+                {loading ? (
+                  <DetailsLoading />
+                ) : (
+                  content && (
+                    <div className="relative flex-1 rounded-lg min-h-0 overflow-hidden">
+                      <CopyButton
+                        text={content}
+                        className="top-2 right-6 z-10 absolute"
+                      />
+                      <CodeMirror
+                        value={content}
+                        extensions={[
+                          extensions,
+                          EditorView.lineWrapping,
+                          EditorView.baseTheme({
+                            ".cm-content": {
+                              // fontFamily: "var(--font-sans)",
+                              fontSize: "14px",
+                              minHeight: "50px",
+                            },
+                          }),
+                        ]}
+                        // style={{
+                        //   overflow: "auto",
+                        //   height: 600,
+                        // }}
+                        readOnly
+                        editable={false}
+                        basicSetup={{
+                          lineNumbers: true,
+                          highlightActiveLine: false,
+                        }}
+                        theme={isDark ? "dark" : "light"}
+                        // className="rounded-md h-[400px] xl:h-[550px] overflow-auto"
+                        className="rounded-md min-h-[200px] max-h-[70vh] overflow-auto"
+                      />
+                    </div>
+                  )
                 )}
               </CardContent>
             </Card>
