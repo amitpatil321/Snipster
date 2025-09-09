@@ -1,10 +1,13 @@
 FROM node:18
 WORKDIR /app
 COPY package*.json ./
+# Install all deps, including dev, so tsc is available
 RUN npm install
+
 COPY . .
 
+# Build TypeScript -> dist
 RUN npm run build
-EXPOSE 5000
 
+EXPOSE 5000
 CMD ["npm", "start"]
