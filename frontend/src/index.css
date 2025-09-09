@@ -11,6 +11,7 @@
 @import "./themes/t3-chat.css";
 @import "./themes/nature.css";
 @import "./themes/starry-night.css";
+@import "./themes/spring-bouquet.css";
 
 @theme inline {
   --color-background: var(--background);
