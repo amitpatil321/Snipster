@@ -996,7 +996,7 @@ http://localhost:5173
 - [x] Add multiple snippet delete and favorite
 - [x] Add animations
 - [ ] Drag & drop snippets
-- [-] Responsive design
+- [x] Responsive design
 - [ ] Fullscreen mode for code editor
 - [ ] Snippet history tracking
 - [ ] Search by tags
@@ -1027,6 +1027,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
