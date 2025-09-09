@@ -18,7 +18,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: amitpatil126
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # Build and push Frontend
@@ -27,7 +27,7 @@ jobs:
         with:
           context: ./frontend # adjust path
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/snipster-frontend:latest
+          tags: amitpatil126/snipster-frontend:latest
 
       # Build and push Backend
       - name: Build and push backend
@@ -35,4 +35,4 @@ jobs:
         with:
           context: ./backend # adjust path
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/snipster-backend:latest
+          tags: amitpatil126/snipster-backend:latest
