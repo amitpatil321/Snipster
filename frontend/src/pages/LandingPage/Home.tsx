@@ -8,7 +8,13 @@ export default function Home() {
     <div className="relative bg-white p-4 md:p-6 h-dvh">
       <div className="mx-auto md:pt-2 max-w-4xl md:max-w-4xl lg:max-w-5xl">
         <div className="flex justify-between items-center mx-auto p-4">
-          <div className="text-2xl">Snipster</div>
+          <div className="flex justify-center items-center gap-2 text-2xl">
+            <img alt="snipster logo" src="/logo.svg" className="w-10 h-6" />
+            <div className="font-bold tracking-[1px]">
+              <span className="text-purple-600">Snip</span>
+              <span>ster</span>
+            </div>
+          </div>
           <div className="flex gap-3">
             <Button variant="ghost" asChild>
               <Link to={`${import.meta.env.VITE_API_BASE}/auth/login`}>
@@ -17,14 +23,19 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <section className="mt-10 md:mt-12">
+        <section className="mt-10 md:mt-8">
           <h1 className="text-3xl md:text-4xl text-center">
             Stay organized with an easy-to-use snippet manager.
           </h1>
-          <p className="mt-9 md:text-xl text-center">
-            Snipster helps you capture, organize, and retrieve your code
-            snippets with ease. Smart categories and lightning-fast search
-            ensure your favorite snippets are always just a click away.
+          <p className="mt-6 md:text-xl text-center">
+            <span className="mr-1 font-bold tracking-[1px]">
+              <span className="text-purple-600">Snip</span>
+              <span>ster</span>
+            </span>
+            helps you capture, organize, and retrieve your code snippets with
+            ease. Smart categories and lightning-fast search ensure your
+            favorite snippets are always just a click away. Thanks to an
+            Optimistic UI, every action feels instant.
           </p>
         </section>
         <section className="group mt-30">
