@@ -32,6 +32,7 @@
   - [☑️ Prerequisites](#-prerequisites)
   - [⚙️ Installation & Running](#-installation--running)
   - [🤖 Usage](#-usage)
+- [ 💄 Adding new theme](#-adding-new-theme)
 - [📌 Project Roadmap](#-project-roadmap)
 - [🔰 Contributing](#-contributing)
 - [🎗 License](#-license)
@@ -979,6 +980,15 @@ http://localhost:5173
 
 ---
 
+## 💄Adding new theme
+1) Find desired theme from [https://tweakcn.com](https://tweakcn.com/editor/theme)
+2) Copy css code for that theme
+3) Save css file in frontend/src/themes
+4) Rename ":root" to ".theme-name" and ".dark" to ".theme-name.dark"
+5) Find font used in selected theme, integrate that font app
+6) Add theme name to src/config/config.ts, THEMES array
+7) Import newly added css file into index.css
+
 ## 📌 Project Roadmap
 
 - [x] Fix eslint settings for import order
@@ -1016,6 +1026,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
