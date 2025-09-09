@@ -1029,11 +1029,3 @@ http://localhost:5173
 This project is licensed under the [AGPL-3.0](LICENSE).
 
 
-
-
-
-
-
-
-
-
