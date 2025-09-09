@@ -980,7 +980,8 @@ http://localhost:5173
 
 ---
 
-## 💄Adding new theme
+## 💄 Adding New Theme
+
 1. Choose a desired theme from [tweakcn.com](https://tweakcn.com/editor/theme) (or another source).  
 2. Copy the CSS code for that theme.  
 3. Save the CSS file in `frontend/src/themes`.  
@@ -1026,6 +1027,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
