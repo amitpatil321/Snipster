@@ -69,8 +69,7 @@ app.use("/api/tags", requireAuthJson(), tagRoutes);
 app.use("/api/folder", requireAuthJson(), folderRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
-  const user = req.oidc.user ? "Logged in as: " + req.oidc.user.name : "";
-  res.send(`<h2>Snipster API</h2>` + user);
+  res.send(`<h2>Snipster API</h2>`);
 });
 
 app.use((req: Request, res: Response) => {
