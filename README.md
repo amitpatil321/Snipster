@@ -981,13 +981,13 @@ http://localhost:5173
 ---
 
 ## 💄Adding new theme
-1) Find desired theme from [https://tweakcn.com](https://tweakcn.com/editor/theme)
-2) Copy css code for that theme
-3) Save css file in frontend/src/themes
-4) Rename ":root" to ".theme-name" and ".dark" to ".theme-name.dark"
-5) Find font used in selected theme, integrate that font app
-6) Add theme name to src/config/config.ts, THEMES array
-7) Import newly added css file into index.css
+1. Choose a desired theme from [tweakcn.com](https://tweakcn.com/editor/theme) (or another source).  
+2. Copy the CSS code for that theme.  
+3. Save the CSS file in `frontend/src/themes`.  
+4. Rename `:root` to `.theme-name` and `.theme-name.dark`.  
+5. Add the theme’s font to `index.html`.  
+6. Add the theme name to the `THEMES` array in `src/config/config.ts`.  
+7. Import the newly added CSS file into `index.css`.  
 
 ## 📌 Project Roadmap
 
@@ -1026,6 +1026,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
