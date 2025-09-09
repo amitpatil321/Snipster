@@ -5,8 +5,8 @@ import { getFolders } from "../controllers/user.controller";
 const router = Router();
 
 router.get("/", (req, res) => {
-  if (req.oidc.user) {
-    res.json({ success: true, data: req.oidc.user });
+  if (req.oidc?.user) {
+    res.json({ success: true, data: req.oidc?.user });
   } else {
     res.status(401).json({ success: false, message: "User not authenticated" });
   }
