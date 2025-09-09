@@ -32,7 +32,7 @@
   - [☑️ Prerequisites](#-prerequisites)
   - [⚙️ Installation & Running](#-installation--running)
   - [🤖 Usage](#-usage)
-- [ 💄 Adding new theme](#-adding-new-theme)
+- [💄 Adding new theme](#-adding-new-theme)
 - [📌 Project Roadmap](#-project-roadmap)
 - [🔰 Contributing](#-contributing)
 - [🎗 License](#-license)
@@ -1026,6 +1026,7 @@ http://localhost:5173
 ## 🎗 License
 
 This project is licensed under the [AGPL-3.0](LICENSE).
+
 
 
 
