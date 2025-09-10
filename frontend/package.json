@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
     "preview": "vite preview --port 5173",
-    "prepare": "husky"
+    "prepare": "husky",
+    "serve": "serve -s dist -l 5173"
   },
   "dependencies": {
     "@auth0/auth0-react": "2.x",
