@@ -50,7 +50,6 @@ app.use(cookieParser());
 
 app.use(rateLimitConfig);
 
-app.options("*", cors());
 app.use(
   cors({
     origin: process.env.REACT_APP_URL,
