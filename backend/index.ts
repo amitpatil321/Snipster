@@ -49,6 +49,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(rateLimitConfig);
+
+app.options("*", cors());
 app.use(
   cors({
     origin: process.env.REACT_APP_URL,
@@ -57,6 +59,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+console.log("Allowed origin:", process.env.REACT_APP_URL);
 
 app.use(auth(config)); // auth0 router attaches /login, /logout, and /callback routes to the baseURL
 app.use(compression());
