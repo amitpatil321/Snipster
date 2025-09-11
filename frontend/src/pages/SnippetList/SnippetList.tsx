@@ -44,6 +44,7 @@ const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
   const onSnippetClick = (snippetId: string | null) => {
     const findSnippet = snippets.find((each) => each._id === snippetId);
     if (findSnippet) dispatch(setSnippetDetails(findSnippet));
+    else dispatch(setSnippetDetails(null));
   };
 
   if (error) {
@@ -123,6 +124,7 @@ const SnippetList = ({ loading, error, snippets }: SnippetListType) => {
               <Sheet
                 open={!!snippetDetails}
                 onOpenChange={(open) => !open && onSnippetClick(null)}
+                // onOpenChange={(open) => console.log("open", open)}
               >
                 <SheetHeader></SheetHeader>
                 {/* <SheetContent className="w-full md:w-3/4 lg:w-2/3"> */}

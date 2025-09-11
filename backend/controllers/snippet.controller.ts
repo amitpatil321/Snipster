@@ -250,60 +250,66 @@ export const saveSnippet = withUser(async (req: Request, res: Response) => {
 });
 
 export const updateSnippet = withUser(async (req: Request, res: Response) => {
-  try {
-    const userId = req.oidc?.user?.sub;
-    const { id, title, description, folder, tags, language, content } =
-      req.body;
+  setTimeout(async () => {
+    try {
+      const userId = req.oidc?.user?.sub;
+      const { id, title, description, folder, tags, language, content } =
+        req.body;
 
-    if (!id || !title?.trim() || !language?.trim() || !content?.trim()) {
-      return res.status(400).json({
+      if (!id || !title?.trim() || !language?.trim() || !content?.trim()) {
+        return res.status(400).json({
+          success: false,
+          message: "Title, language and content are mandatory fields",
+        });
+      }
+
+      const tagIds = await resolveTagIds(tags);
+
+      const updatedSnippet = await Snippet.findOneAndUpdate(
+        { _id: id, createdBy: userId },
+        {
+          title: title.trim(),
+          description: description.trim(),
+          folderId: folder ? new Types.ObjectId(folder) : null,
+          tagIds: tagIds,
+          language,
+          content,
+          updatedAt: new Date(),
+        },
+        { new: true }
+      )
+        .populate({
+          path: "folderId",
+          model: Folder,
+          select: "name",
+        })
+        .populate({
+          path: "tagIds",
+          model: Tag,
+          select: "name",
+        })
+        .exec();
+
+      if (!updatedSnippet) {
+        return res.status(404).json({
+          success: false,
+          message: "Snippet not found or not authorized",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        data: updatedSnippet,
+        message: "Snippet updated successfully!",
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
         success: false,
-        message: "Title, language and content are mandatory fields",
+        message: "Error updating snippet, Please try again!",
       });
     }
-
-    const tagIds = await resolveTagIds(tags);
-
-    const updatedSnippet = await Snippet.findOneAndUpdate(
-      { _id: id, createdBy: userId },
-      {
-        title: title.trim(),
-        description: description.trim(),
-        folderId: folder ? new Types.ObjectId(folder) : null,
-        tagIds: tagIds,
-        language,
-        content,
-        updatedAt: new Date(),
-      },
-      { new: true }
-    )
-      .populate({
-        path: "folderId",
-        model: Folder,
-        select: "name",
-      })
-      .select("-updatedAt -__v -content -tagIds")
-      .exec();
-
-    if (!updatedSnippet) {
-      return res.status(404).json({
-        success: false,
-        message: "Snippet not found or not authorized",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: updatedSnippet,
-      message: "Snippet updated successfully!",
-    });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({
-      success: false,
-      message: "Error updating snippet, Please try again!",
-    });
-  }
+  }, 3000);
 });
 
 export const moveToFolder = withUser(async (req: Request, res: Response) => {
