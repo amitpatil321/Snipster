@@ -26,6 +26,8 @@
 
 - [📍 Overview](#-overview)
 - [📸 Screenshots](#-screenshots)
+- [🌟 Features](#-features)
+- [🧩 BFF Architecture](#-bff-backend-for-frontend-architecture)
 - [📁 Project Structure](#-project-structure)
 - [📁 Project Index](#-project-index)
 - [🚀 Getting Started](#-getting-started)
@@ -53,6 +55,32 @@ Snipster is an open-source snippet manager built for developers who value speed,
 <p align="center">
   <img src="add-snippet.png" alt="Add Snippet" width="600">
 </p>
+
+
+---
+
+## 🌟 Features
+
+- **🔐 Secure Authentication** – Auth0 integration with **BFF architecture (Backend for frontend)**.
+- **📂 Smart Snippet Organization** – Group snippets into folders and tags.
+- **🏷️ Tag Support** – Assign one or multiple tags to snippets.
+- **🔎 Advanced Search & Filters** – Search by title, description, language, tags, favorites (roadmap).
+- **✨ Rich Code Editor** – Code editor with syntax highlighting for 15+ programming languages (JavaScript, TypeScript, Python, Go, etc.). 
+- **🌗 Theming System** – Switch between **light/dark/system modes** and apply **color themes**.  
+  Users can also **add new custom/ready themes in just a few steps** – see [Theme Setup Guide](./README.md#-adding-new-theme).
+- **⭐ Favorites & Quick Access** – Mark snippets as favorites and quickly find them later.
+- **🗑️ Soft Delete** – Deleted snippets are preserved with deletedAt timestamps for recovery.
+- **📱 Responsive UI** – Mobile-first design, fully responsive layout with Tailwind CSS + shadcn/ui.
+- **⚡ Optimistic Updates** – Instant UI feedback for actions powered by React Query.
+- **🌀 Animations & Transitions** – Smooth motion effects for dialogs, modals, and lists.
+- **🛠️ Developer Friendly** – ESLint + Prettier setup, TypeScript strict mode.
+- **📈 Scalable Backend** – Express + MongoDB with modular routes, controllers, and models.
+
+--- 
+## 🧩 BFF (Backend for Frontend) Architecture
+
+<img width="450" height="650" alt="backend-for-frontend-bff-flow" src="https://github.com/user-attachments/assets/fe33b8c6-1879-48c7-b717-0a8da82b0a15" />
+
 
 ---
 
