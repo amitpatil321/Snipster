@@ -49,12 +49,11 @@ Snipster is an open-source snippet manager built for developers who value speed,
 
 ## 📸 Screenshots
 
-<p align="center">
-  <img src="snipster-home.png" alt="Snipster Home" width="600">
-</p>
-<p align="center">
-  <img src="add-snippet.png" alt="Add Snippet" width="600">
-</p>
+<div style="display: flex; gap: 20px;">
+  <img src="home.png" alt="Snipster Home" width="30%">
+  <img src="dark.png" alt="Add Snippet" width="30%">
+  <img src="theme.png" alt="Add Snippet" width="30%">
+</div>
 
 
 ---
