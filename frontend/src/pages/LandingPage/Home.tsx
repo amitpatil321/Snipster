@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="relative bg-white p-4 md:p-6 h-dvh">
+    <div className="relative bg-white p-4 md:p-6 h-dvh font-['Montserrat'] text-gray-600">
       <div className="mx-auto md:pt-2 max-w-4xl md:max-w-4xl lg:max-w-5xl">
         <div className="flex justify-between items-center mx-auto p-4">
           <div className="flex justify-center items-center gap-2 text-2xl">
@@ -24,7 +24,7 @@ export default function Home() {
           </div>
         </div>
         <section className="mt-10 md:mt-8">
-          <h1 className="text-3xl md:text-4xl text-center">
+          <h1 className="text-2xl md:text-3xl text-center">
             Stay organized with an easy-to-use snippet manager.
           </h1>
           <p className="mt-6 md:text-xl text-center">
@@ -38,7 +38,7 @@ export default function Home() {
             Optimistic UI, every action feels instant.
           </p>
         </section>
-        <section className="group mt-30">
+        <section className="group md:mt-30">
           {/* <div className="shadow-gray-600 shadow-xl group-hover:shadow-2xl mx-auto border border-gray-200 rounded-2xl group-hover:scale-102 transition-all duration-300 ease-in-out transform">
             <img
               alt="snipster image"
@@ -51,17 +51,17 @@ export default function Home() {
             <img
               alt="Snipster app screenshot left"
               className="absolute shadow-lg rounded-xl w-50 sm:w-60 md:w-80 lg:w-xl xl:w-5xl object-cover -rotate-3 group-hover:-rotate-6 transition-all -translate-x-12 sm:-translate-x-16 sm:group-hover:-translate-x-24 md:-translate-x-20 md:group-hover:-translate-x-32 lg:-translate-x-24 lg:group-hover:-translate-x-40 group-hover:-translate-x-20 duration-500 ease-in-out"
-              src="https://github.com/amitpatil321/Snipster/raw/main/snipster-home.png"
+              src="https://github.com/amitpatil321/Snipster/raw/main/home.png"
             />
             <img
               alt="Snipster app screenshot center"
               className="z-10 relative shadow-lg rounded-xl w-50 sm:w-60 md:w-80 lg:w-xl xl:w-5xl object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
-              src="https://github.com/amitpatil321/Snipster/raw/main/snipster-home.png"
+              src="https://github.com/amitpatil321/Snipster/raw/main/theme.png"
             />
             <img
               alt="Snipster app screenshot right"
               className="absolute shadow-lg rounded-xl w-50 sm:w-60 md:w-80 lg:w-xl xl:w-5xl object-cover rotate-3 group-hover:rotate-6 transition-all translate-x-12 sm:group-hover:translate-x-24 sm:translate-x-16 md:group-hover:translate-x-32 md:translate-x-20 lg:group-hover:translate-x-40 lg:translate-x-24 group-hover:translate-x-20 duration-500 ease-in-out"
-              src="https://github.com/amitpatil321/Snipster/raw/main/snipster-home.png"
+              src="https://github.com/amitpatil321/Snipster/raw/main/dark.png"
             />
           </div>
         </section>
