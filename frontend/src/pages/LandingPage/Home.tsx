@@ -51,12 +51,12 @@ export default function Home() {
             <img
               alt="Snipster app screenshot left"
               className="absolute shadow-lg rounded-xl w-50 sm:w-60 md:w-80 lg:w-xl xl:w-5xl object-cover -rotate-3 group-hover:-rotate-6 transition-all -translate-x-12 sm:-translate-x-16 sm:group-hover:-translate-x-24 md:-translate-x-20 md:group-hover:-translate-x-32 lg:-translate-x-24 lg:group-hover:-translate-x-40 group-hover:-translate-x-20 duration-500 ease-in-out"
-              src="https://github.com/amitpatil321/Snipster/raw/main/home.png"
+              src="https://github.com/amitpatil321/Snipster/raw/main/theme.png"
             />
             <img
               alt="Snipster app screenshot center"
               className="z-10 relative shadow-lg rounded-xl w-50 sm:w-60 md:w-80 lg:w-xl xl:w-5xl object-cover group-hover:scale-105 transition-all duration-500 ease-in-out"
-              src="https://github.com/amitpatil321/Snipster/raw/main/theme.png"
+              src="https://github.com/amitpatil321/Snipster/raw/main/home.png"
             />
             <img
               alt="Snipster app screenshot right"
