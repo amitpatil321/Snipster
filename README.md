@@ -26,6 +26,7 @@
 
 - [📍 Overview](#-overview)
 - [📸 Screenshots](#-screenshots)
+- [🌟 Features](#-features)
 - [📁 Project Structure](#-project-structure)
 - [📁 Project Index](#-project-index)
 - [🚀 Getting Started](#-getting-started)
