@@ -27,6 +27,7 @@
 - [📍 Overview](#-overview)
 - [📸 Screenshots](#-screenshots)
 - [🌟 Features](#-features)
+- [🧩 BFF Architecture](#-bff-backend-for-frontend-architecture)
 - [📁 Project Structure](#-project-structure)
 - [📁 Project Index](#-project-index)
 - [🚀 Getting Started](#-getting-started)
@@ -74,6 +75,12 @@ Snipster is an open-source snippet manager built for developers who value speed,
 - **🌀 Animations & Transitions** – Smooth motion effects for dialogs, modals, and lists.
 - **🛠️ Developer Friendly** – ESLint + Prettier setup, TypeScript strict mode.
 - **📈 Scalable Backend** – Express + MongoDB with modular routes, controllers, and models.
+
+--- 
+## 🧩 BFF (Backend for Frontend) Architecture
+
+<img width="450" height="650" alt="backend-for-frontend-bff-flow" src="https://github.com/user-attachments/assets/fe33b8c6-1879-48c7-b717-0a8da82b0a15" />
+
 
 ---
 
