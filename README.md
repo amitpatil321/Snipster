@@ -1021,13 +1021,11 @@ http://localhost:5173
 
 - [x] Fix eslint settings for import order
 - [x] Add multiple snippet delete and favorite
-- [x] Add animations
+- [ ] Import and export snippets
 - [ ] Drag & drop snippets
-- [x] Responsive design
 - [ ] Fullscreen mode for code editor
 - [ ] Snippet history tracking
 - [ ] Search by tags
-- [x] Dark/light theme improvements
 - [ ] While adding new snippet user should be able to mark it favorite
 - [ ] Add dedicated user settings page
 - [ ] Add AI support to auto detect language and tags
