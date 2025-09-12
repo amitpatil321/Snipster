@@ -1000,7 +1000,6 @@ pnpm run dev
 ```sh
 cd ../frontend
 pnpm install
-pnpm run dev
 ```
 
 Create  .env file
@@ -1008,6 +1007,12 @@ Create  .env file
 ```
 VITE_API_BASE=BACKEND_API_ENDPOINT_URL
 PORT=PORT
+```
+
+Run frontend
+
+```sh
+pnpm run dev
 ```
 
 ---
