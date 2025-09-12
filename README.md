@@ -977,8 +977,16 @@ pnpm install
 Create a `.env` file:
 
 ```
-MONGODB_URI=mongodb://localhost:27017/snipster
-PORT=5000
+API_URL=API_ENDPOINT_URL
+PORT=APPLICATION_PORT
+DB_URI=MONGODB_URL
+REACT_APP_URL=REACT_APPLICATION_URL
+
+AUTH0_SECRET: YOUR_AUTH0_SECRET
+AUTH0_CLIENT_ID: YOUR_AUTH0_CLIENT_ID
+AUTH0_ISSUER_BASE_URL: YOUR_AUTH0_ISSUER_BASE_URL
+AUTH0_CLIENT_SECRET: RANDOM_SECRET_STRING
+
 ```
 
 Run the backend server:
@@ -993,6 +1001,13 @@ pnpm run dev
 cd ../frontend
 pnpm install
 pnpm run dev
+```
+
+Create  .env file
+
+```
+VITE_API_BASE=BACKEND_API_ENDPOINT_URL
+PORT=PORT
 ```
 
 ---
